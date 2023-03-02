@@ -1,19 +1,29 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { router } from "./router";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { privateRoutes, publicRoutes } from "./router";
 
 const AppRouter = () => {
-  return (
+  return localStorage.getItem("isAuth") ? (
     <Routes>
-      {router.map(({ path, component }) => {
-        return (
-          <Route
-            key={path}
-            path={path}
-            element={React.createElement(component)}
-          />
-        );
-      })}
+      {privateRoutes.map(({ path, component }) => (
+        <Route
+          key={path}
+          path={path}
+          element={React.createElement(component)}
+        />
+      ))}
+      <Route path="/login" element={<Navigate to="/" replace />} />
+    </Routes>
+  ) : (
+    <Routes>
+      {publicRoutes.map(({ path, component }) => (
+        <Route
+          key={path}
+          path={path}
+          element={React.createElement(component)}
+        />
+      ))}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
