@@ -1,9 +1,13 @@
 import api from "../API/API";
-import { IUser } from "../models/bonami";
+import { IUser } from "../models/bonami-server-response";
 
 export default class BonamiService {
-  static async googleAuth() {
-    return await api.get("/google");
+  static async isAuth() {
+    return (await api.get("/isAuth")).data;
+  }
+
+  static async logOut() {
+    return (await api.get("/logout")).data;
   }
 
   static async getUser() {
