@@ -17,3 +17,13 @@ export interface IUser {
   updatedAt: string;
   isAdmin: boolean;
 }
+
+interface IMultiLang {
+  en: string;
+  ua: string;
+}
+
+export interface ICategory {
+  _id: string;
+  name: IMultiLang;
+}

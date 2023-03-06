@@ -1,5 +1,5 @@
 import api from "../API/API";
-import { IUser } from "../models/bonami-server-response";
+import { ICategory, IUser } from "../models/bonami-server-response";
 
 export default class BonamiService {
   static async isAuth() {
@@ -12,5 +12,9 @@ export default class BonamiService {
 
   static async getUser() {
     return (await api.get<IUser>("/user")).data;
+  }
+
+  static async getCategories() {
+    return (await api.get<ICategory[]>("/category")).data;
   }
 }

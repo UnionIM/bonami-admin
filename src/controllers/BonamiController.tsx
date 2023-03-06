@@ -24,4 +24,12 @@ export default class BonamiController {
       throw e;
     }
   }
+
+  static async getCategories() {
+    try {
+      return await BonamiService.getCategories();
+    } catch (e) {
+      throw e;
+    }
+  }
 }
