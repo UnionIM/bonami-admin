@@ -5,7 +5,7 @@ export interface ICreateItemForm {
   descriptionUa: string;
   categoryEn: string;
   categoryUa: string;
-  price: number;
-  discount: number;
+  price: string;
+  discount: string;
   files: Blob[];
 }
