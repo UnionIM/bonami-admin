@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export default function useFetchData<T>(
   promise: (...args: any) => Promise<T>,
-  params: any[],
+  params?: any[],
   deps?: any[]
 ) {
   const [data, setData] = useState<{ data: null | T; isLoading: boolean }>({
@@ -14,7 +14,7 @@ export default function useFetchData<T>(
     () => {
       setData({ data: null, isLoading: true });
       promise
-        .apply(null, params)
+        .apply(null, params || [])
         .then((value) => {
           setData({ data: value, isLoading: false });
         })
