@@ -1,5 +1,13 @@
 import React, { ChangeEvent, useState, FormEvent } from "react";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Card,
+  TextField,
+  CardContent,
+  Typography,
+} from "@mui/material";
 import { Google } from "@mui/icons-material";
 import axios from "axios";
 import PasswordTextField from "../components/UI/Inputs/PasswordTextField";
@@ -25,6 +33,7 @@ const Login = () => {
     })
       .then((res) => {
         if (res.status === 200) {
+          localStorage.setItem(`isAuth`, JSON.stringify(true));
           window.location.href = "http://localhost:3000";
         }
       })
@@ -45,47 +54,48 @@ const Login = () => {
   };
 
   return (
-    <Grid container justifyContent={"center"}>
-      <Grid
-        container
-        flexDirection={"column"}
-        justifyContent={"space-between"}
-        width={"350px"}
-        boxShadow={"0px 0px 5px gray"}
-        borderRadius={"25px"}
-        padding={"50px 20px"}
-        bgcolor={"white"}
+    <Grid container justifyContent={"center"} p={"32px"}>
+      <Card
+        sx={{
+          width: "350px",
+        }}
       >
-        <form onSubmit={local}>
-          <TextField
-            value={email}
-            onChange={emailHandler}
-            fullWidth={true}
-            variant={"outlined"}
-            label={"Email"}
-          />
-          <PasswordTextField
-            m={"20px 0 0 0"}
-            onChange={passwordHandler}
-            value={password}
-          />
-          {failure ? (
-            <Grid border={"1px solid #d32f2f"} height={30}>
-              <Typography color="#d32f2f" align={"center"}>
-                Wrong email of password
-              </Typography>
-            </Grid>
-          ) : (
-            <Box height={30} />
-          )}
-          <Button type="submit" sx={{ mt: 2 }} fullWidth={true}>
-            Sign in
+        <CardContent>
+          <form onSubmit={local}>
+            <TextField
+              value={email}
+              onChange={emailHandler}
+              fullWidth={true}
+              variant={"outlined"}
+              label={"Email"}
+            />
+            <PasswordTextField
+              m={"20px 0 0 0"}
+              onChange={passwordHandler}
+              value={password}
+            />
+            {failure ? (
+              <Grid border={"1px solid #d32f2f"} mt={"20px"} height={30}>
+                <Typography color="#d32f2f" align={"center"}>
+                  Wrong email of password
+                </Typography>
+              </Grid>
+            ) : (
+              <Box height={30} />
+            )}
+            <Button type="submit" sx={{ mt: 2 }} fullWidth={true}>
+              Sign in
+            </Button>
+          </form>
+          <Button
+            sx={{ mt: 5, width: "100%" }}
+            onClick={google}
+            startIcon={<Google />}
+          >
+            Sign in with google
           </Button>
-        </form>
-        <Button sx={{ mt: 5 }} onClick={google} startIcon={<Google />}>
-          Sign in with google
-        </Button>
-      </Grid>
+        </CardContent>
+      </Card>
     </Grid>
   );
 };
