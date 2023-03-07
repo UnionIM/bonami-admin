@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import DropDownMenu from "./UI/DropDownMenu";
 import ModalDialog from "./UI/ModalDialog";
 import MultiLangInputs from "./UI/Inputs/MultiLangInputs";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { ICreateCategoryForm } from "../models/bonami-client";
+import axios from "axios";
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -16,6 +17,10 @@ const Navbar = () => {
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const logOutHandler = () => {
@@ -27,6 +32,21 @@ const Navbar = () => {
       })
       .catch((e) => console.log(e));
     localStorage.clear();
+  };
+
+  const onSubmit: SubmitHandler<ICreateCategoryForm> = (data) => {
+    axios({
+      method: "POST",
+      data: { name: { en: data.nameEn, ua: data.nameUa } },
+      withCredentials: true,
+      url: "http://localhost:5000/category/create",
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -90,11 +110,7 @@ const Navbar = () => {
             title={"Create category"}
             width={"500px"}
           >
-            <form
-              onSubmit={handleSubmit((data) => {
-                console.log(data);
-              })}
-            >
+            <form onSubmit={handleSubmit(onSubmit)}>
               <MultiLangInputs
                 register={register}
                 header={"Name"}
@@ -104,6 +120,7 @@ const Navbar = () => {
                 type={"submit"}
                 variant="contained"
                 sx={{ width: "100%", marginTop: "20px" }}
+                onClick={handleClose}
               >
                 CREATE
               </Button>

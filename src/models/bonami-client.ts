@@ -1,8 +1,3 @@
-interface IMultiLang {
-  en: string;
-  ua: string;
-}
-
 export interface ICreateItemForm {
   nameEn: string;
   nameUa: string;
@@ -16,5 +11,6 @@ export interface ICreateItemForm {
 }
 
 export interface ICreateCategoryForm {
-  name: IMultiLang;
+  nameEn: string;
+  nameUa: string;
 }
