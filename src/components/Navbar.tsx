@@ -33,22 +33,53 @@ const Navbar = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Link to={"/"} style={{ flexGrow: 1 }}>
-            <Typography component={"span"}>Bonami Admin</Typography>
+          <Link to={"/"} style={{ display: "inline-block", width: "200px" }}>
+            <Typography
+              sx={{ fontSize: "24px", lineHeight: "2.7" }}
+              component={"span"}
+            >
+              Bonami Admin
+            </Typography>
           </Link>
           {localStorage.getItem("isAuth") ? (
-            <Grid container sx={{ width: "unset" }} gap={"25px"}>
-              <DropDownMenu buttonContent={<Add />}>
-                <Link to={"/item/create"} key={1}>
-                  Create item
+            <Grid
+              container
+              justifyContent={"space-between"}
+              sx={{ flexWrap: "unset" }}
+            >
+              <Grid
+                item
+                container
+                gap={"15px"}
+                sx={{ ml: "40px" }}
+                alignItems={"center"}
+                component={"nav"}
+              >
+                <Link to={"/item/list"}>
+                  <Typography>Item manager</Typography>
                 </Link>
-                <span onClick={handleClickOpen} key={2}>
-                  Create category
-                </span>
-              </DropDownMenu>
-              <Button onClick={logOutHandler} color={"inherit"}>
-                Logout
-              </Button>
+                <Link to={"/order/list"}>
+                  <Typography>Orders</Typography>
+                </Link>
+              </Grid>
+              <Grid
+                item
+                container
+                sx={{ width: "unset", flexWrap: "unset" }}
+                gap={"25px"}
+              >
+                <DropDownMenu buttonContent={<Add />}>
+                  <Link to={"/item/create"} key={1}>
+                    Create item
+                  </Link>
+                  <span onClick={handleClickOpen} key={2}>
+                    Create category
+                  </span>
+                </DropDownMenu>
+                <Button onClick={logOutHandler} color={"inherit"}>
+                  Logout
+                </Button>
+              </Grid>
             </Grid>
           ) : (
             <div></div>
