@@ -8,8 +8,7 @@ import { Box } from "@mui/material";
 import { gray } from "./design/colors";
 import Footer from "./components/Footer";
 
-function App() {
-  const Global = createGlobalStyle`
+const Global = createGlobalStyle`
     *{
       margin: 0;
       padding: 0;
@@ -20,6 +19,8 @@ function App() {
       color: unset;
     }
   `;
+
+function App() {
   useEffect(() => {
     BonamiController.isAuth()
       .then((res: { isAuth: boolean }) => {
