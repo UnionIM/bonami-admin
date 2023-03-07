@@ -6,7 +6,7 @@ import {
   Card,
   TextField,
   CardContent,
-  Typography,
+  Alert,
 } from "@mui/material";
 import { Google } from "@mui/icons-material";
 import axios from "axios";
@@ -57,7 +57,7 @@ const Login = () => {
     <Grid container justifyContent={"center"} p={"32px"}>
       <Card
         sx={{
-          width: "350px",
+          width: "375px",
         }}
       >
         <CardContent>
@@ -75,11 +75,15 @@ const Login = () => {
               value={password}
             />
             {failure ? (
-              <Grid border={"1px solid #d32f2f"} mt={"20px"} height={30}>
-                <Typography color="#d32f2f" align={"center"}>
-                  Wrong email of password
-                </Typography>
-              </Grid>
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setFailure(false);
+                }}
+                sx={{ mt: "20px" }}
+              >
+                Wrong email or password
+              </Alert>
             ) : (
               <Box height={30} />
             )}
