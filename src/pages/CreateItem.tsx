@@ -23,8 +23,8 @@ const CreateItem = () => {
 
   const { data } = useFetchData(BonamiController.getCategories);
 
-  const [dataFiles, setDataFiles] = useState<FileList>();
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<FileList>();
+  const [imgDisplayLinks, setImgDisplayLinks] = useState<string[]>([]);
   const [captcha, setCaptcha] = useState<string>("");
 
   const menuItems = useMemo(() => {
@@ -50,13 +50,9 @@ const CreateItem = () => {
     formData.append("price", data.price);
     formData.append("discount", data.discount || "0");
     //@ts-ignore
-    console.log(...dataFiles, "DATA FILES");
-    //@ts-ignore
-    for (let file of dataFiles) {
+    for (let file of files) {
       formData.append("files", file);
     }
-    //@ts-ignore
-    console.log(...formData);
     axios({
       method: "POST",
       data: formData,
@@ -73,13 +69,13 @@ const CreateItem = () => {
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setDataFiles(e.target.files);
+      setFiles(e.target.files);
       const fileArr = [];
       // @ts-ignore
       for (let fileItem of e.target.files) {
         fileArr.push(URL.createObjectURL(fileItem));
       }
-      setFiles(fileArr);
+      setImgDisplayLinks(fileArr);
     }
   };
 
@@ -140,14 +136,14 @@ const CreateItem = () => {
                   hidden
                 />
               </Button>
-              {files?.length ? (
+              {imgDisplayLinks?.length ? (
                 <ImageList
                   sx={{ width: 490, height: 235, m: "0 auto" }}
                   cols={3}
                   rowHeight={150}
                   gap={8}
                 >
-                  {files.map((el) => (
+                  {imgDisplayLinks.map((el) => (
                     <ImageListItem key={el}>
                       <img
                         src={`${el}`}
