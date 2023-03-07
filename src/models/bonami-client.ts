@@ -1,3 +1,8 @@
+interface IMultiLang {
+  en: string;
+  ua: string;
+}
+
 export interface ICreateItemForm {
   nameEn: string;
   nameUa: string;
@@ -8,4 +13,8 @@ export interface ICreateItemForm {
   price: string;
   discount: string;
   files: Blob[];
+}
+
+export interface ICreateCategoryForm {
+  name: IMultiLang;
 }
