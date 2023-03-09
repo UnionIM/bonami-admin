@@ -11,18 +11,23 @@ import {
 import { Google } from "@mui/icons-material";
 import PasswordTextField from "../components/UI/Inputs/PasswordTextField";
 import BonamiService from "../services/BonamiService";
+import MyAlert from "../components/UI/MyAlert";
 
 const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [failure, setFailure] = useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = useState<{
+    isOpen: boolean;
+    message: string;
+  }>({ isOpen: false, message: "" });
 
   const google = () => {
     window.open("http://localhost:5000/google", "_self");
   };
   const local = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    BonamiService.localLogin(email, password, setFailure);
+    BonamiService.localLogin(email, password, setFailure, setOpenSnackbar);
   };
 
   const emailHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +85,13 @@ const Login = () => {
           </Button>
         </CardContent>
       </Card>
+      <MyAlert
+        severity={"error"}
+        state={openSnackbar}
+        setState={setOpenSnackbar}
+      >
+        <>{openSnackbar.message}</>
+      </MyAlert>
     </Grid>
   );
 };

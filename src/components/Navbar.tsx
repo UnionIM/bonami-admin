@@ -9,10 +9,15 @@ import MultiLangInputs from "./UI/Inputs/MultiLangInputs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ICreateCategoryForm } from "../models/bonami-client";
 import BonamiService from "../services/BonamiService";
+import MyAlert from "./UI/MyAlert";
 
 const Navbar = () => {
   const [openCreate, setOpenCreate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = useState<{
+    isOpen: boolean;
+    message: string;
+  }>({ isOpen: false, message: "" });
 
   const { register, handleSubmit } = useForm<ICreateCategoryForm>();
 
@@ -27,7 +32,7 @@ const Navbar = () => {
     setOpenDelete(true);
   };
   const handleCloseDelete = () => {
-    BonamiService.deleteCategories();
+    BonamiService.deleteCategories(setOpenSnackbar);
     setOpenDelete(false);
   };
 
@@ -43,7 +48,7 @@ const Navbar = () => {
   };
 
   const onSubmit: SubmitHandler<ICreateCategoryForm> = (data) => {
-    BonamiService.createCategory(data);
+    BonamiService.createCategory(data, setOpenSnackbar);
   };
 
   return (
@@ -145,6 +150,13 @@ const Navbar = () => {
               </Button>
             </div>
           </ModalDialog>
+          <MyAlert
+            severity={"error"}
+            state={openSnackbar}
+            setState={setOpenSnackbar}
+          >
+            <>{openSnackbar.message}</>
+          </MyAlert>
         </Toolbar>
       </AppBar>
     </Box>

@@ -24,7 +24,13 @@ export default class BonamiService {
   static localLogin(
     email: string,
     password: string,
-    setState: Dispatch<SetStateAction<boolean>>
+    setState: Dispatch<SetStateAction<boolean>>,
+    setAlert: Dispatch<
+      SetStateAction<{
+        isOpen: boolean;
+        message: string;
+      }>
+    >
   ) {
     axios({
       method: "POST",
@@ -45,8 +51,11 @@ export default class BonamiService {
         }
       })
       .catch((e) => {
-        if (!e.response.data.success) {
+        console.log(e);
+        if (e.code !== "ERR_NETWORK" && !e.response.data.success) {
           setState(true);
+        } else {
+          setAlert({ isOpen: true, message: "Server error, try again later" });
         }
         console.log(e);
       });
@@ -55,7 +64,13 @@ export default class BonamiService {
   static createItem(
     data: ICreateItemForm,
     menuItems: { value: string; name: string }[],
-    files: FileList
+    files: FileList,
+    setAlert: Dispatch<
+      SetStateAction<{
+        isOpen: boolean;
+        message: string;
+      }>
+    >
   ) {
     const formData = new FormData();
     const categoryUa = menuItems?.find(
@@ -84,10 +99,14 @@ export default class BonamiService {
       })
       .catch((e) => {
         console.log(e);
+        setAlert({ isOpen: true, message: "Server error, try again later" });
       });
   }
 
-  static createCategory(data: ICreateCategoryForm) {
+  static createCategory(
+    data: ICreateCategoryForm,
+    setAlert: Dispatch<SetStateAction<{ isOpen: boolean; message: string }>>
+  ) {
     axios({
       method: "POST",
       data: { name: { en: data.nameEn, ua: data.nameUa } },
@@ -99,10 +118,13 @@ export default class BonamiService {
       })
       .catch((e) => {
         console.log(e);
+        setAlert({ isOpen: true, message: "Server error, try again later" });
       });
   }
 
-  static deleteCategories() {
+  static deleteCategories(
+    setAlert: Dispatch<SetStateAction<{ isOpen: boolean; message: string }>>
+  ) {
     axios({
       method: "DELETE",
       withCredentials: true,
@@ -113,6 +135,7 @@ export default class BonamiService {
       })
       .catch((e) => {
         console.log(e);
+        setAlert({ isOpen: true, message: "Server error, try again later" });
       });
   }
 }

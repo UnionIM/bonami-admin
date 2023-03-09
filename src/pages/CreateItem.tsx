@@ -22,29 +22,40 @@ import MyAlert from "../components/UI/MyAlert";
 const CreateItem = () => {
   const { register, handleSubmit, control } = useForm<ICreateItemForm>();
 
-  const { data } = useFetchData(BonamiController.getCategories);
+  const { data, message } = useFetchData(BonamiController.getCategories);
 
   const [files, setFiles] = useState<FileList>();
   const [imgDisplayLinks, setImgDisplayLinks] = useState<string[]>([]);
   const [captcha, setCaptcha] = useState<string>("");
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = useState<{
+    isOpen: boolean;
+    message: string;
+  }>({ isOpen: false, message: "" });
 
   const menuItems = useMemo<
     { value: string; name: string }[] | undefined
   >(() => {
-    return data?.map((el) => {
-      return {
-        value: el.name.en,
-        name: el.name.ua,
-      };
-    });
-  }, [data]);
+    //@ts-ignore
+    if (message?.code === "ERR_NETWORK") {
+      setOpenSnackbar({
+        isOpen: true,
+        message: "Server error, try again later",
+      });
+    } else {
+      return data?.map((el) => {
+        return {
+          value: el.name.en,
+          name: el.name.ua,
+        };
+      });
+    }
+  }, [data, message]);
 
   const onSubmit: SubmitHandler<ICreateItemForm> = (data) => {
     if (files && menuItems) {
-      BonamiService.createItem(data, menuItems, files);
+      BonamiService.createItem(data, menuItems, files, setOpenSnackbar);
     } else {
-      setOpenSnackbar(true);
+      setOpenSnackbar({ isOpen: true, message: "Add at least 1 photo" });
     }
   };
 
@@ -203,7 +214,7 @@ const CreateItem = () => {
         state={openSnackbar}
         setState={setOpenSnackbar}
       >
-        <>Add at least 1 photo</>
+        <>{openSnackbar.message}</>
       </MyAlert>
     </Box>
   );

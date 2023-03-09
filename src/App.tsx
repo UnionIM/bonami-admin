@@ -29,7 +29,7 @@ function App() {
         }
       })
       .catch((e) => {
-        if (e.response.status === 401) {
+        if (e.code !== "ERR_NETWORK" && e.response.status === 401) {
           localStorage.clear();
         }
       });

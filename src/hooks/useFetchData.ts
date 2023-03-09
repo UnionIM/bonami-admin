@@ -5,21 +5,26 @@ export default function useFetchData<T>(
   params?: any[],
   deps?: any[]
 ) {
-  const [data, setData] = useState<{ data: null | T; isLoading: boolean }>({
+  const [data, setData] = useState<{
+    data: null | T;
+    message: null | T;
+    isLoading: boolean;
+  }>({
     data: null,
+    message: null,
     isLoading: true,
   });
 
   useEffect(
     () => {
-      setData({ data: null, isLoading: true });
+      setData({ data: null, message: null, isLoading: true });
       promise
         .apply(null, params || [])
         .then((value) => {
-          setData({ data: value, isLoading: false });
+          setData({ data: value, message: null, isLoading: false });
         })
         .catch((err) => {
-          setData({ data: err, isLoading: false });
+          setData({ data: null, message: err, isLoading: false });
         });
     },
     deps ? [...deps] : []
