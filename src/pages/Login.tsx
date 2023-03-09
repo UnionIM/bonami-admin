@@ -9,8 +9,8 @@ import {
   Alert,
 } from "@mui/material";
 import { Google } from "@mui/icons-material";
-import axios from "axios";
 import PasswordTextField from "../components/UI/Inputs/PasswordTextField";
+import BonamiService from "../services/BonamiService";
 
 const Login = () => {
   const [password, setPassword] = useState<string>("");
@@ -22,27 +22,7 @@ const Login = () => {
   };
   const local = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios({
-      method: "POST",
-      data: {
-        email: email,
-        password: password,
-      },
-      withCredentials: true,
-      url: "http://localhost:5000/local",
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          localStorage.setItem(`isAuth`, JSON.stringify(true));
-          window.location.href = "http://localhost:3000";
-        }
-      })
-      .catch((e) => {
-        if (!e.response.data.success) {
-          setFailure(true);
-        }
-        console.log(e);
-      });
+    BonamiService.localLogin(email, password, setFailure);
   };
 
   const emailHandler = (e: ChangeEvent<HTMLInputElement>) => {

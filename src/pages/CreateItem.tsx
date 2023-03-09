@@ -16,7 +16,8 @@ import FormSelect from "../components/UI/Inputs/FormSelect";
 import useFetchData from "../hooks/useFetchData";
 import BonamiController from "../controllers/BonamiController";
 import { ICreateItemForm } from "../models/bonami-client";
-import axios from "axios";
+import BonamiService from "../services/BonamiService";
+import MyAlert from "../components/UI/MyAlert";
 
 const CreateItem = () => {
   const { register, handleSubmit, control } = useForm<ICreateItemForm>();
@@ -26,8 +27,11 @@ const CreateItem = () => {
   const [files, setFiles] = useState<FileList>();
   const [imgDisplayLinks, setImgDisplayLinks] = useState<string[]>([]);
   const [captcha, setCaptcha] = useState<string>("");
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
-  const menuItems = useMemo(() => {
+  const menuItems = useMemo<
+    { value: string; name: string }[] | undefined
+  >(() => {
     return data?.map((el) => {
       return {
         value: el.name.en,
@@ -37,34 +41,11 @@ const CreateItem = () => {
   }, [data]);
 
   const onSubmit: SubmitHandler<ICreateItemForm> = (data) => {
-    const formData = new FormData();
-    const categoryUa = menuItems?.find(
-      (item) => item.value === data.categoryEn
-    )?.name;
-    formData.append("nameEn", data.nameEn);
-    formData.append("nameUa", data.nameUa);
-    formData.append("descriptionEn", data.descriptionEn);
-    formData.append("descriptionUa", data.descriptionUa);
-    formData.append("categoryEn", data.categoryEn);
-    formData.append("categoryUa", categoryUa || data.categoryEn);
-    formData.append("price", data.price);
-    formData.append("discount", data.discount || "0");
-    //@ts-ignore
-    for (let file of files) {
-      formData.append("files", file);
+    if (files && menuItems) {
+      BonamiService.createItem(data, menuItems, files);
+    } else {
+      setOpenSnackbar(true);
     }
-    axios({
-      method: "POST",
-      data: formData,
-      withCredentials: true,
-      url: "http://localhost:5000/item/create",
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   };
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -217,6 +198,13 @@ const CreateItem = () => {
           </Grid>
         </Grid>
       </form>
+      <MyAlert
+        severity={"error"}
+        state={openSnackbar}
+        setState={setOpenSnackbar}
+      >
+        <>Add at least 1 photo</>
+      </MyAlert>
     </Box>
   );
 };

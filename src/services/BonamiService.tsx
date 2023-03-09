@@ -1,5 +1,8 @@
 import api from "../API/API";
 import { ICategory, IUser } from "../models/bonami-server-response";
+import axios from "axios";
+import { ICreateCategoryForm, ICreateItemForm } from "../models/bonami-client";
+import { Dispatch, SetStateAction } from "react";
 
 export default class BonamiService {
   static async isAuth() {
@@ -16,5 +19,100 @@ export default class BonamiService {
 
   static async getCategories() {
     return (await api.get<ICategory[]>("/category")).data;
+  }
+
+  static localLogin(
+    email: string,
+    password: string,
+    setState: Dispatch<SetStateAction<boolean>>
+  ) {
+    axios({
+      method: "POST",
+      data: {
+        email: email,
+        password: password,
+      },
+      withCredentials: true,
+      url: "http://localhost:5000/local",
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.isAdmin) {
+            localStorage.setItem(`isAuth`, JSON.stringify(true));
+            window.location.href = "http://localhost:3000";
+          }
+          setState(true);
+        }
+      })
+      .catch((e) => {
+        if (!e.response.data.success) {
+          setState(true);
+        }
+        console.log(e);
+      });
+  }
+
+  static createItem(
+    data: ICreateItemForm,
+    menuItems: { value: string; name: string }[],
+    files: FileList
+  ) {
+    const formData = new FormData();
+    const categoryUa = menuItems?.find(
+      (item) => item.value === data.categoryEn
+    )?.name;
+    formData.append("nameEn", data.nameEn);
+    formData.append("nameUa", data.nameUa);
+    formData.append("descriptionEn", data.descriptionEn);
+    formData.append("descriptionUa", data.descriptionUa);
+    formData.append("categoryEn", data.categoryEn);
+    formData.append("categoryUa", categoryUa || data.categoryEn);
+    formData.append("price", data.price);
+    formData.append("discount", data.discount || "0");
+    //@ts-ignore
+    for (let file of files) {
+      formData.append("files", file);
+    }
+    axios({
+      method: "POST",
+      data: formData,
+      withCredentials: true,
+      url: "http://localhost:5000/item/create",
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  static createCategory(data: ICreateCategoryForm) {
+    axios({
+      method: "POST",
+      data: { name: { en: data.nameEn, ua: data.nameUa } },
+      withCredentials: true,
+      url: "http://localhost:5000/category/create",
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  static deleteCategories() {
+    axios({
+      method: "DELETE",
+      withCredentials: true,
+      url: "http://localhost:5000/category/delete-empty",
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 }

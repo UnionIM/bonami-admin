@@ -8,19 +8,27 @@ import ModalDialog from "./UI/ModalDialog";
 import MultiLangInputs from "./UI/Inputs/MultiLangInputs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ICreateCategoryForm } from "../models/bonami-client";
-import axios from "axios";
+import BonamiService from "../services/BonamiService";
 
 const Navbar = () => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [openCreate, setOpenCreate] = useState<boolean>(false);
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   const { register, handleSubmit } = useForm<ICreateCategoryForm>();
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpenCreate = () => {
+    setOpenCreate(true);
+  };
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleCloseDelete = () => {
+    BonamiService.deleteCategories();
+    setOpenDelete(false);
   };
 
   const logOutHandler = () => {
@@ -35,18 +43,7 @@ const Navbar = () => {
   };
 
   const onSubmit: SubmitHandler<ICreateCategoryForm> = (data) => {
-    axios({
-      method: "POST",
-      data: { name: { en: data.nameEn, ua: data.nameUa } },
-      withCredentials: true,
-      url: "http://localhost:5000/category/create",
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    BonamiService.createCategory(data);
   };
 
   return (
@@ -92,8 +89,11 @@ const Navbar = () => {
                   <Link to={"/item/create"} key={1}>
                     Create item
                   </Link>
-                  <span onClick={handleClickOpen} key={2}>
+                  <span onClick={handleClickOpenCreate} key={2}>
                     Create category
+                  </span>
+                  <span onClick={handleClickOpenDelete} key={3}>
+                    Delete categories
                   </span>
                 </DropDownMenu>
                 <Button onClick={logOutHandler} color={"inherit"}>
@@ -105,8 +105,8 @@ const Navbar = () => {
             <div></div>
           )}
           <ModalDialog
-            state={open}
-            setState={setOpen}
+            state={openCreate}
+            setState={setOpenCreate}
             title={"Create category"}
             width={"500px"}
           >
@@ -120,11 +120,30 @@ const Navbar = () => {
                 type={"submit"}
                 variant="contained"
                 sx={{ width: "100%", marginTop: "20px" }}
-                onClick={handleClose}
+                onClick={handleCloseCreate}
               >
                 CREATE
               </Button>
             </form>
+          </ModalDialog>
+          <ModalDialog
+            state={openDelete}
+            setState={setOpenDelete}
+            title={"Delete category"}
+            width={"500px"}
+          >
+            <div>
+              <Typography>
+                Click to button bellow to delete all categories without items
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{ width: "100%", marginTop: "20px" }}
+                onClick={handleCloseDelete}
+              >
+                DELETE
+              </Button>
+            </div>
           </ModalDialog>
         </Toolbar>
       </AppBar>
