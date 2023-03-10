@@ -13,6 +13,7 @@ import {
   Divider,
   styled,
   ButtonProps,
+  AlertColor,
 } from "@mui/material";
 import useCategoryMenuItems from "../hooks/useCategoryMenuItems";
 import useFetchData from "../hooks/useFetchData";
@@ -27,7 +28,8 @@ const ItemList = () => {
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
-  }>({ isOpen: false, message: "" });
+    severity: AlertColor;
+  }>({ isOpen: false, message: "", severity: "info" });
 
   const { data: itemList, message: itemListErrorMessage } = useFetchData(
     BonamiController.getItemList
@@ -163,11 +165,7 @@ const ItemList = () => {
           <CircularProgress />
         )}
       </Card>
-      <MyAlert
-        severity={"error"}
-        state={openSnackbar}
-        setState={setOpenSnackbar}
-      >
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
         <>{openSnackbar.message}</>
       </MyAlert>
     </Box>

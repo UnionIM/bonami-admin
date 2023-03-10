@@ -7,6 +7,7 @@ import {
   TextField,
   CardContent,
   Alert,
+  AlertColor,
 } from "@mui/material";
 import { Google } from "@mui/icons-material";
 import PasswordTextField from "../components/UI/Inputs/PasswordTextField";
@@ -20,7 +21,8 @@ const Login = () => {
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
-  }>({ isOpen: false, message: "" });
+    severity: AlertColor;
+  }>({ isOpen: false, message: "", severity: "info" });
 
   const google = () => {
     window.open("http://localhost:5000/google", "_self");
@@ -85,11 +87,7 @@ const Login = () => {
           </Button>
         </CardContent>
       </Card>
-      <MyAlert
-        severity={"error"}
-        state={openSnackbar}
-        setState={setOpenSnackbar}
-      >
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
         <>{openSnackbar.message}</>
       </MyAlert>
     </Grid>

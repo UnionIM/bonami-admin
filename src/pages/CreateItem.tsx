@@ -9,6 +9,7 @@ import {
   CircularProgress,
   ImageList,
   ImageListItem,
+  AlertColor,
 } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import MultiLangInputs from "../components/UI/Inputs/MultiLangInputs";
@@ -31,7 +32,8 @@ const CreateItem = () => {
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
-  }>({ isOpen: false, message: "" });
+    severity: AlertColor;
+  }>({ isOpen: false, message: "", severity: "info" });
 
   const menuItems = useCategoryMenuItems(setOpenSnackbar, data, message);
 
@@ -39,7 +41,11 @@ const CreateItem = () => {
     if (files && menuItems) {
       BonamiService.createItem(data, menuItems, files, setOpenSnackbar);
     } else {
-      setOpenSnackbar({ isOpen: true, message: "Add at least 1 photo" });
+      setOpenSnackbar({
+        isOpen: true,
+        message: "Add at least 1 photo",
+        severity: "error",
+      });
     }
   };
 
@@ -193,11 +199,7 @@ const CreateItem = () => {
           </Grid>
         </Grid>
       </form>
-      <MyAlert
-        severity={"error"}
-        state={openSnackbar}
-        setState={setOpenSnackbar}
-      >
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
         <>{openSnackbar.message}</>
       </MyAlert>
     </Box>

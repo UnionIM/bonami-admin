@@ -7,6 +7,7 @@ import {
 import axios from "axios";
 import { ICreateCategoryForm, ICreateItemForm } from "../models/bonami-client";
 import { Dispatch, SetStateAction } from "react";
+import { AlertColor } from "@mui/material";
 
 export default class BonamiService {
   static async isAuth() {
@@ -37,6 +38,7 @@ export default class BonamiService {
       SetStateAction<{
         isOpen: boolean;
         message: string;
+        severity: AlertColor;
       }>
     >
   ) {
@@ -64,7 +66,11 @@ export default class BonamiService {
         if (e.code !== "ERR_NETWORK" && !e.response.data.success) {
           setState(true);
         } else {
-          setAlert({ isOpen: true, message: "Server error, try again later" });
+          setAlert({
+            isOpen: true,
+            message: "Server error, try again later",
+            severity: "error",
+          });
         }
         console.log(e);
       });
@@ -78,6 +84,7 @@ export default class BonamiService {
       SetStateAction<{
         isOpen: boolean;
         message: string;
+        severity: AlertColor;
       }>
     >
   ) {
@@ -105,16 +112,23 @@ export default class BonamiService {
     })
       .then((res) => {
         console.log(res);
+        setAlert({ isOpen: true, message: "Success", severity: "success" });
       })
       .catch((e) => {
         console.log(e);
-        setAlert({ isOpen: true, message: "Server error, try again later" });
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
       });
   }
 
   static createCategory(
     data: ICreateCategoryForm,
-    setAlert: Dispatch<SetStateAction<{ isOpen: boolean; message: string }>>
+    setAlert: Dispatch<
+      SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
+    >
   ) {
     axios({
       method: "POST",
@@ -124,15 +138,27 @@ export default class BonamiService {
     })
       .then((res) => {
         console.log(res);
+        setAlert({
+          isOpen: true,
+          message: "Category created",
+          severity: "success",
+        });
       })
       .catch((e) => {
         console.log(e);
-        setAlert({ isOpen: true, message: "Server error, try again later" });
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
       });
   }
 
-  static deleteCategories(
-    setAlert: Dispatch<SetStateAction<{ isOpen: boolean; message: string }>>
+  static async deleteCategories(
+    setAlert: Dispatch<
+      SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
+    >,
+    setDeletedCategories: Dispatch<SetStateAction<ICategory[]>>
   ) {
     axios({
       method: "DELETE",
@@ -140,11 +166,16 @@ export default class BonamiService {
       url: "http://localhost:5000/category/delete-empty",
     })
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setDeletedCategories(res.data);
       })
       .catch((e) => {
         console.log(e);
-        setAlert({ isOpen: true, message: "Server error, try again later" });
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
       });
   }
 }

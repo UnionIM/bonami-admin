@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
+import { AlertColor } from "@mui/material";
 
 export default function useCategoryMenuItems(
   setOpenSnackbar: Dispatch<
-    SetStateAction<{ isOpen: boolean; message: string }>
+    SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
   >,
   data: any[] | null,
   message: any
@@ -13,6 +14,7 @@ export default function useCategoryMenuItems(
       setOpenSnackbar({
         isOpen: true,
         message: "Server error, try again later",
+        severity: "error",
       });
     } else {
       return data?.map((el) => {

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Button, Box, Grid } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Grid,
+  AlertColor,
+} from "@mui/material";
 import BonamiController from "../controllers/BonamiController";
 import { Add } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -10,14 +18,19 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ICreateCategoryForm } from "../models/bonami-client";
 import BonamiService from "../services/BonamiService";
 import MyAlert from "./UI/MyAlert";
+import { ICategory } from "../models/bonami-server-response";
 
 const Navbar = () => {
   const [openCreate, setOpenCreate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
+  const [openDeletedCategories, setOpenDeletedCategories] =
+    useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
-  }>({ isOpen: false, message: "" });
+    severity: AlertColor;
+  }>({ isOpen: false, message: "", severity: "info" });
+  const [deletedCategories, setDeletedCategories] = useState<ICategory[]>([]);
 
   const { register, handleSubmit } = useForm<ICreateCategoryForm>();
 
@@ -32,8 +45,9 @@ const Navbar = () => {
     setOpenDelete(true);
   };
   const handleCloseDelete = () => {
-    BonamiService.deleteCategories(setOpenSnackbar);
+    BonamiService.deleteCategories(setOpenSnackbar, setDeletedCategories);
     setOpenDelete(false);
+    setOpenDeletedCategories(true);
   };
 
   const logOutHandler = () => {
@@ -150,13 +164,21 @@ const Navbar = () => {
               </Button>
             </div>
           </ModalDialog>
-          <MyAlert
-            severity={"error"}
-            state={openSnackbar}
-            setState={setOpenSnackbar}
-          >
+          <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
             <>{openSnackbar.message}</>
           </MyAlert>
+          <ModalDialog
+            state={openDeletedCategories}
+            setState={setOpenDeletedCategories}
+            title={"Deleted categories"}
+            width={"500px"}
+          >
+            <div>
+              {deletedCategories.map((el) => (
+                <Typography key={el._id}>{el.name.en}</Typography>
+              ))}
+            </div>
+          </ModalDialog>
         </Toolbar>
       </AppBar>
     </Box>
