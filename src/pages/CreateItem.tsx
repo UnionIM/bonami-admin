@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   Box,
   Typography,
@@ -18,6 +18,7 @@ import BonamiController from "../controllers/BonamiController";
 import { ICreateItemForm } from "../models/bonami-client";
 import BonamiService from "../services/BonamiService";
 import MyAlert from "../components/UI/MyAlert";
+import useCategoryMenuItems from "../hooks/useCategoryMenuItems";
 
 const CreateItem = () => {
   const { register, handleSubmit, control } = useForm<ICreateItemForm>();
@@ -32,24 +33,7 @@ const CreateItem = () => {
     message: string;
   }>({ isOpen: false, message: "" });
 
-  const menuItems = useMemo<
-    { value: string; name: string }[] | undefined
-  >(() => {
-    //@ts-ignore
-    if (message?.code === "ERR_NETWORK") {
-      setOpenSnackbar({
-        isOpen: true,
-        message: "Server error, try again later",
-      });
-    } else {
-      return data?.map((el) => {
-        return {
-          value: el.name.en,
-          name: el.name.ua,
-        };
-      });
-    }
-  }, [data, message]);
+  const menuItems = useCategoryMenuItems(setOpenSnackbar, data, message);
 
   const onSubmit: SubmitHandler<ICreateItemForm> = (data) => {
     if (files && menuItems) {
@@ -87,7 +71,7 @@ const CreateItem = () => {
                 registerName={"name"}
               />
               {!menuItems ? (
-                <CircularProgress />
+                <CircularProgress sx={{ margin: "20px 0" }} />
               ) : (
                 <FormSelect
                   register={register}
