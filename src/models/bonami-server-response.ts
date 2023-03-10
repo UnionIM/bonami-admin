@@ -23,7 +23,21 @@ interface IMultiLang {
   ua: string;
 }
 
+interface IImage {
+  _id: string;
+  url: string;
+}
+
 export interface ICategory {
   _id: string;
   name: IMultiLang;
+}
+
+export interface IItemListElement {
+  _id: string;
+  name: IMultiLang;
+  category: IMultiLang;
+  images: IImage[];
+  price: number;
+  discount: number;
 }

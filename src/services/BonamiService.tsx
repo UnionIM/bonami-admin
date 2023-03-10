@@ -1,5 +1,9 @@
 import api from "../API/API";
-import { ICategory, IUser } from "../models/bonami-server-response";
+import {
+  ICategory,
+  IItemListElement,
+  IUser,
+} from "../models/bonami-server-response";
 import axios from "axios";
 import { ICreateCategoryForm, ICreateItemForm } from "../models/bonami-client";
 import { Dispatch, SetStateAction } from "react";
@@ -19,6 +23,10 @@ export default class BonamiService {
 
   static async getCategories() {
     return (await api.get<ICategory[]>("/category")).data;
+  }
+
+  static async getItemList() {
+    return (await api.get<IItemListElement[]>("/item/list")).data;
   }
 
   static localLogin(
@@ -46,8 +54,9 @@ export default class BonamiService {
           if (res.data.isAdmin) {
             localStorage.setItem(`isAuth`, JSON.stringify(true));
             window.location.href = "http://localhost:3000";
+          } else {
+            setState(true);
           }
-          setState(true);
         }
       })
       .catch((e) => {
