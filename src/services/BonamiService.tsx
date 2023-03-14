@@ -177,5 +177,33 @@ export default class BonamiService {
       });
   }
 
-  static deleteItem(id: string) {}
+  static async deleteItem(
+    id: string,
+    setAlert: Dispatch<
+      SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
+    >
+  ) {
+    await axios({
+      method: "DELETE",
+      withCredentials: true,
+      data: { id: id },
+      url: "http://localhost:5000/item/delete",
+    })
+      .then((res) => {
+        console.log(res.data);
+        setAlert({
+          isOpen: true,
+          message: "Success",
+          severity: "success",
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
 }

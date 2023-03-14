@@ -24,6 +24,7 @@ import MyAlert from "../components/UI/MyAlert";
 import { colorful, gray } from "../design/colors";
 import { Delete, EditOutlined } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
+import BonamiService from "../services/BonamiService";
 
 const ItemList = () => {
   const { page } = useParams();
@@ -57,6 +58,10 @@ const ItemList = () => {
 
   const selectButtonHandler = () => {
     console.log(categoryValue);
+  };
+
+  const deleteButtonHandler = async (id: string) => {
+    await BonamiService.deleteItem(id, setOpenSnackbar);
   };
 
   const DeleteButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -159,6 +164,9 @@ const ItemList = () => {
                           height: "25px",
                           minWidth: "unset",
                           backgroundColor: colorful.lightRed,
+                        }}
+                        onClick={() => {
+                          deleteButtonHandler(el._id);
                         }}
                       >
                         <Delete fontSize={"small"} />
