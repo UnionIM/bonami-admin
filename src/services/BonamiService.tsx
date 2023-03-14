@@ -1,9 +1,5 @@
 import api from "../API/API";
-import {
-  ICategory,
-  IItemListElement,
-  IUser,
-} from "../models/bonami-server-response";
+import { ICategory, IItemList, IUser } from "../models/bonami-server-response";
 import axios from "axios";
 import { ICreateCategoryForm, ICreateItemForm } from "../models/bonami-client";
 import { Dispatch, SetStateAction } from "react";
@@ -26,8 +22,10 @@ export default class BonamiService {
     return (await api.get<ICategory[]>("/category")).data;
   }
 
-  static async getItemList() {
-    return (await api.get<IItemListElement[]>("/item/list")).data;
+  static async getItemList(page: number, per_page: number) {
+    return (
+      await api.get<IItemList>(`/item/list?page=${page}&per_page=${per_page}`)
+    ).data;
   }
 
   static localLogin(
@@ -178,4 +176,6 @@ export default class BonamiService {
         });
       });
   }
+
+  static deleteItem(id: string) {}
 }

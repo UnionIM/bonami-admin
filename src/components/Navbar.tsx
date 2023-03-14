@@ -91,7 +91,7 @@ const Navbar = () => {
                 alignItems={"center"}
                 component={"nav"}
               >
-                <Link to={"/item/list"}>
+                <Link to={"/item/list/1"}>
                   <Typography>Item manager</Typography>
                 </Link>
                 <Link to={"/order/list"}>

@@ -14,6 +14,8 @@ import {
   styled,
   ButtonProps,
   AlertColor,
+  Pagination,
+  PaginationItem,
 } from "@mui/material";
 import useCategoryMenuItems from "../hooks/useCategoryMenuItems";
 import useFetchData from "../hooks/useFetchData";
@@ -21,8 +23,10 @@ import BonamiController from "../controllers/BonamiController";
 import MyAlert from "../components/UI/MyAlert";
 import { colorful, gray } from "../design/colors";
 import { Delete, EditOutlined } from "@mui/icons-material";
+import { Link, useParams } from "react-router-dom";
 
 const ItemList = () => {
+  const { page } = useParams();
   const [searchValue, setSearchValue] = useState<string>("");
   const [categoryValue, setCategoryValue] = useState<string>("");
   const [openSnackbar, setOpenSnackbar] = useState<{
@@ -32,7 +36,9 @@ const ItemList = () => {
   }>({ isOpen: false, message: "", severity: "info" });
 
   const { data: itemList, message: itemListErrorMessage } = useFetchData(
-    BonamiController.getItemList
+    BonamiController.getItemList,
+    [parseInt(page || "1")],
+    [parseInt(page || "1")]
   );
   const { data, message } = useFetchData(BonamiController.getCategories);
 
@@ -109,7 +115,7 @@ const ItemList = () => {
             m={"35px 0 25px"}
           >
             <Grid container justifyContent={"space-between"} gap={"20px"}>
-              {itemList.map((el) => (
+              {itemList.itemList.map((el) => (
                 <Card key={el._id} sx={{ padding: "unset" }}>
                   <img
                     src={el.images[0].url}
@@ -122,7 +128,9 @@ const ItemList = () => {
                   />
                   <div style={{ padding: "10px" }}>
                     <Typography fontSize={"14px"} mb={"10px"}>
-                      {el.name.ua}
+                      {el.name.ua.length >= 28
+                        ? el.name.ua.slice(0, 24) + "..."
+                        : el.name.ua}
                     </Typography>
                     <Grid container justifyContent={"space-between"}>
                       <Typography fontSize={"14px"} mb={"10px"}>
@@ -160,6 +168,18 @@ const ItemList = () => {
                 </Card>
               ))}
             </Grid>
+            <Pagination
+              sx={{ m: "0 auto" }}
+              page={parseInt(page || "1")}
+              count={Math.ceil(itemList.totalCount / 12)}
+              renderItem={(item) => (
+                <PaginationItem
+                  component={Link}
+                  to={`/item/list/${item.page}`}
+                  {...item}
+                />
+              )}
+            />
           </Grid>
         ) : (
           <CircularProgress />

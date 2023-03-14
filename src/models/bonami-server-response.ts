@@ -41,3 +41,8 @@ export interface IItemListElement {
   price: number;
   discount: number;
 }
+
+export interface IItemList {
+  itemList: IItemListElement[];
+  totalCount: number;
+}

@@ -7,7 +7,7 @@ import OrderList from "../pages/OrderList";
 export const privateRoutes = [
   { path: "/", component: Home },
   { path: "/item/create", component: CreateItem },
-  { path: "/item/list", component: ItemList },
+  { path: "/item/list/:page", component: ItemList },
   { path: "/order/list", component: OrderList },
 ];
 
