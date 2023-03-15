@@ -32,6 +32,7 @@ const ItemList = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchParam, setSearchParam] = useState<string>("");
   const [categoryValue, setCategoryValue] = useState<string>("");
+  const [categoryParam, setCategoryParam] = useState<string>("");
   const [itemList, setItemList] = useState<IItemList | null>();
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
@@ -41,8 +42,8 @@ const ItemList = () => {
 
   const { data, message } = useFetchData(
     BonamiController.getItemList,
-    [searchParam, parseInt(page || "1")],
-    [searchParam, parseInt(page || "1")]
+    [searchParam, categoryParam, parseInt(page || "1")],
+    [searchParam, categoryParam, parseInt(page || "1")]
   );
   useEffect(() => {
     setItemList(data);
@@ -70,7 +71,11 @@ const ItemList = () => {
   };
 
   const selectButtonHandler = () => {
-    console.log(categoryValue);
+    setCategoryParam(categoryValue);
+  };
+  const clearButtonHandler = () => {
+    setSearchValue("");
+    setCategoryParam("");
   };
 
   const deleteButtonHandler = async (id: string) => {
@@ -120,7 +125,7 @@ const ItemList = () => {
           <Button variant="contained" onClick={selectButtonHandler}>
             SELECT
           </Button>
-          <Button variant="contained" onClick={() => setCategoryValue("")}>
+          <Button variant="contained" onClick={clearButtonHandler}>
             CLEAR
           </Button>
         </Grid>
