@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./router";
+import PageNotFound from "../pages/PageNotFound";
 
 const AppRouter = () => {
   return localStorage.getItem("isAuth") ? (
@@ -13,6 +14,7 @@ const AppRouter = () => {
         />
       ))}
       <Route path="/login" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   ) : (
     <Routes>
