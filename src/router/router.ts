@@ -3,12 +3,14 @@ import Home from "../pages/Home";
 import CreateItem from "../pages/CreateItem";
 import ItemList from "../pages/ItemList";
 import OrderList from "../pages/OrderList";
+import ItemEdit from "../pages/ItemEdit";
 
 export const privateRoutes = [
   { path: "/", component: Home },
   { path: "/item/create", component: CreateItem },
   { path: "/item/list/:page", component: ItemList },
   { path: "/order/list", component: OrderList },
+  { path: "/item/edit/:id", component: ItemEdit },
 ];
 
 export const publicRoutes = [{ path: "login", component: Login }];

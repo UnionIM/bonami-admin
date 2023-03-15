@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Card,
   Box,
@@ -25,25 +25,38 @@ import { colorful, gray } from "../design/colors";
 import { Delete, EditOutlined } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import BonamiService from "../services/BonamiService";
+import { IItemList } from "../models/bonami-server-response";
 
 const ItemList = () => {
   const { page } = useParams();
   const [searchValue, setSearchValue] = useState<string>("");
+  const [searchParam, setSearchParam] = useState<string>("");
   const [categoryValue, setCategoryValue] = useState<string>("");
+  const [itemList, setItemList] = useState<IItemList | null>();
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
     severity: AlertColor;
   }>({ isOpen: false, message: "", severity: "info" });
 
-  const { data: itemList, message: itemListErrorMessage } = useFetchData(
+  const { data, message } = useFetchData(
     BonamiController.getItemList,
-    [parseInt(page || "1")],
-    [parseInt(page || "1")]
+    [searchParam, parseInt(page || "1")],
+    [searchParam, parseInt(page || "1")]
   );
-  const { data, message } = useFetchData(BonamiController.getCategories);
+  useEffect(() => {
+    setItemList(data);
+  }, [data]);
 
-  const menuItems = useCategoryMenuItems(setOpenSnackbar, data, message);
+  const { data: categories, message: categoriesErrorMessage } = useFetchData(
+    BonamiController.getCategories
+  );
+
+  const menuItems = useCategoryMenuItems(
+    setOpenSnackbar,
+    categories,
+    categoriesErrorMessage
+  );
 
   const searchHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -53,7 +66,7 @@ const ItemList = () => {
   };
 
   const findButtonHandler = () => {
-    console.log(searchValue);
+    setSearchParam(searchValue);
   };
 
   const selectButtonHandler = () => {
@@ -153,6 +166,8 @@ const ItemList = () => {
                           width: "115px",
                           borderRadius: "10px",
                         }}
+                        component={Link}
+                        to={`/item/edit/${el._id}`}
                       >
                         <Typography fontSize={"14px"}>EDIT</Typography>
                         <EditOutlined sx={{ fontSize: 18 }} />

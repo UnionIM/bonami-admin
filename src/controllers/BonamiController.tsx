@@ -33,9 +33,13 @@ export default class BonamiController {
     }
   }
 
-  static async getItemList(page: number, per_page: number = 12) {
+  static async getItemList(
+    search: string,
+    page: number,
+    per_page: number = 12
+  ) {
     try {
-      return await BonamiService.getItemList(page, per_page);
+      return await BonamiService.getItemList(search, page, per_page);
     } catch (e) {
       throw e;
     }

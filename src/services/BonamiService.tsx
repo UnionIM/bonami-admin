@@ -22,9 +22,11 @@ export default class BonamiService {
     return (await api.get<ICategory[]>("/category")).data;
   }
 
-  static async getItemList(page: number, per_page: number) {
+  static async getItemList(search: string, page: number, per_page: number) {
     return (
-      await api.get<IItemList>(`/item/list?page=${page}&per_page=${per_page}`)
+      await api.get<IItemList>(
+        `/item/list?search=${search}&page=${page}&per_page=${per_page}`
+      )
     ).data;
   }
 
