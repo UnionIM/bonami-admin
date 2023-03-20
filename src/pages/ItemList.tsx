@@ -160,7 +160,7 @@ const ItemList = () => {
                         {el.price}
                       </Typography>
                       <Typography fontSize={"14px"} mb={"10px"}>
-                        {el.discount}
+                        {el.discount}%
                       </Typography>
                     </Grid>
                     <Grid container gap={"10px"}>
