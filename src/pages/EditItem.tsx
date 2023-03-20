@@ -1,7 +1,7 @@
 import React from "react";
 
-const ItemEdit = () => {
+const EditItem = () => {
   return <div>ItemEdit</div>;
 };
 
-export default ItemEdit;
+export default EditItem;

@@ -7,6 +7,7 @@ import BonamiController from "./controllers/BonamiController";
 import { Box } from "@mui/material";
 import { gray } from "./design/colors";
 import Footer from "./components/Footer";
+import { useNavigate } from "react-router-dom";
 
 const Global = createGlobalStyle`
     *{
@@ -21,6 +22,8 @@ const Global = createGlobalStyle`
   `;
 
 function App() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     BonamiController.isAuth()
       .then((res: { isAuth: boolean }) => {
@@ -31,6 +34,7 @@ function App() {
       .catch((e) => {
         if (e.code !== "ERR_NETWORK" && e.response.status === 401) {
           localStorage.clear();
+          navigate("/login");
         }
       });
   }, []);
