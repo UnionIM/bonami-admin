@@ -45,4 +45,24 @@ export default class BonamiController {
       throw e;
     }
   }
+
+  static async getOrderList(
+    email: string,
+    date_start: string,
+    date_end: string,
+    page: number,
+    per_page: number = 12
+  ) {
+    try {
+      return await BonamiService.getOrderList(
+        email,
+        date_start,
+        date_end,
+        page,
+        per_page
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
 }

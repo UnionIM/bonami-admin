@@ -46,3 +46,17 @@ export interface IItemList {
   itemList: IItemListElement[];
   totalCount: number;
 }
+
+export interface IOrderList {
+  orderList: IOrderListElement[];
+  totalCount: number;
+}
+
+export interface IOrderListElement {
+  _id: string;
+  socialMedia: ISocialMedia;
+  email: string;
+  phoneNumber: string;
+  status: "pending" | "canceled" | "delivered";
+  createdAt: number;
+}

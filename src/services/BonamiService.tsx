@@ -1,5 +1,10 @@
 import api from "../API/API";
-import { ICategory, IItemList, IUser } from "../models/bonami-server-response";
+import {
+  ICategory,
+  IItemList,
+  IOrderList,
+  IUser,
+} from "../models/bonami-server-response";
 import axios from "axios";
 import { ICreateCategoryForm, ICreateItemForm } from "../models/bonami-client";
 import { Dispatch, SetStateAction } from "react";
@@ -31,6 +36,20 @@ export default class BonamiService {
     return (
       await api.get<IItemList>(
         `/item/list?search=${search}&category=${category}&page=${page}&per_page=${per_page}`
+      )
+    ).data;
+  }
+
+  static async getOrderList(
+    email: string,
+    date_start: string,
+    date_end: string,
+    page: number,
+    per_page: number
+  ) {
+    return (
+      await api.get<IOrderList>(
+        `/order/list?email=${email}&date_start=${date_start}&date_end=${date_end}&page=${page}&per_page=${per_page}`
       )
     ).data;
   }
