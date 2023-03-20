@@ -42,8 +42,8 @@ export default class BonamiService {
 
   static async getOrderList(
     email: string,
-    date_start: string,
-    date_end: string,
+    date_start: number,
+    date_end: number,
     page: number,
     per_page: number
   ) {
