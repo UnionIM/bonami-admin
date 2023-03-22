@@ -94,7 +94,7 @@ const Navbar = () => {
                 <Link to={"/item/list/1"}>
                   <Typography>Item manager</Typography>
                 </Link>
-                <Link to={"/order/list"}>
+                <Link to={"/order/list/1"}>
                   <Typography>Orders</Typography>
                 </Link>
               </Grid>
@@ -164,9 +164,7 @@ const Navbar = () => {
               </Button>
             </div>
           </ModalDialog>
-          <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
-            <>{openSnackbar.message}</>
-          </MyAlert>
+          <MyAlert state={openSnackbar} setState={setOpenSnackbar} />
           <ModalDialog
             state={openDeletedCategories}
             setState={setOpenDeletedCategories}

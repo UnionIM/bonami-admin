@@ -1,10 +1,8 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { AlertColor } from "@mui/material";
+import { IAlertState } from "../models/bonami-client";
 
 export default function useCategoryMenuItems(
-  setOpenSnackbar: Dispatch<
-    SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
-  >,
+  setOpenSnackbar: Dispatch<SetStateAction<IAlertState>>,
   data: any[] | null,
   message: any
 ) {

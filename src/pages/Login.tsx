@@ -87,9 +87,7 @@ const Login = () => {
           </Button>
         </CardContent>
       </Card>
-      <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
-        <>{openSnackbar.message}</>
-      </MyAlert>
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar} />
     </Grid>
   );
 };

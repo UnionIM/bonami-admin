@@ -1,15 +1,13 @@
-import React, { Dispatch, SetStateAction, FC, ReactElement } from "react";
-import { Alert, AlertColor, Snackbar } from "@mui/material";
+import React, { Dispatch, SetStateAction, FC } from "react";
+import { Alert, Snackbar } from "@mui/material";
+import { IAlertState } from "../../models/bonami-client";
 
 interface IMyAlert {
-  state: { isOpen: boolean; message: string; severity: AlertColor };
-  setState: Dispatch<
-    SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
-  >;
-  children: ReactElement;
+  state: IAlertState;
+  setState: Dispatch<SetStateAction<IAlertState>>;
 }
 
-const MyAlert: FC<IMyAlert> = ({ state, setState, children }) => {
+const MyAlert: FC<IMyAlert> = ({ state, setState /*, children*/ }) => {
   const handleClose = () => {
     setState({
       isOpen: false,
@@ -24,7 +22,7 @@ const MyAlert: FC<IMyAlert> = ({ state, setState, children }) => {
         severity={state.severity}
         sx={{ width: "100%" }}
       >
-        {children}
+        {state.message}
       </Alert>
     </Snackbar>
   );

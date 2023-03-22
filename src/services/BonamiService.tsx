@@ -6,7 +6,11 @@ import {
   IUser,
 } from "../models/bonami-server-response";
 import axios from "axios";
-import { ICreateCategoryForm, ICreateItemForm } from "../models/bonami-client";
+import {
+  IAlertState,
+  ICreateCategoryForm,
+  ICreateItemForm,
+} from "../models/bonami-client";
 import { Dispatch, SetStateAction } from "react";
 import { AlertColor } from "@mui/material";
 
@@ -42,8 +46,8 @@ export default class BonamiService {
 
   static async getOrderList(
     email: string,
-    date_start: number,
-    date_end: number,
+    date_start: number | "",
+    date_end: number | "",
     page: number,
     per_page: number
   ) {
@@ -150,9 +154,7 @@ export default class BonamiService {
 
   static createCategory(
     data: ICreateCategoryForm,
-    setAlert: Dispatch<
-      SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
-    >
+    setAlert: Dispatch<SetStateAction<IAlertState>>
   ) {
     axios({
       method: "POST",
@@ -179,9 +181,7 @@ export default class BonamiService {
   }
 
   static async deleteCategories(
-    setAlert: Dispatch<
-      SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
-    >,
+    setAlert: Dispatch<SetStateAction<IAlertState>>,
     setDeletedCategories: Dispatch<SetStateAction<ICategory[]>>
   ) {
     axios({
@@ -205,9 +205,7 @@ export default class BonamiService {
 
   static async deleteItem(
     id: string,
-    setAlert: Dispatch<
-      SetStateAction<{ isOpen: boolean; message: string; severity: AlertColor }>
-    >
+    setAlert: Dispatch<SetStateAction<IAlertState>>
   ) {
     await axios({
       method: "DELETE",

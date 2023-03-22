@@ -1,3 +1,5 @@
+import { AlertColor } from "@mui/material";
+
 export interface ICreateItemForm {
   nameEn: string;
   nameUa: string;
@@ -13,4 +15,10 @@ export interface ICreateItemForm {
 export interface ICreateCategoryForm {
   nameEn: string;
   nameUa: string;
+}
+
+export interface IAlertState {
+  isOpen: boolean;
+  message: string;
+  severity: AlertColor;
 }

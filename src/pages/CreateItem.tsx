@@ -199,9 +199,7 @@ const CreateItem = () => {
           </Grid>
         </Grid>
       </form>
-      <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
-        <>{openSnackbar.message}</>
-      </MyAlert>
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar} />
     </Box>
   );
 };

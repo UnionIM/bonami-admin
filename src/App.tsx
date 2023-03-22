@@ -93,6 +93,14 @@ function App() {
           },
         },
       },
+      //MuiButtonBase-root-MuiIconButton-root
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            marginRight: "0",
+          },
+        },
+      },
     },
   });
   return (

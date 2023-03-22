@@ -1,4 +1,5 @@
 import BonamiService from "../services/BonamiService";
+import { Dayjs } from "dayjs";
 
 export default class BonamiController {
   static async isAuth() {
@@ -48,16 +49,18 @@ export default class BonamiController {
 
   static async getOrderList(
     email: string,
-    date_start: number,
-    date_end: number,
+    date_start: Dayjs | null,
+    date_end: Dayjs | null,
     page: number,
     per_page: number = 12
   ) {
     try {
+      const epochStart = new Date(date_start?.toString() || "").valueOf();
+      const epochEnd = new Date(date_end?.toString() || "").valueOf();
       return await BonamiService.getOrderList(
         email,
-        date_start,
-        date_end,
+        epochStart || "",
+        epochEnd || "",
         page,
         per_page
       );

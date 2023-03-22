@@ -213,9 +213,7 @@ const ItemList = () => {
           <CircularProgress />
         )}
       </Card>
-      <MyAlert state={openSnackbar} setState={setOpenSnackbar}>
-        <>{openSnackbar.message}</>
-      </MyAlert>
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar} />
     </Box>
   );
 };
