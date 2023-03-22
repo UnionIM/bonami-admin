@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 const OrderPage = () => {
   const { id } = useParams();
-  return <div>{id}</div>;
+  return <div>id:{id}</div>;
 };
 
 export default OrderPage;
