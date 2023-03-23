@@ -38,12 +38,18 @@ const CreateItem = () => {
   const menuItems = useCategoryMenuItems(setOpenSnackbar, data, message);
 
   const onSubmit: SubmitHandler<ICreateItemForm> = (data) => {
-    if (files && menuItems) {
+    if (files?.length && menuItems) {
       BonamiService.createItem(data, menuItems, files, setOpenSnackbar);
-    } else {
+    } else if (!files?.length) {
       setOpenSnackbar({
         isOpen: true,
         message: "Add at least 1 photo",
+        severity: "error",
+      });
+    } else {
+      setOpenSnackbar({
+        isOpen: true,
+        message: "Server error try again later",
         severity: "error",
       });
     }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -31,17 +31,28 @@ const OrderList = () => {
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
 
-  const [datePickerError, setDatePicketError] = useState<IAlertState>({
+  const [openSnackBar, setOpenSnackBar] = useState<IAlertState>({
     isOpen: false,
     message: "",
     severity: "error",
   });
 
-  const { data: orderList } = useFetchData(
+  const { data: orderList, message } = useFetchData(
     BonamiController.getOrderList,
     [searchParam, dateStart, dateEnd, page],
     [page, searchParam, dateStart, dateEnd]
   );
+
+  useEffect(() => {
+    //@ts-ignore
+    if (message?.code === "ERR_NETWORK") {
+      setOpenSnackBar({
+        isOpen: true,
+        message: "Server error, try again later",
+        severity: "error",
+      });
+    }
+  }, [message]);
 
   const searchHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -52,7 +63,7 @@ const OrderList = () => {
 
   const dateStartHandler = (newValue: Dayjs | null) => {
     if (newValue && dateEnd && dateEnd < newValue) {
-      setDatePicketError({
+      setOpenSnackBar({
         isOpen: true,
         message: "First date bigger than second",
         severity: "error",
@@ -65,7 +76,7 @@ const OrderList = () => {
 
   const dateEndHandler = (newValue: Dayjs | null) => {
     if (newValue && dateStart && dateStart > newValue) {
-      setDatePicketError({
+      setOpenSnackBar({
         isOpen: true,
         message: "First date bigger than second",
         severity: "error",
@@ -158,7 +169,7 @@ const OrderList = () => {
           <CircularProgress />
         )}
       </Card>
-      <MyAlert state={datePickerError} setState={setDatePicketError} />
+      <MyAlert state={openSnackBar} setState={setOpenSnackBar} />
     </Box>
   );
 };

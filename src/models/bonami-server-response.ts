@@ -60,3 +60,51 @@ export interface IOrderListElement {
   status: "pending" | "canceled" | "delivered";
   createdAt: number;
 }
+
+interface IOrderedItem {
+  _id: string;
+  id: string;
+  amount: number;
+}
+
+interface ICustomerName {
+  firstName: string;
+  secondName: string;
+  patronymic: string;
+}
+
+interface IDelivery {
+  country: string;
+  city: string;
+  region: string;
+  street: string;
+  address: string;
+  postIndex: string;
+}
+
+interface IDeliveryToPostOffice {
+  country: string;
+  city: string;
+  region: string;
+  street: string;
+  address: string;
+  postIndex: string;
+  deliveryCompanyName: string;
+  postOfficeNumber: string;
+}
+
+export interface IOrder {
+  _id: string;
+  socialMedia: ISocialMedia;
+  email: string;
+  phoneNumber: string;
+  status: "pending" | "canceled" | "delivered";
+  isPaid: boolean;
+  isAuthenticated: boolean;
+  notes: string;
+  name: ICustomerName;
+  items: IOrderedItem[];
+  delivery: IDelivery;
+  deliveryToPostOffice: IDeliveryToPostOffice;
+  createdAt: number;
+}

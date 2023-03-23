@@ -68,4 +68,12 @@ export default class BonamiController {
       throw e;
     }
   }
+
+  static async getOrderById(id: string) {
+    try {
+      return await BonamiService.getOrderById(id);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

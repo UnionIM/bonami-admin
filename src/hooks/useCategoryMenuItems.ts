@@ -7,7 +7,6 @@ export default function useCategoryMenuItems(
   message: any
 ) {
   return useMemo<{ value: string; name: string }[] | undefined>(() => {
-    //@ts-ignore
     if (message?.code === "ERR_NETWORK") {
       setOpenSnackbar({
         isOpen: true,

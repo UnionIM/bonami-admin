@@ -2,15 +2,15 @@ import React, { FC } from "react";
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
 import { IOrderListElement } from "../../../models/bonami-server-response";
 import { colorful } from "../../../design/colors";
-import deliveredImg from "../../../icons/Delivery-delivered.svg";
-import pendingImg from "../../../icons/Delivery-pending.svg";
-import canceledImg from "../../../icons/Delivery-canceled.svg";
-import telegram from "../../../icons/Telegram.svg";
-import instagram from "../../../icons/Instagram.svg";
-import facebook from "../../../icons/Facebook.svg";
-import google from "../../../icons/Google.svg";
-import phone from "../../../icons/Phone.svg";
-import viber from "../../../icons/Viber.svg";
+import deliveredImg from "../../../design/svg/Delivery-delivered.svg";
+import pendingImg from "../../../design/svg/Delivery-pending.svg";
+import canceledImg from "../../../design/svg/Delivery-canceled.svg";
+import telegram from "../../../design/svg/Telegram.svg";
+import instagram from "../../../design/svg/Instagram.svg";
+import facebook from "../../../design/svg/Facebook.svg";
+import google from "../../../design/svg/Google.svg";
+import phone from "../../../design/svg/Phone.svg";
+import viber from "../../../design/svg/Viber.svg";
 import { Link } from "react-router-dom";
 
 interface IOrderCard {

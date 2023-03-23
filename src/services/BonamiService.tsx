@@ -2,6 +2,7 @@ import api from "../API/API";
 import {
   ICategory,
   IItemList,
+  IOrder,
   IOrderList,
   IUser,
 } from "../models/bonami-server-response";
@@ -56,6 +57,10 @@ export default class BonamiService {
         `/order/list?email=${email}&date_start=${date_start}&date_end=${date_end}&page=${page}&per_page=${per_page}`
       )
     ).data;
+  }
+
+  static async getOrderById(id: string) {
+    return (await api.get<IOrder>(`/order?id=${id}`)).data;
   }
 
   static localLogin(
