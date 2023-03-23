@@ -107,4 +107,6 @@ export interface IOrder {
   delivery: IDelivery;
   deliveryToPostOffice: IDeliveryToPostOffice;
   createdAt: number;
+  amountOfOrders: number;
+  message: string;
 }
