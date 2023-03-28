@@ -61,9 +61,12 @@ export interface IOrderListElement {
   createdAt: number;
 }
 
-interface IOrderedItem {
+export interface IOrderedItem {
   _id: string;
   id: string;
+  name: IMultiLang;
+  picture: string;
+  price: number;
   amount: number;
 }
 
@@ -73,7 +76,7 @@ interface ICustomerName {
   patronymic: string;
 }
 
-interface IDelivery {
+export interface IDelivery {
   country: string;
   city: string;
   region: string;
@@ -82,13 +85,7 @@ interface IDelivery {
   postIndex: string;
 }
 
-interface IDeliveryToPostOffice {
-  country: string;
-  city: string;
-  region: string;
-  street: string;
-  address: string;
-  postIndex: string;
+export interface IDeliveryToPostOffice {
   deliveryCompanyName: string;
   postOfficeNumber: string;
 }
