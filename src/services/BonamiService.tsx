@@ -235,4 +235,33 @@ export default class BonamiService {
         });
       });
   }
+
+  static async changeOrderStatus(
+    id: string,
+    status: "pending" | "canceled" | "delivered",
+    setAlert: Dispatch<SetStateAction<IAlertState>>
+  ) {
+    await axios({
+      method: "PUT",
+      withCredentials: true,
+      data: { status: status },
+      url: `http://localhost:5000/order/status?id=${id}`,
+    })
+      .then((res) => {
+        console.log(res.data);
+        setAlert({
+          isOpen: true,
+          message: "Success",
+          severity: "success",
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
 }

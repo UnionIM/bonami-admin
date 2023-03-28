@@ -21,6 +21,7 @@ import ItemInOrderList from "../components/ItemInOrderList";
 import cross from "../design/svg/Cross.svg";
 import check from "../design/svg/Check.svg";
 import { IOrderedItem } from "../models/bonami-server-response";
+import BonamiService from "../services/BonamiService";
 
 const OrderPage = () => {
   const { id } = useParams();
@@ -59,6 +60,52 @@ const OrderPage = () => {
     return items.reduce((acc, val) => acc + val.price * val.amount, 0);
   };
 
+  const handleMarkAsDelivered = async () => {
+    if (order) {
+      await BonamiService.changeOrderStatus(
+        order._id,
+        "delivered",
+        setOpenSnackBar
+      );
+    } else {
+      setOpenSnackBar({
+        isOpen: true,
+        message: "Server error, try again later",
+        severity: "error",
+      });
+    }
+  };
+  const handleMarkAsCanceled = async () => {
+    if (order) {
+      await BonamiService.changeOrderStatus(
+        order._id,
+        "canceled",
+        setOpenSnackBar
+      );
+    } else {
+      setOpenSnackBar({
+        isOpen: true,
+        message: "Server error, try again later",
+        severity: "error",
+      });
+    }
+  };
+  const handleMarkAsPending = async () => {
+    if (order) {
+      await BonamiService.changeOrderStatus(
+        order._id,
+        "pending",
+        setOpenSnackBar
+      );
+    } else {
+      setOpenSnackBar({
+        isOpen: true,
+        message: "Server error, try again later",
+        severity: "error",
+      });
+    }
+  };
+
   return (
     <Box p={"32px"} display={"flex"}>
       <div style={{ margin: "0 auto" }}>
@@ -86,8 +133,52 @@ const OrderPage = () => {
                     </Typography>
                   </Grid>
                   <Grid container gap={"10px"} sx={{ width: "unset" }}>
-                    <Button variant="contained">MARK AS DELIVERED</Button>
-                    <Button variant="contained">MARK AS CANCELED</Button>
+                    {order.status === "pending" ? (
+                      <>
+                        <Button
+                          variant="contained"
+                          onClick={handleMarkAsDelivered}
+                        >
+                          MARK AS DELIVERED
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={handleMarkAsCanceled}
+                        >
+                          MARK AS CANCELED
+                        </Button>
+                      </>
+                    ) : order.status === "delivered" ? (
+                      <>
+                        <Button
+                          variant="contained"
+                          onClick={handleMarkAsPending}
+                        >
+                          MARK AS PENDING
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={handleMarkAsCanceled}
+                        >
+                          MARK AS CANCELED
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          variant="contained"
+                          onClick={handleMarkAsPending}
+                        >
+                          MARK AS PENDING
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={handleMarkAsDelivered}
+                        >
+                          MARK AS DELIVERED
+                        </Button>
+                      </>
+                    )}
                   </Grid>
                 </Grid>
                 <Divider sx={{ borderColor: gray.default, margin: "25px 0" }} />
