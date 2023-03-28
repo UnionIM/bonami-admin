@@ -11,8 +11,6 @@ import {
   CircularProgress,
   SelectChangeEvent,
   Divider,
-  styled,
-  ButtonProps,
   AlertColor,
   Pagination,
   PaginationItem,
@@ -21,11 +19,10 @@ import useCategoryMenuItems from "../hooks/useCategoryMenuItems";
 import useFetchData from "../hooks/useFetchData";
 import BonamiController from "../controllers/BonamiController";
 import MyAlert from "../components/UI/MyAlert";
-import { colorful, gray } from "../design/colors";
-import { Delete, EditOutlined } from "@mui/icons-material";
+import { gray } from "../design/colors";
 import { Link, useParams } from "react-router-dom";
-import BonamiService from "../services/BonamiService";
 import { IItemList } from "../models/bonami-server-response";
+import ItemCard from "../components/UI/Cards/ItemCard";
 
 const ItemList = () => {
   const { page } = useParams();
@@ -40,7 +37,7 @@ const ItemList = () => {
     severity: AlertColor;
   }>({ isOpen: false, message: "", severity: "info" });
 
-  const { data, message } = useFetchData(
+  const { data } = useFetchData(
     BonamiController.getItemList,
     [searchParam, categoryParam, parseInt(page || "1")],
     [searchParam, categoryParam, parseInt(page || "1")]
@@ -77,18 +74,6 @@ const ItemList = () => {
     setSearchValue("");
     setCategoryParam("");
   };
-
-  const deleteButtonHandler = async (id: string) => {
-    await BonamiService.deleteItem(id, setOpenSnackbar);
-  };
-
-  const DeleteButton = styled(Button)<ButtonProps>(({ theme }) => ({
-    color: theme.palette.getContrastText(colorful.lightRed),
-    backgroundColor: colorful.lightRed,
-    "&:hover": {
-      backgroundColor: colorful.red,
-    },
-  }));
 
   return (
     <Box p={"32px"}>
@@ -139,61 +124,7 @@ const ItemList = () => {
           >
             <Grid container justifyContent={"space-between"} gap={"20px"}>
               {itemList.itemList.map((el) => (
-                <Card key={el._id} sx={{ padding: "unset" }}>
-                  <img
-                    src={el.images[0].url}
-                    alt=""
-                    style={{
-                      width: "177px",
-                      height: "177px",
-                      borderRadius: "5px",
-                    }}
-                  />
-                  <div style={{ padding: "10px" }}>
-                    <Typography fontSize={"14px"} mb={"10px"}>
-                      {el.name.ua.length >= 28
-                        ? el.name.ua.slice(0, 24) + "..."
-                        : el.name.ua}
-                    </Typography>
-                    <Grid container justifyContent={"space-between"}>
-                      <Typography fontSize={"14px"} mb={"10px"}>
-                        {el.price}
-                      </Typography>
-                      <Typography fontSize={"14px"} mb={"10px"}>
-                        {el.discount}%
-                      </Typography>
-                    </Grid>
-                    <Grid container gap={"10px"}>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          height: "25px",
-                          width: "115px",
-                          borderRadius: "10px",
-                        }}
-                        component={Link}
-                        to={`/item/edit/${el._id}`}
-                      >
-                        <Typography fontSize={"14px"}>EDIT</Typography>
-                        <EditOutlined sx={{ fontSize: 18 }} />
-                      </Button>
-                      <DeleteButton
-                        variant="contained"
-                        sx={{
-                          width: "25px",
-                          height: "25px",
-                          minWidth: "unset",
-                          backgroundColor: colorful.lightRed,
-                        }}
-                        onClick={() => {
-                          deleteButtonHandler(el._id);
-                        }}
-                      >
-                        <Delete fontSize={"small"} />
-                      </DeleteButton>
-                    </Grid>
-                  </div>
-                </Card>
+                <ItemCard item={el} setOpenSnackbar={setOpenSnackbar} />
               ))}
             </Grid>
             <Pagination

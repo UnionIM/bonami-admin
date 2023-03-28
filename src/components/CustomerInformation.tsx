@@ -23,7 +23,11 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
     delivery: IDelivery,
     postOffice: IDeliveryToPostOffice | null
   ) => {
-    return `https://www.google.com.ua/maps/place/${delivery.country},+${delivery.city},+${delivery.street},+${delivery.address},+${postOffice?.postOfficeNumber},+${postOffice?.deliveryCompanyName}`;
+    return `https://www.google.com.ua/maps/place/${delivery.country || ""},+${
+      delivery.city || ""
+    },+${delivery.street || ""},+${delivery.address || ""},+${
+      postOffice?.postOfficeNumber || ""
+    },+${postOffice?.deliveryCompanyName || ""}`;
   };
 
   return (
