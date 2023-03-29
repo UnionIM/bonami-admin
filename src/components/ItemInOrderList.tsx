@@ -9,7 +9,7 @@ interface IItemInOrderList {
 
 const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
   const [pageNumber, setPageNumber] = useState(1);
-  const [itemNumber] = useState(3);
+  const [itemNumber] = useState(4);
 
   const currentPageNumber = pageNumber * itemNumber - itemNumber;
   const paginatedItems = items.slice(
@@ -25,8 +25,14 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
     setPageNumber(pageNumber + 1);
   };
 
+  console.log(
+    currentPageNumber * 2 >= items.length - 1,
+    currentPageNumber,
+    items.length - 1
+  );
+
   return (
-    <div style={{ position: "relative", height: "410px" }}>
+    <div style={{ position: "relative", paddingBottom: "35px" }}>
       {paginatedItems.map((item) => (
         <ItemInOrderListElement key={item._id} item={item} />
       ))}
@@ -40,7 +46,10 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
         </Button>
         <Button
           onClick={handleNext}
-          disabled={currentPageNumber * 2 >= items.length - 1}
+          disabled={
+            currentPageNumber * 2 >= items.length - 1 ||
+            items.length === itemNumber
+          }
         >
           Next
         </Button>

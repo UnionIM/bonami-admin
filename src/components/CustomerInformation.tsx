@@ -160,6 +160,13 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
             Open in google maps
           </Typography>
         </a>
+        <Divider sx={{ borderColor: gray.default, margin: "25px 0" }} />
+        <Typography fontWeight={700} marginBottom={"20px"}>
+          Notes
+        </Typography>
+        <Typography>
+          {order.notes || "The customer didn't leave any notes"}
+        </Typography>
       </Card>
     </>
   );
