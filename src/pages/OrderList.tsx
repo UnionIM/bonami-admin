@@ -6,8 +6,11 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  MenuItem,
   Pagination,
   PaginationItem,
+  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -31,6 +34,11 @@ const OrderList = () => {
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
 
+  const [sort, setSort] = useState<{ element: string; direction: 1 | -1 }>({
+    element: "status",
+    direction: -1,
+  });
+
   const [openSnackBar, setOpenSnackBar] = useState<IAlertState>({
     isOpen: false,
     message: "",
@@ -39,8 +47,8 @@ const OrderList = () => {
 
   const { data: orderList, message } = useFetchData(
     BonamiController.getOrderList,
-    [searchParam, dateStart, dateEnd, page],
-    [page, searchParam, dateStart, dateEnd]
+    [searchParam, dateStart, dateEnd, sort, page],
+    [page, searchParam, dateStart, dateEnd, sort]
   );
 
   useEffect(() => {
@@ -95,49 +103,99 @@ const OrderList = () => {
     setDateEnd(null);
   };
 
+  const handleSortSelect = (e: SelectChangeEvent) => {
+    setSort(JSON.parse(e.target.value));
+  };
+
+  const selectSortMenuItems = [
+    {
+      value: { element: "status", direction: -1 },
+      name: "Status pending first",
+    },
+    {
+      value: { element: "status", direction: 1 },
+      name: "Status canceled first",
+    },
+    {
+      value: { element: "createdAt", direction: -1 },
+      name: "Newest first",
+    },
+    {
+      value: { element: "createdAt", direction: 1 },
+      name: "Latest first",
+    },
+  ];
+
   return (
     <Box p={"32px"}>
       <Card sx={{ width: "100%" }}>
         <Typography sx={{ mb: "25px" }}>Orders</Typography>
-        <Grid container gap={"15px"}>
-          <TextField
-            placeholder={"Email..."}
-            value={searchValue}
-            onChange={searchHandler}
-          />
-          <Button variant="contained" onClick={findButtonHandler}>
-            FIND
-          </Button>
-        </Grid>
         <Grid
-          sx={{ mt: "25px" }}
           container
-          gap={"15px"}
-          flexDirection={"column"}
+          justifyContent={"space-between"}
+          sx={{ width: "unset" }}
         >
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              sx={{ width: "240px" }}
-              label={"Date start"}
-              value={dateStart}
-              onChange={dateStartHandler}
-            />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              sx={{ width: "240px" }}
-              label={"Date end"}
-              value={dateEnd}
-              onChange={dateEndHandler}
-            />
-          </LocalizationProvider>
-          <Button
-            sx={{ width: "240px" }}
-            variant="contained"
-            onClick={clearDateHandler}
+          <Grid
+            container
+            flexDirection={"column"}
+            sx={{ width: "unset" }}
+            gap={"15px"}
           >
-            CLEAR
-          </Button>
+            <Grid container gap={"15px"} sx={{ width: "unset" }}>
+              <TextField
+                placeholder={"Email..."}
+                value={searchValue}
+                onChange={searchHandler}
+              />
+              <Button variant="contained" onClick={findButtonHandler}>
+                FIND
+              </Button>
+            </Grid>
+            <Select
+              sx={{ width: "241px" }}
+              value={JSON.stringify(sort)}
+              onChange={handleSortSelect}
+            >
+              {selectSortMenuItems.map((el) => (
+                <MenuItem
+                  key={JSON.stringify(el.value)}
+                  value={JSON.stringify(el.value)}
+                >
+                  {el.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid
+            sx={{ width: "unset" }}
+            container
+            gap={"15px"}
+            flexDirection={"column"}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                sx={{ width: "240px" }}
+                label={"Date start"}
+                value={dateStart}
+                onChange={dateStartHandler}
+              />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                sx={{ width: "240px" }}
+                label={"Date end"}
+                value={dateEnd}
+                onChange={dateEndHandler}
+              />
+            </LocalizationProvider>
+            <Button
+              sx={{ width: "240px" }}
+              variant="contained"
+              onClick={clearDateHandler}
+            >
+              CLEAR
+            </Button>
+          </Grid>
         </Grid>
         <Divider sx={{ borderColor: gray.default, mt: "20px" }} />
         {orderList ? (

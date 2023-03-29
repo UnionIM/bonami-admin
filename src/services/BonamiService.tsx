@@ -49,12 +49,13 @@ export default class BonamiService {
     email: string,
     date_start: number | "",
     date_end: number | "",
+    sort: { element: string; direction: 1 | -1 },
     page: number,
     per_page: number
   ) {
     return (
       await api.get<IOrderList>(
-        `/order/list?email=${email}&date_start=${date_start}&date_end=${date_end}&page=${page}&per_page=${per_page}`
+        `/order/list?email=${email}&date_start=${date_start}&date_end=${date_end}&sort_element=${sort.element}&sort_direct=${sort.direction}&page=${page}&per_page=${per_page}`
       )
     ).data;
   }

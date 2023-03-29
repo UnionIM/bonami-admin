@@ -51,6 +51,7 @@ export default class BonamiController {
     email: string,
     date_start: Dayjs | null,
     date_end: Dayjs | null,
+    sort: { element: string; direction: 1 | -1 },
     page: number,
     per_page: number = 12
   ) {
@@ -61,6 +62,7 @@ export default class BonamiController {
         email,
         epochStart || "",
         epochEnd || "",
+        sort,
         page,
         per_page
       );
