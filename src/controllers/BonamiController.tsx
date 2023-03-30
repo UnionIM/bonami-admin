@@ -46,6 +46,13 @@ export default class BonamiController {
       throw e;
     }
   }
+  static async getItemById(id: string) {
+    try {
+      return await BonamiService.getItemById(id);
+    } catch (e) {
+      throw e;
+    }
+  }
 
   static async getOrderList(
     email: string,

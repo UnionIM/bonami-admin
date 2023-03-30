@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -20,9 +20,48 @@ import { ICreateItemForm } from "../models/bonami-client";
 import BonamiService from "../services/BonamiService";
 import MyAlert from "../components/UI/MyAlert";
 import useCategoryMenuItems from "../hooks/useCategoryMenuItems";
+import { useParams } from "react-router-dom";
 
 const CreateItem = () => {
-  const { register, handleSubmit, control } = useForm<ICreateItemForm>();
+  const { id } = useParams();
+  const { data: itemToEdit, message: itemByIdMessage } = useFetchData(
+    BonamiController.getItemById,
+    [id],
+    []
+  );
+
+  const { register, handleSubmit, control, setValue } =
+    useForm<ICreateItemForm>(
+      itemToEdit
+        ? {
+            defaultValues: {
+              nameEn: itemToEdit.name.en,
+              nameUa: itemToEdit.name.ua,
+              descriptionEn: itemToEdit.description.en,
+              descriptionUa: itemToEdit.description.ua,
+              categoryEn: itemToEdit.category.en,
+              categoryUa: itemToEdit.category.ua,
+              price: itemToEdit.price.toString(),
+              discount: itemToEdit.discount.toString(),
+            },
+          }
+        : {}
+    );
+
+  useEffect(() => {
+    if (itemToEdit) {
+      const urlArr = itemToEdit.images.map((el) => el.url);
+      setImgDisplayLinks(urlArr);
+      setValue("nameEn", itemToEdit.name.en);
+      setValue("nameUa", itemToEdit.name.ua);
+      setValue("descriptionEn", itemToEdit.description.en);
+      setValue("descriptionUa", itemToEdit.description.ua);
+      setValue("categoryEn", itemToEdit.category.en);
+      setValue("categoryUa", itemToEdit.category.ua);
+      setValue("price", itemToEdit.price.toString());
+      setValue("discount", itemToEdit.discount.toString());
+    }
+  }, [itemToEdit]);
 
   const { data, message } = useFetchData(BonamiController.getCategories);
 

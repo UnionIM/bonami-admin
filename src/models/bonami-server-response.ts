@@ -47,6 +47,16 @@ export interface IItemList {
   totalCount: number;
 }
 
+export interface IItem {
+  _id: string;
+  name: IMultiLang;
+  description: IMultiLang;
+  category: IMultiLang;
+  images: IImage[];
+  price: number;
+  discount: number;
+}
+
 export interface IOrderList {
   orderList: IOrderListElement[];
   totalCount: number;

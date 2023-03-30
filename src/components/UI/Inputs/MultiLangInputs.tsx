@@ -17,22 +17,24 @@ const MultiLangInputs: FC<IMultiLangInputs> = ({
   return (
     <Grid container flexDirection={"column"} gap={"10px"}>
       <Typography>{header}</Typography>
+      <Typography fontSize={"12px"}>English</Typography>
       <TextField
-        label={"English"}
         {...register(`${registerName}En`)}
         required
         InputLabelProps={{ required: false }}
         multiline
         rows={rows}
       />
-      <TextField
-        label={"Ukrainian"}
-        {...register(`${registerName}Ua`)}
-        required
-        InputLabelProps={{ required: false }}
-        multiline
-        rows={rows}
-      />
+      <div>
+        <Typography fontSize={"12px"}>Ukrainian</Typography>
+        <TextField
+          {...register(`${registerName}Ua`)}
+          required
+          InputLabelProps={{ required: false }}
+          multiline
+          rows={rows}
+        />
+      </div>
     </Grid>
   );
 };

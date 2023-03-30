@@ -1,6 +1,7 @@
 import api from "../API/API";
 import {
   ICategory,
+  IItem,
   IItemList,
   IOrder,
   IOrderList,
@@ -43,6 +44,10 @@ export default class BonamiService {
         `/item/list?search=${search}&category=${category}&page=${page}&per_page=${per_page}`
       )
     ).data;
+  }
+
+  static async getItemById(id: string) {
+    return (await api.get<IItem>(`/item?id=${id}`)).data;
   }
 
   static async getOrderList(
