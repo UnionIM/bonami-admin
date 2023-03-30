@@ -118,7 +118,7 @@ const OrderPage = () => {
                 flexDirection={"column"}
                 sx={{ width: "unset" }}
               >
-                <Card>
+                <Card sx={{ height: "693px", maxWidth: "660px" }}>
                   <Grid
                     container
                     justifyContent={"space-between"}

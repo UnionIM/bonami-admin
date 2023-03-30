@@ -11,7 +11,12 @@ interface IItemInOrderListElement {
 const ItemInOrderListElement: FC<IItemInOrderListElement> = ({ item }) => {
   const { width } = useWindowDimensions();
   return (
-    <Grid container alignItems={"center"} gap={"25px"} sx={{ mb: "27px" }}>
+    <Grid
+      container
+      alignItems={"center"}
+      sx={{ mb: "27px" }}
+      justifyContent={"space-between"}
+    >
       <Box position={"relative"} mr={"26px"}>
         <Box
           position={"absolute"}
