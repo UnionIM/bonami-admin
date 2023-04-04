@@ -25,9 +25,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { IAlertState } from "../models/bonami-client";
 import MyAlert from "../components/UI/MyAlert";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const OrderList = () => {
   const { page } = useParams();
+  const { width } = useWindowDimensions();
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchParam, setSearchParam] = useState<string>("");
 
@@ -107,6 +109,18 @@ const OrderList = () => {
     setSort(JSON.parse(e.target.value));
   };
 
+  const responsiveWidthHandler = (width: number) => {
+    if (width >= 1487) {
+      return "1369px";
+    } else if (width >= 1135) {
+      return "1021px";
+    } else if (width >= 791) {
+      return "677px";
+    } else {
+      return "329px";
+    }
+  };
+
   const selectSortMenuItems = [
     {
       value: { element: "status", direction: -1 },
@@ -140,6 +154,7 @@ const OrderList = () => {
             flexDirection={"column"}
             sx={{ width: "unset" }}
             gap={"15px"}
+            marginBottom={"32px"}
           >
             <Grid container gap={"15px"} sx={{ width: "unset" }}>
               <TextField
@@ -203,9 +218,10 @@ const OrderList = () => {
             container
             flexDirection={"column"}
             gap={"35px"}
-            m={"35px 0 25px"}
+            m={"35px auto 25px"}
+            width={responsiveWidthHandler(width)}
           >
-            <Grid container justifyContent={"space-between"} gap={"20px"}>
+            <Grid container gap={"20px"} width={responsiveWidthHandler(width)}>
               {orderList.orderList.map((el) => (
                 <OrderCard key={el._id} orderElement={el} />
               ))}

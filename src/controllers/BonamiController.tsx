@@ -60,7 +60,7 @@ export default class BonamiController {
     date_end: Dayjs | null,
     sort: { element: string; direction: 1 | -1 },
     page: number,
-    per_page: number = 12
+    per_page: number = 8
   ) {
     try {
       const epochStart = new Date(date_start?.toString() || "").valueOf();

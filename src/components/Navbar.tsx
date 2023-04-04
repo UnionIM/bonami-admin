@@ -19,8 +19,10 @@ import { ICreateCategoryForm } from "../models/bonami-client";
 import BonamiService from "../services/BonamiService";
 import MyAlert from "./UI/MyAlert";
 import { ICategory } from "../models/bonami-server-response";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const Navbar = () => {
+  const { width } = useWindowDimensions();
   const [openCreate, setOpenCreate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDeletedCategories, setOpenDeletedCategories] =
@@ -71,7 +73,10 @@ const Navbar = () => {
         <Toolbar>
           <Link to={"/"} style={{ display: "inline-block", width: "200px" }}>
             <Typography
-              sx={{ fontSize: "24px", lineHeight: "2.7" }}
+              sx={{
+                fontSize: width >= 779 ? "24px" : "19px",
+                lineHeight: "2.7",
+              }}
               component={"span"}
             >
               Bonami Admin

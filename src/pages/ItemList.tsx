@@ -23,9 +23,11 @@ import { gray } from "../design/colors";
 import { Link, useParams } from "react-router-dom";
 import { IItemList } from "../models/bonami-server-response";
 import ItemCard from "../components/UI/Cards/ItemCard";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const ItemList = () => {
   const { page } = useParams();
+  const { width } = useWindowDimensions();
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchParam, setSearchParam] = useState<string>("");
   const [categoryValue, setCategoryValue] = useState<string>("");
@@ -75,6 +77,20 @@ const ItemList = () => {
     setCategoryParam("");
   };
 
+  const responsiveWidthHandler = (width: number) => {
+    if (width >= 1279) {
+      return "1162px";
+    } else if (width >= 1083) {
+      return "965px";
+    } else if (width >= 883) {
+      return "768px";
+    } else if (width >= 687) {
+      return "571px";
+    } else {
+      return "374px";
+    }
+  };
+
   return (
     <Box p={"32px"}>
       <Card sx={{ width: "100%" }}>
@@ -120,9 +136,15 @@ const ItemList = () => {
             container
             flexDirection={"column"}
             gap={"35px"}
-            m={"35px 0 25px"}
+            m={"35px auto 25px"}
+            width={responsiveWidthHandler(width)}
           >
-            <Grid container justifyContent={"space-between"} gap={"20px"}>
+            <Grid
+              container
+              width={responsiveWidthHandler(width)}
+              gap={"20px"}
+              m={"0 auto"}
+            >
               {itemList.itemList.map((el) => (
                 <ItemCard item={el} setOpenSnackbar={setOpenSnackbar} />
               ))}
