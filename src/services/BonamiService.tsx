@@ -5,6 +5,7 @@ import {
   IItemList,
   IOrder,
   IOrderList,
+  IStatistic,
   IUser,
 } from "../models/bonami-server-response";
 import axios from "axios";
@@ -67,6 +68,10 @@ export default class BonamiService {
 
   static async getOrderById(id: string) {
     return (await api.get<IOrder>(`/order?id=${id}`)).data;
+  }
+
+  static async getStatistics() {
+    return (await api.get<IStatistic>(`/statistics`)).data;
   }
 
   static localLogin(

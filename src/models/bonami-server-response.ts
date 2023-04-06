@@ -117,3 +117,22 @@ export interface IOrder {
   amountOfOrders: number;
   message: string;
 }
+
+export interface IStatistic {
+  orderStatistic: {
+    mostPopularCategory: IMultiLang;
+    _id: string;
+    profitOfDeliveredOrders: number;
+    profitOfPendingOrders: number;
+    amountOfDeliveredOrders: number;
+    amountOfPendingOrders: number;
+    amountOfCanceledOrders: number;
+  };
+  orderedCategories: IOrderedCategory[];
+  amountOfCategories: number;
+}
+
+export interface IOrderedCategory {
+  categoryName: IMultiLang;
+  orderedItems: number;
+}

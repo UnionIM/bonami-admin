@@ -85,4 +85,10 @@ export default class BonamiController {
       throw e;
     }
   }
+
+  static async getStatistics() {
+    try {
+      return await BonamiService.getStatistics();
+    } catch (e) {}
+  }
 }
