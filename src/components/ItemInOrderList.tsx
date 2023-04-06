@@ -25,12 +25,6 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
     setPageNumber(pageNumber + 1);
   };
 
-  console.log(
-    currentPageNumber * 2 >= items.length - 1,
-    currentPageNumber,
-    items.length - 1
-  );
-
   return (
     <div style={{ position: "relative", paddingBottom: "35px" }}>
       {paginatedItems.map((item) => (

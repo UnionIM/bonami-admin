@@ -130,6 +130,9 @@ const ItemList = () => {
             CLEAR
           </Button>
         </Grid>
+        <Typography m={"15px 0"}>
+          Total: {itemList?.totalCount} items
+        </Typography>
         <Divider sx={{ borderColor: gray.default }} />
         {itemList ? (
           <Grid
@@ -146,7 +149,11 @@ const ItemList = () => {
               m={"0 auto"}
             >
               {itemList.itemList.map((el) => (
-                <ItemCard item={el} setOpenSnackbar={setOpenSnackbar} />
+                <ItemCard
+                  item={el}
+                  key={el._id}
+                  setOpenSnackbar={setOpenSnackbar}
+                />
               ))}
             </Grid>
             <Pagination
