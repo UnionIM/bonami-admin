@@ -1,6 +1,7 @@
 import api from "../API/API";
 import {
   ICategory,
+  IGraph,
   IItem,
   IItemList,
   IOrder,
@@ -72,6 +73,10 @@ export default class BonamiService {
 
   static async getStatistics() {
     return (await api.get<IStatistic>(`/statistics`)).data;
+  }
+
+  static async getGraphData() {
+    return (await api.get<IGraph[]>(`/statistics/graph`)).data;
   }
 
   static localLogin(

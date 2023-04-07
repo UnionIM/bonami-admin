@@ -136,3 +136,8 @@ export interface IOrderedCategory {
   categoryName: IMultiLang;
   orderedItems: number;
 }
+
+export interface IGraph {
+  date: number;
+  amount: number;
+}
