@@ -12,15 +12,21 @@ import {
 import { IOrderedCategory } from "../models/bonami-server-response";
 import { colorful, gray } from "../design/colors";
 import GraphColorIcon from "../components/UI/GraphColorIcon";
-import { Chart, ArcElement } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import {
+  Chart,
+  ArcElement,
+  CategoryScale,
+  BarElement,
+  LinearScale,
+  Tooltip,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
+
+Chart.register(CategoryScale, BarElement, LinearScale, Tooltip, ArcElement);
 
 const Home = () => {
-  const { data: stat, isLoading } = useFetchData(
-    BonamiController.getStatistics,
-    [],
-    []
-  );
+  const { data: stat } = useFetchData(BonamiController.getStatistics, [], []);
+  const { data: graph } = useFetchData(BonamiController.getGraphData, [], []);
 
   const findMostOrderedCategory = (orderedItems: IOrderedCategory[]) => {
     let mostOrderedCategory: IOrderedCategory = orderedItems[0];
@@ -32,19 +38,38 @@ const Home = () => {
     return mostOrderedCategory;
   };
 
-  Chart.register(ArcElement);
-  const data = {
-    maintainAspectRatio: false,
+  const doughnutData = {
     responsive: false,
     labels: ["Delivered", "Pending", "Canceled"],
     datasets: [
       {
+        label: "Amount",
         data: [
           stat?.orderStatistic.amountOfDeliveredOrders,
           stat?.orderStatistic.amountOfPendingOrders,
           stat?.orderStatistic.amountOfCanceledOrders,
         ],
         backgroundColor: [colorful.green, colorful.yellow, colorful.red],
+      },
+    ],
+  };
+
+  const labels = graph?.map((el) => {
+    const date = new Date(el.date);
+    const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+    const month =
+      1 + date.getMonth() < 10
+        ? "0" + (1 + date.getMonth())
+        : 1 + date.getMonth();
+    return day + "-" + month + "-" + date.getFullYear();
+  });
+  const barChartData = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Amount",
+        data: graph?.map((el) => el.amount),
+        backgroundColor: colorful.blue,
       },
     ],
   };
@@ -89,7 +114,7 @@ const Home = () => {
           {stat ? (
             <>
               <Typography fontSize={"20px"}>Order statistic</Typography>
-              <Typography>
+              <Typography textAlign={"center"}>
                 Total orders:{" "}
                 {stat.orderStatistic.amountOfCanceledOrders +
                   stat.orderStatistic.amountOfDeliveredOrders +
@@ -133,15 +158,33 @@ const Home = () => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Doughnut data={data} />
+              <Doughnut data={doughnutData} />
               <Typography>Total profit of delivered orders:</Typography>
-              <Typography color={colorful.green} fontSize={"64px"}>
+              <Typography
+                color={colorful.green}
+                fontSize={"64px"}
+                textAlign={"center"}
+              >
                 {stat.orderStatistic.profitOfDeliveredOrders} ₴
               </Typography>
               <Typography>Total profit of pending orders:</Typography>
-              <Typography color={colorful.yellow} fontSize={"64px"}>
+              <Typography
+                color={colorful.yellow}
+                fontSize={"64px"}
+                textAlign={"center"}
+              >
                 {stat.orderStatistic.profitOfPendingOrders} ₴
               </Typography>
+            </>
+          ) : (
+            <CircularProgress />
+          )}
+        </Card>
+        <Card sx={{ ml: "32px" }}>
+          {graph ? (
+            <>
+              <Typography>Orders graph</Typography>
+              <Bar data={barChartData} />
             </>
           ) : (
             <CircularProgress />
