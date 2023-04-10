@@ -19,13 +19,11 @@ import useFetchData from "../hooks/useFetchData";
 import BonamiController from "../controllers/BonamiController";
 import { Link, useParams } from "react-router-dom";
 import OrderCard from "../components/UI/Cards/OrderCard";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { IAlertState } from "../models/bonami-client";
 import MyAlert from "../components/UI/MyAlert";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import RangeDatePicker from "../components/UI/Inputs/RangeDatePicker";
 
 const OrderList = () => {
   const { page } = useParams();
@@ -69,40 +67,6 @@ const OrderList = () => {
   };
   const findButtonHandler = () => {
     setSearchParam(searchValue);
-  };
-
-  const dateStartHandler = (newValue: Dayjs | null) => {
-    if (newValue && dateEnd && dateEnd < newValue) {
-      setOpenSnackBar({
-        isOpen: true,
-        message: "First date bigger than second",
-        severity: "error",
-      });
-      setDateEnd(null);
-    } else {
-      setDateStart(newValue);
-    }
-  };
-
-  const dateEndHandler = (newValue: Dayjs | null) => {
-    if (newValue && dateStart && dateStart > newValue) {
-      setOpenSnackBar({
-        isOpen: true,
-        message: "First date bigger than second",
-        severity: "error",
-      });
-      setDateEnd(null);
-    } else {
-      //@ts-ignore
-      const date = newValue?.$d;
-      const date23_59_59 = new Date(date.valueOf() + 86400 * 1000 - 1000);
-      setDateEnd(dayjs(date23_59_59));
-    }
-  };
-
-  const clearDateHandler = () => {
-    setDateStart(null);
-    setDateEnd(null);
   };
 
   const handleSortSelect = (e: SelectChangeEvent) => {
@@ -181,36 +145,13 @@ const OrderList = () => {
               ))}
             </Select>
           </Grid>
-          <Grid
-            sx={{ width: "unset" }}
-            container
-            gap={"15px"}
-            flexDirection={"column"}
-          >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                sx={{ width: "240px" }}
-                label={"Date start"}
-                value={dateStart}
-                onChange={dateStartHandler}
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                sx={{ width: "240px" }}
-                label={"Date end"}
-                value={dateEnd}
-                onChange={dateEndHandler}
-              />
-            </LocalizationProvider>
-            <Button
-              sx={{ width: "240px" }}
-              variant="contained"
-              onClick={clearDateHandler}
-            >
-              CLEAR
-            </Button>
-          </Grid>
+          <RangeDatePicker
+            dateEnd={dateEnd}
+            dateStart={dateStart}
+            setDateEnd={setDateEnd}
+            setDateStart={setDateStart}
+            setOpenSnackBar={setOpenSnackBar}
+          />
         </Grid>
         <Divider sx={{ borderColor: gray.default, mt: "20px" }} />
         {orderList ? (
