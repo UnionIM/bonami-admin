@@ -12,6 +12,7 @@ interface IDatePicker {
   dateStart: Dayjs | null;
   setDateStart: Dispatch<SetStateAction<Dayjs | null>>;
   setOpenSnackBar: Dispatch<SetStateAction<IAlertState>>;
+  width?: string;
 }
 
 const RangeDatePicker: FC<IDatePicker> = ({
@@ -20,6 +21,7 @@ const RangeDatePicker: FC<IDatePicker> = ({
   setDateEnd,
   setDateStart,
   setOpenSnackBar,
+  width = "240px",
 }) => {
   const dateStartHandler = (newValue: Dayjs | null) => {
     if (newValue && dateEnd && dateEnd < newValue) {
@@ -63,7 +65,7 @@ const RangeDatePicker: FC<IDatePicker> = ({
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          sx={{ width: "240px" }}
+          sx={{ width: width }}
           label={"Date start"}
           value={dateStart}
           onChange={dateStartHandler}
@@ -71,14 +73,14 @@ const RangeDatePicker: FC<IDatePicker> = ({
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          sx={{ width: "240px" }}
+          sx={{ width: width }}
           label={"Date end"}
           value={dateEnd}
           onChange={dateEndHandler}
         />
       </LocalizationProvider>
       <Button
-        sx={{ width: "240px" }}
+        sx={{ width: width }}
         variant="contained"
         onClick={clearDateHandler}
       >

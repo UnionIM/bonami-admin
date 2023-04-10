@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BonamiController from "../controllers/BonamiController";
 import useFetchData from "../hooks/useFetchData";
 import {
@@ -21,12 +21,56 @@ import {
   Tooltip,
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
+import RangeDatePicker from "../components/UI/Inputs/RangeDatePicker";
+import { Dayjs } from "dayjs";
+import { IAlertState } from "../models/bonami-client";
+import MyAlert from "../components/UI/MyAlert";
 
 Chart.register(CategoryScale, BarElement, LinearScale, Tooltip, ArcElement);
 
 const Home = () => {
+  const [dateStart, setDateStart] = useState<Dayjs | null>(null);
+  const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
+
+  const [openSnackBar, setOpenSnackBar] = useState<IAlertState>({
+    isOpen: false,
+    message: "",
+    severity: "error",
+  });
+
+  const [graphData, setGraphData] = useState<{
+    labels: string[];
+    data: number[];
+  } | null>(null);
+
   const { data: stat } = useFetchData(BonamiController.getStatistics, [], []);
   const { data: graph } = useFetchData(BonamiController.getGraphData, [], []);
+
+  useEffect(() => {
+    if (graph) {
+      const epochStart = new Date(dateStart?.toString() || "").valueOf();
+      const epochEnd = new Date(dateEnd?.toString() || "").valueOf();
+      const filteredData = graph.filter((el) => {
+        console.log(el.date < epochStart, el.date, "<", epochStart);
+        return !(el.date < epochStart || el.date > epochEnd);
+      });
+      console.log(graph);
+      console.log(filteredData);
+      setGraphData({
+        labels: filteredData?.map((el) => {
+          const date = new Date(el.date);
+          const day =
+            date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+          const month =
+            1 + date.getMonth() < 10
+              ? "0" + (1 + date.getMonth())
+              : 1 + date.getMonth();
+          return day + "-" + month + "-" + date.getFullYear();
+        }),
+        data: filteredData?.map((el) => el.amount),
+      });
+    }
+  }, [graph, dateEnd, dateStart]);
 
   const findMostOrderedCategory = (orderedItems: IOrderedCategory[]) => {
     let mostOrderedCategory: IOrderedCategory = orderedItems[0];
@@ -54,24 +98,23 @@ const Home = () => {
     ],
   };
 
-  const labels = graph?.map((el) => {
-    const date = new Date(el.date);
-    const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-    const month =
-      1 + date.getMonth() < 10
-        ? "0" + (1 + date.getMonth())
-        : 1 + date.getMonth();
-    return day + "-" + month + "-" + date.getFullYear();
-  });
   const barChartData = {
-    labels: labels,
+    labels: graphData?.labels,
     datasets: [
       {
         label: "Amount",
-        data: graph?.map((el) => el.amount),
+        data: graphData?.data,
         backgroundColor: colorful.blue,
       },
     ],
+  };
+  const barChartOptions = {
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        max: Math.max.apply(null, graphData?.data ? graphData?.data : [0]) + 2,
+      },
+    },
   };
 
   return (
@@ -107,7 +150,7 @@ const Home = () => {
               ))}
             </>
           ) : (
-            <CircularProgress />
+            <CircularProgress sx={{ m: "320px 140px" }} />
           )}
         </Card>
         <Card sx={{ marginLeft: "32px" }}>
@@ -177,20 +220,32 @@ const Home = () => {
               </Typography>
             </>
           ) : (
-            <CircularProgress />
+            <CircularProgress sx={{ m: "320px 140px" }} />
           )}
         </Card>
-        <Card sx={{ ml: "32px" }}>
-          {graph ? (
+        <Card sx={{ ml: "32px", width: "400px" }}>
+          {graphData ? (
             <>
-              <Typography>Orders graph</Typography>
-              <Bar data={barChartData} />
+              <Typography mb={"20px"}>Orders graph</Typography>
+              <RangeDatePicker
+                dateEnd={dateEnd}
+                dateStart={dateStart}
+                setDateEnd={setDateEnd}
+                setDateStart={setDateStart}
+                setOpenSnackBar={setOpenSnackBar}
+                width={"100%"}
+              />
+              <br />
+              <Box sx={{ height: "410px" }}>
+                <Bar data={barChartData} options={barChartOptions} />
+              </Box>
             </>
           ) : (
-            <CircularProgress />
+            <CircularProgress sx={{ m: "320px 140px" }} />
           )}
         </Card>
       </Grid>
+      <MyAlert state={openSnackBar} setState={setOpenSnackBar} />
     </Box>
   );
 };
