@@ -14,6 +14,7 @@ const ItemInOrderListElement: FC<IItemInOrderListElement> = ({ item }) => {
     <Grid
       container
       alignItems={"center"}
+      gap={"10px"}
       sx={{ mb: "27px" }}
       justifyContent={"space-between"}
     >
@@ -61,7 +62,9 @@ const ItemInOrderListElement: FC<IItemInOrderListElement> = ({ item }) => {
       ) : (
         <></>
       )}
-      <Typography>{item.price * item.amount} грн</Typography>
+      <Typography sx={{ minWidth: "75px", textAlign: "right" }}>
+        {item.price * item.amount} грн
+      </Typography>
     </Grid>
   );
 };

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { IOrderedItem } from "../models/bonami-server-response";
 import ItemInOrderListElement from "./ItemInOrderListElement";
-import { Button } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 
 interface IItemInOrderList {
   items: IOrderedItem[];
@@ -26,11 +26,19 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
   };
 
   return (
-    <div style={{ position: "relative", paddingBottom: "35px" }}>
-      {paginatedItems.map((item) => (
-        <ItemInOrderListElement key={item._id} item={item} />
-      ))}
-      <div style={{ position: "absolute", bottom: 0, left: "41%" }}>
+    <Grid
+      container
+      flexDirection={"column"}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      sx={{ height: "80%" }}
+    >
+      <Grid item>
+        {paginatedItems.map((item) => (
+          <ItemInOrderListElement key={item._id} item={item} />
+        ))}
+      </Grid>
+      <Grid item>
         <Button
           onClick={handlePrev}
           disabled={currentPageNumber === 0}
@@ -47,8 +55,8 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
         >
           Next
         </Button>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
