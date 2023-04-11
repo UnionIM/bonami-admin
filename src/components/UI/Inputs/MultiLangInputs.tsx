@@ -25,16 +25,14 @@ const MultiLangInputs: FC<IMultiLangInputs> = ({
         multiline
         rows={rows}
       />
-      <div>
-        <Typography fontSize={"12px"}>Ukrainian</Typography>
-        <TextField
-          {...register(`${registerName}Ua`)}
-          required
-          InputLabelProps={{ required: false }}
-          multiline
-          rows={rows}
-        />
-      </div>
+      <Typography fontSize={"12px"}>Ukrainian</Typography>
+      <TextField
+        {...register(`${registerName}Ua`)}
+        required
+        InputLabelProps={{ required: false }}
+        multiline
+        rows={rows}
+      />
     </Grid>
   );
 };

@@ -74,6 +74,8 @@ const ItemList = () => {
   };
   const clearButtonHandler = () => {
     setSearchValue("");
+    setSearchParam("");
+    setCategoryValue("");
     setCategoryParam("");
   };
 
@@ -127,7 +129,7 @@ const ItemList = () => {
             SELECT
           </Button>
           <Button variant="contained" onClick={clearButtonHandler}>
-            CLEAR
+            CLEAR ALL
           </Button>
         </Grid>
         <Typography m={"15px 0"}>

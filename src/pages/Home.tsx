@@ -119,7 +119,7 @@ const Home = () => {
 
   return (
     <Box p={"32px"} display={"flex"}>
-      <Grid container flex={1}>
+      <Grid container flex={1} justifyContent={"center"}>
         <Card sx={{ height: "100%" }}>
           {stat ? (
             <>
