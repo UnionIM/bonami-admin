@@ -101,4 +101,12 @@ export default class BonamiController {
       throw e;
     }
   }
+
+  static async recalculateProfit() {
+    try {
+      return await BonamiService.recalculateProfit();
+    } catch (e) {
+      throw e;
+    }
+  }
 }

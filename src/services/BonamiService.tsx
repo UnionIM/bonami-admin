@@ -79,6 +79,14 @@ export default class BonamiService {
     return (await api.get<IGraph[]>(`/statistics/graph`)).data;
   }
 
+  static async recalculateProfit() {
+    return (
+      await api.get<{ delivered: number; pending: number }>(
+        `/statistics/recalculate`
+      )
+    ).data;
+  }
+
   static localLogin(
     email: string,
     password: string,

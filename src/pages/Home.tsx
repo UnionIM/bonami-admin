@@ -3,6 +3,7 @@ import BonamiController from "../controllers/BonamiController";
 import useFetchData from "../hooks/useFetchData";
 import {
   Box,
+  Button,
   Card,
   CircularProgress,
   Divider,
@@ -31,6 +32,7 @@ Chart.register(CategoryScale, BarElement, LinearScale, Tooltip, ArcElement);
 const Home = () => {
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
+  const [recalculateLoading, setRecalculateLoading] = useState<boolean>(false);
 
   const [openSnackBar, setOpenSnackBar] = useState<IAlertState>({
     isOpen: false,
@@ -54,8 +56,6 @@ const Home = () => {
         console.log(el.date < epochStart, el.date, "<", epochStart);
         return !(el.date < epochStart || el.date > epochEnd);
       });
-      console.log(graph);
-      console.log(filteredData);
       setGraphData({
         labels: filteredData?.map((el) => {
           const date = new Date(el.date);
@@ -80,6 +80,19 @@ const Home = () => {
       }
     });
     return mostOrderedCategory;
+  };
+
+  const recalculateHandler = () => {
+    setRecalculateLoading(true);
+    BonamiController.recalculateProfit()
+      .then((res) => setRecalculateLoading(false))
+      .catch((e) =>
+        setOpenSnackBar({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        })
+      );
   };
 
   const doughnutData = {
@@ -120,7 +133,7 @@ const Home = () => {
   return (
     <Box p={"32px"} display={"flex"}>
       <Grid container flex={1} justifyContent={"center"}>
-        <Card sx={{ height: "100%" }}>
+        <Card sx={{ height: "100%", width: "350px" }}>
           {stat ? (
             <>
               <Typography fontSize={"20px"}>Category statistic</Typography>
@@ -218,6 +231,11 @@ const Home = () => {
               >
                 {stat.orderStatistic.profitOfPendingOrders} ₴
               </Typography>
+              <Grid container justifyContent={"center"}>
+                <Button variant={"contained"} onClick={recalculateHandler}>
+                  {recalculateLoading ? "LOADING..." : "RECALCULATE"}
+                </Button>
+              </Grid>
             </>
           ) : (
             <CircularProgress sx={{ m: "320px 140px" }} />
