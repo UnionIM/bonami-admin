@@ -55,6 +55,16 @@ export interface IItem {
   images: IImage[];
   price: number;
   discount: number;
+  reviews: IReview[];
+}
+
+interface IReview {
+  _id: string;
+  rating: number;
+  author: ICustomerName;
+  ordered: boolean;
+  text: string;
+  createdAt: number;
 }
 
 export interface IOrderList {
