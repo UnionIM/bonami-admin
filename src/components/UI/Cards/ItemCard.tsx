@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import {
   Button,
   ButtonProps,
@@ -20,6 +20,8 @@ interface IItemCard {
 }
 
 const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
+  const nameElementRef = useRef<HTMLParagraphElement>(null);
+
   const deleteButtonHandler = async (id: string) => {
     await BonamiService.deleteItem(id, setOpenSnackbar);
   };
@@ -36,7 +38,7 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
     <Card key={item._id} sx={{ padding: "unset" }}>
       <img
         src={item.images[0].url}
-        alt=""
+        alt="Item img"
         style={{
           width: "177px",
           height: "177px",
@@ -44,9 +46,15 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
         }}
       />
       <div style={{ padding: "10px" }}>
-        <Typography fontSize={"14px"} mb={"10px"}>
-          {item.name.ua.length >= 28
-            ? item.name.ua.slice(0, 24) + "..."
+        <Typography
+          fontSize={"14px"}
+          ref={nameElementRef}
+          mb={"10px"}
+          width={"150px"}
+          sx={{ wordWrap: "break-word" }}
+        >
+          {item.name.ua.length >= 21
+            ? item.name.ua.slice(0, 19) + "..."
             : item.name.ua}
         </Typography>
         <Grid container justifyContent={"space-between"}>
@@ -86,6 +94,19 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
             <Delete fontSize={"small"} />
           </DeleteButton>
         </Grid>
+        <Button
+          variant={"contained"}
+          component={Link}
+          to={`/item/reviews/${item._id}`}
+          sx={{
+            mt: "5px",
+            width: "100%",
+            height: "25px",
+            borderRadius: "10px",
+          }}
+        >
+          OPEN REVIEWS
+        </Button>
       </div>
     </Card>
   );
