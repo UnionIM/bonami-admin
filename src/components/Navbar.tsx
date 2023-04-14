@@ -20,10 +20,12 @@ import BonamiService from "../services/BonamiService";
 import MyAlert from "./UI/MyAlert";
 import { ICategory } from "../models/bonami-server-response";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import CreateReview from "./CreateReview";
 
 const Navbar = () => {
   const { width } = useWindowDimensions();
   const [openCreate, setOpenCreate] = useState<boolean>(false);
+  const [openCreateReview, setOpenCreateReview] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDeletedCategories, setOpenDeletedCategories] =
     useState<boolean>(false);
@@ -41,6 +43,10 @@ const Navbar = () => {
   };
   const handleCloseCreate = () => {
     setOpenCreate(false);
+  };
+
+  const handleClickOpenCreateReview = () => {
+    setOpenCreateReview(true);
   };
 
   const handleClickOpenDelete = () => {
@@ -113,10 +119,13 @@ const Navbar = () => {
                   <Link to={"/item/create"} key={1}>
                     Create item
                   </Link>
-                  <span onClick={handleClickOpenCreate} key={2}>
+                  <span onClick={handleClickOpenCreateReview} key={2}>
+                    Create review
+                  </span>
+                  <span onClick={handleClickOpenCreate} key={3}>
                     Create category
                   </span>
-                  <span onClick={handleClickOpenDelete} key={3}>
+                  <span onClick={handleClickOpenDelete} key={4}>
                     Delete categories
                   </span>
                 </DropDownMenu>
@@ -128,6 +137,14 @@ const Navbar = () => {
           ) : (
             <div></div>
           )}
+          <ModalDialog
+            state={openCreateReview}
+            setState={setOpenCreateReview}
+            title={"Create review"}
+            width={"600px"}
+          >
+            <CreateReview />
+          </ModalDialog>
           <ModalDialog
             state={openCreate}
             setState={setOpenCreate}
