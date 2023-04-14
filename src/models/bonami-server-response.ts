@@ -90,7 +90,7 @@ export interface IOrderedItem {
   amount: number;
 }
 
-interface ICustomerName {
+export interface ICustomerName {
   firstName: string;
   secondName: string;
   patronymic: string;

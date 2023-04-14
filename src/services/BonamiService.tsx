@@ -14,6 +14,7 @@ import {
   IAlertState,
   ICreateCategoryForm,
   ICreateItemForm,
+  ICreateReviewForm,
 } from "../models/bonami-client";
 import { Dispatch, SetStateAction } from "react";
 import { AlertColor } from "@mui/material";
@@ -196,6 +197,34 @@ export default class BonamiService {
         setAlert({
           isOpen: true,
           message: "Category created",
+          severity: "success",
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
+
+  static createReview(
+    data: ICreateReviewForm,
+    setAlert: Dispatch<SetStateAction<IAlertState>>
+  ) {
+    axios({
+      method: "POST",
+      withCredentials: true,
+      data: data,
+      url: `http://localhost:5000/item/review/create`,
+    })
+      .then((res) => {
+        console.log(res.data);
+        setAlert({
+          isOpen: true,
+          message: "Success",
           severity: "success",
         });
       })

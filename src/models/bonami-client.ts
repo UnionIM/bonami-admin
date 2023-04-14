@@ -1,4 +1,5 @@
 import { AlertColor } from "@mui/material";
+import { ICustomerName } from "./bonami-server-response";
 
 export interface ICreateItemForm {
   nameEn: string;
@@ -10,6 +11,14 @@ export interface ICreateItemForm {
   price: string;
   discount: string;
   files: Blob[];
+}
+
+export interface ICreateReviewForm {
+  id: string;
+  rating: number;
+  author: ICustomerName;
+  ordered: boolean | undefined;
+  text: string;
 }
 
 export interface ICreateCategoryForm {
