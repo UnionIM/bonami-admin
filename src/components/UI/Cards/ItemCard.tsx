@@ -1,18 +1,12 @@
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
-import {
-  Button,
-  ButtonProps,
-  Card,
-  Grid,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Button, Card, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Delete, EditOutlined } from "@mui/icons-material";
 import { colorful } from "../../../design/colors";
 import { IItemListElement } from "../../../models/bonami-server-response";
 import BonamiService from "../../../services/BonamiService";
 import { IAlertState } from "../../../models/bonami-client";
+import { DeleteButton } from "../Buttons/DeleteButton";
 
 interface IItemCard {
   item: IItemListElement;
@@ -25,14 +19,6 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
   const deleteButtonHandler = async (id: string) => {
     await BonamiService.deleteItem(id, setOpenSnackbar);
   };
-
-  const DeleteButton = styled(Button)<ButtonProps>(({ theme }) => ({
-    color: theme.palette.getContrastText(colorful.lightRed),
-    backgroundColor: colorful.lightRed,
-    "&:hover": {
-      backgroundColor: colorful.red,
-    },
-  }));
 
   return (
     <Card key={item._id} sx={{ padding: "unset" }}>
