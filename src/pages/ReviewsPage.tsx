@@ -5,18 +5,22 @@ import {
   Card,
   CircularProgress,
   Grid,
+  Rating,
   Typography,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import BonamiController from "../controllers/BonamiController";
-import { gray } from "../design/colors";
+import { colorful, gray } from "../design/colors";
 import { IReview } from "../models/bonami-server-response";
 import SortSelect from "../components/UI/Inputs/SortSelect";
 import { ISort } from "../models/bonami-client";
 import { sortArr } from "../utils/sort";
 import { timeConverter } from "../utils/timeConverter";
 import MyAlert from "../components/UI/MyAlert";
+import { Delete } from "@mui/icons-material";
+import { DeleteButton } from "../components/UI/Buttons/DeleteButton";
+import BonamiService from "../services/BonamiService";
 
 const ReviewsPage = () => {
   const { id } = useParams();
@@ -39,6 +43,7 @@ const ReviewsPage = () => {
   );
 
   useEffect(() => {
+    console.log(item);
     if (message) {
       setOpenSnackbar({
         isOpen: true,
@@ -50,6 +55,18 @@ const ReviewsPage = () => {
       setReviews(sortArr(item.reviews, sort.element, sort.direction));
     }
   }, [item, sort, message]);
+
+  const deleteReviewHandler = async (reviewId: string) => {
+    if (id) {
+      await BonamiService.deleteReview(id, reviewId, setOpenSnackbar);
+    } else {
+      setOpenSnackbar({
+        isOpen: true,
+        message: "Client error, try again later",
+        severity: "error",
+      });
+    }
+  };
 
   const selectSortMenuItems: { value: ISort; name: string }[] = [
     {
@@ -136,13 +153,36 @@ const ReviewsPage = () => {
                       : "Item was not ordered"}
                   </Typography>
                 </Grid>
-                <Typography>{review.rating}</Typography>
+                <Grid container gap={"15px"}>
+                  <Rating
+                    defaultValue={review.rating}
+                    precision={0.1}
+                    readOnly
+                  ></Rating>
+                  <Typography sx={{ mt: "1px" }}>{review.rating}</Typography>
+                </Grid>
                 <Typography sx={{ maxWidth: "730px", wordWrap: "break-word" }}>
                   {review.text}
                 </Typography>
-                <Typography color={gray.dark}>
-                  {timeConverter(review.createdAt)}
-                </Typography>
+                <Grid container justifyContent={"space-between"}>
+                  <Typography color={gray.dark}>
+                    {timeConverter(review.createdAt)}
+                  </Typography>
+                  <DeleteButton
+                    variant="contained"
+                    sx={{
+                      width: "25px",
+                      height: "25px",
+                      minWidth: "unset",
+                      backgroundColor: colorful.lightRed,
+                    }}
+                    onClick={() => {
+                      deleteReviewHandler(review._id);
+                    }}
+                  >
+                    <Delete fontSize={"small"} />
+                  </DeleteButton>
+                </Grid>
               </Card>
             ))
           ) : (
