@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Card, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  AlertColor,
+  Box,
+  Card,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import BonamiController from "../controllers/BonamiController";
@@ -9,6 +16,7 @@ import SortSelect from "../components/UI/Inputs/SortSelect";
 import { ISort } from "../models/bonami-client";
 import { sortArr } from "../utils/sort";
 import { timeConverter } from "../utils/timeConverter";
+import MyAlert from "../components/UI/MyAlert";
 
 const ReviewsPage = () => {
   const { id } = useParams();
@@ -18,6 +26,11 @@ const ReviewsPage = () => {
     element: "createdAt",
     direction: -1,
   });
+  const [openSnackbar, setOpenSnackbar] = useState<{
+    isOpen: boolean;
+    message: string;
+    severity: AlertColor;
+  }>({ isOpen: false, message: "", severity: "info" });
 
   const { data: item, message } = useFetchData(
     BonamiController.getItemById,
@@ -26,10 +39,17 @@ const ReviewsPage = () => {
   );
 
   useEffect(() => {
+    if (message) {
+      setOpenSnackbar({
+        isOpen: true,
+        message: "Server error, try again later",
+        severity: "error",
+      });
+    }
     if (item) {
       setReviews(sortArr(item.reviews, sort.element, sort.direction));
     }
-  }, [item, sort]);
+  }, [item, sort, message]);
 
   const selectSortMenuItems: { value: ISort; name: string }[] = [
     {
@@ -98,11 +118,11 @@ const ReviewsPage = () => {
               />
             </>
           ) : (
-            <CircularProgress sx={{ margin: "166px 320px" }} />
+            <CircularProgress sx={{ margin: "196px 320px" }} />
           )}
         </Card>
-        {item ? (
-          reviews?.length ? (
+        {reviews ? (
+          item?.reviews.length ? (
             reviews.map((review) => (
               <Card sx={{ marginTop: "25px", width: "730px" }} key={review._id}>
                 <Grid container justifyContent={"space-between"}>
@@ -133,11 +153,12 @@ const ReviewsPage = () => {
             </Card>
           )
         ) : (
-          <Card sx={{ marginTop: "25px", width: "730px", height: "130px" }}>
-            <CircularProgress />
+          <Card sx={{ marginTop: "25px", width: "730px", height: "170px" }}>
+            <CircularProgress sx={{ margin: "20px 320px" }} />
           </Card>
         )}
       </Grid>
+      <MyAlert state={openSnackbar} setState={setOpenSnackbar} />
     </Box>
   );
 };
