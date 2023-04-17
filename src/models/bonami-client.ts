@@ -31,3 +31,8 @@ export interface IAlertState {
   message: string;
   severity: AlertColor;
 }
+
+export interface ISort {
+  element: string;
+  direction: 1 | -1;
+}

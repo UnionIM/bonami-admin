@@ -58,7 +58,7 @@ export interface IItem {
   reviews: IReview[];
 }
 
-interface IReview {
+export interface IReview {
   _id: string;
   rating: number;
   author: ICustomerName;

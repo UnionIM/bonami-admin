@@ -6,11 +6,8 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  MenuItem,
   Pagination,
   PaginationItem,
-  Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,10 +17,11 @@ import BonamiController from "../controllers/BonamiController";
 import { Link, useParams } from "react-router-dom";
 import OrderCard from "../components/UI/Cards/OrderCard";
 import { Dayjs } from "dayjs";
-import { IAlertState } from "../models/bonami-client";
+import { IAlertState, ISort } from "../models/bonami-client";
 import MyAlert from "../components/UI/MyAlert";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import RangeDatePicker from "../components/UI/Inputs/RangeDatePicker";
+import SortSelect from "../components/UI/Inputs/SortSelect";
 
 const OrderList = () => {
   const { page } = useParams();
@@ -69,10 +67,6 @@ const OrderList = () => {
     setSearchParam(searchValue);
   };
 
-  const handleSortSelect = (e: SelectChangeEvent) => {
-    setSort(JSON.parse(e.target.value));
-  };
-
   const responsiveWidthHandler = (width: number) => {
     if (width >= 1487) {
       return "1369px";
@@ -85,7 +79,7 @@ const OrderList = () => {
     }
   };
 
-  const selectSortMenuItems = [
+  const selectSortMenuItems: { value: ISort; name: string }[] = [
     {
       value: { element: "status", direction: -1 },
       name: "Status pending first",
@@ -130,20 +124,11 @@ const OrderList = () => {
                 FIND
               </Button>
             </Grid>
-            <Select
-              sx={{ width: "241px" }}
-              value={JSON.stringify(sort)}
-              onChange={handleSortSelect}
-            >
-              {selectSortMenuItems.map((el) => (
-                <MenuItem
-                  key={JSON.stringify(el.value)}
-                  value={JSON.stringify(el.value)}
-                >
-                  {el.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <SortSelect
+              sort={sort}
+              setSort={setSort}
+              selectSortMenuItems={selectSortMenuItems}
+            />
           </Grid>
           <RangeDatePicker
             dateEnd={dateEnd}
