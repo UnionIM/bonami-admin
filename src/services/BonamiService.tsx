@@ -88,6 +88,40 @@ export default class BonamiService {
     ).data;
   }
 
+  static deleteReview(
+    itemId: string,
+    reviewId: string,
+    setAlert: Dispatch<
+      SetStateAction<{
+        isOpen: boolean;
+        message: string;
+        severity: AlertColor;
+      }>
+    >
+  ) {
+    axios({
+      method: "delete",
+      withCredentials: true,
+      url: `http://localhost:5000/item/review/delete?item=${itemId}&review=${reviewId}`,
+    })
+      .then((res) => {
+        console.log(res.data);
+        setAlert({
+          isOpen: true,
+          message: "Success",
+          severity: "success",
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
+
   static localLogin(
     email: string,
     password: string,
