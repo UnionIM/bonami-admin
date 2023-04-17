@@ -1,18 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Card, CircularProgress, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import BonamiController from "../controllers/BonamiController";
 import { gray } from "../design/colors";
+import { IReview } from "../models/bonami-server-response";
+import SortSelect from "../components/UI/Inputs/SortSelect";
+import { ISort } from "../models/bonami-client";
+import { sortArr } from "../utils/sort";
+import { timeConverter } from "../utils/timeConverter";
 
 const ReviewsPage = () => {
   const { id } = useParams();
+
+  const [reviews, setReviews] = useState<IReview[]>();
+  const [sort, setSort] = useState<{ element: string; direction: 1 | -1 }>({
+    element: "createdAt",
+    direction: -1,
+  });
 
   const { data: item, message } = useFetchData(
     BonamiController.getItemById,
     [id],
     [id]
   );
+
+  useEffect(() => {
+    if (item) {
+      setReviews(sortArr(item.reviews, sort.element, sort.direction));
+    }
+  }, [item, sort]);
+
+  const selectSortMenuItems: { value: ISort; name: string }[] = [
+    {
+      value: { element: "rating", direction: -1 },
+      name: "Best rating first",
+    },
+    {
+      value: { element: "rating", direction: 1 },
+      name: "Worst rating first",
+    },
+    {
+      value: { element: "createdAt", direction: -1 },
+      name: "Newest first",
+    },
+    {
+      value: { element: "createdAt", direction: 1 },
+      name: "Oldest first",
+    },
+  ];
 
   return (
     <Box sx={{ p: "32px" }} display={"flex"}>
@@ -26,7 +62,7 @@ const ReviewsPage = () => {
             <>
               <Typography>Item information</Typography>
               <Typography color={gray.dark}>ID: {id}</Typography>
-              <Grid container gap={"40px"} sx={{ mt: "15px" }}>
+              <Grid container gap={"40px"} sx={{ m: "15px 0 20px 0" }}>
                 <Grid item>
                   <img
                     src={item.images[0].url}
@@ -55,14 +91,19 @@ const ReviewsPage = () => {
                   </Typography>
                 </Grid>
               </Grid>
+              <SortSelect
+                sort={sort}
+                setSort={setSort}
+                selectSortMenuItems={selectSortMenuItems}
+              />
             </>
           ) : (
             <CircularProgress sx={{ margin: "166px 320px" }} />
           )}
         </Card>
         {item ? (
-          item.reviews.length ? (
-            item.reviews.map((review) => (
+          reviews?.length ? (
+            reviews.map((review) => (
               <Card sx={{ marginTop: "25px", width: "730px" }} key={review._id}>
                 <Grid container justifyContent={"space-between"}>
                   <Typography>
@@ -78,6 +119,9 @@ const ReviewsPage = () => {
                 <Typography>{review.rating}</Typography>
                 <Typography sx={{ maxWidth: "730px", wordWrap: "break-word" }}>
                   {review.text}
+                </Typography>
+                <Typography color={gray.dark}>
+                  {timeConverter(review.createdAt)}
                 </Typography>
               </Card>
             ))
