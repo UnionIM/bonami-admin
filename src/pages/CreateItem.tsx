@@ -60,13 +60,10 @@ const CreateItem = () => {
     if (location.pathname === "/item/create" && itemToEdit) {
       reset();
     }
-  }, [location, itemToEdit]);
-
-  useEffect(() => {
     if (itemToEdit !== null && !itemToEdit.name) {
       navigate("/item/create");
     }
-    if (itemToEdit?._id) {
+    if (location.pathname !== "/item/create" && itemToEdit?._id) {
       const urlArr = itemToEdit?.images.map((el) => el.url);
       setImgDisplayLinks(urlArr);
       setValue("nameEn", itemToEdit?.name.en);
@@ -78,7 +75,7 @@ const CreateItem = () => {
       setValue("price", itemToEdit?.price.toString());
       setValue("discount", itemToEdit?.discount.toString());
     }
-  }, [itemToEdit]);
+  }, [itemToEdit, location]);
 
   const { data, message } = useFetchData(BonamiController.getCategories);
 
@@ -243,7 +240,9 @@ const CreateItem = () => {
             <Card>
               <Grid container justifyContent={"space-between"}>
                 <TextField
-                  placeholder={"Please enter ‘I want to create item’"}
+                  placeholder={`Please enter ‘I want to ${
+                    location.pathname === "/item/create" ? "create" : "edit"
+                  } item’`}
                   onChange={captchaHandler}
                   value={captcha}
                   sx={{ width: "70%" }}
@@ -251,10 +250,17 @@ const CreateItem = () => {
                 <Button
                   type={"submit"}
                   variant="contained"
-                  disabled={!(captcha === "I want to create item")}
+                  disabled={
+                    !(
+                      captcha ===
+                      `I want to ${
+                        location.pathname === "/item/create" ? "create" : "edit"
+                      } item`
+                    )
+                  }
                   sx={{ width: "25%" }}
                 >
-                  CREATE
+                  {location.pathname === "/item/create" ? "CREATE" : "EDIT"}
                 </Button>
               </Grid>
             </Card>
