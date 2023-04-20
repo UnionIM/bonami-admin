@@ -1,46 +1,68 @@
-# Getting Started with Create React App
+# Bonami admin panel
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created as admin panel to e-commerce website, store is engaged in producing and sale of knitted accessories.
 
-## Available Scripts
+## Technologies used
 
-In the project directory, you can run:
+* React 18.2.0
+* TypeScript 4.9.5
+* MaterialUI
+* Libraries such as: axios, chartJS, dayJS
 
-### `npm start`
+# Full description of the project
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Login page
 
-### `npm test`
+![https://ibb.co/64x4Dms](https://i.ibb.co/zSYSPrf/1.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+created login page notifications about incorrect data entry. Login with Google (OAuth 2) button
 
-### `npm run build`
+# Home page
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![https://ibb.co/WHg0Lxj](https://i.ibb.co/9psh78S/2.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The charts are made using the chart.js library, the data for the page is loaded from the database (Order statistics) or calculated on the server (Category statistics, Order chart). The user can recalculate the total profit from orders by clicking the button.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Item manager
 
-### `npm run eject`
+![https://ibb.co/M2mRq9m](https://i.ibb.co/X2qzmVq/3.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The page implements a search for goods by name and category, displays information about the total number of goods. Pagination implemented on the server
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Orders
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![https://ibb.co/k6Gn594](https://i.ibb.co/TqwXYb4/4.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The page implements a search for an order by customer's e-mail, by order date, sorting by order status and date
 
-## Learn More
+# Reviews page
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![https://ibb.co/k6Gn594](https://i.ibb.co/41p1w0r/5.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The page implements a sorting by date and reviews rating
+
+# Order page
+
+![https://ibb.co/DDL4LwQ](https://i.ibb.co/d07B7kD/6.png)
+
+This page contains all information about order, here you can open Google Maps to see the exact place of receipt of the order. Ordered items are displayed on multiple pages (4 per page)
+
+# Create item
+
+![https://ibb.co/GpHVtV9](https://i.ibb.co/W5VcPc0/7.png)
+
+Using dropdown menu from navbar you can access page where you can add product to database. Input fields have mandatory data validation, price and discount input validation (only numbers), photos are uploaded to AWS S3
+
+# Create and delete category
+
+![https://ibb.co/m54TXKr](https://i.ibb.co/k2XB9TV/8.png)
+
+Using this modal window you can add new category to database
+
+![https://ibb.co/3cXLcqk](https://i.ibb.co/VTyPTZ3/9.png)
+
+Using this modal window you can delete categories without items from database
+
