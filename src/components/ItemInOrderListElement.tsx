@@ -3,6 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { IOrderedItem } from "../models/bonami-server-response";
 import { gray } from "../design/colors";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import noImage from "../design/img/noImage.png";
 
 interface IItemInOrderListElement {
   item: IOrderedItem;
@@ -33,15 +34,24 @@ const ItemInOrderListElement: FC<IItemInOrderListElement> = ({ item }) => {
             {item.amount}
           </Typography>
         </Box>
-        <img
-          src={item.picture}
-          alt="item img."
+        <object
+          data={item.picture}
           style={{
             width: "87px",
             height: "87px",
             borderRadius: "5px",
           }}
-        />
+        >
+          <img
+            src={noImage}
+            alt="No img"
+            style={{
+              width: "87px",
+              height: "87px",
+              borderRadius: "5px",
+            }}
+          />
+        </object>
       </Box>
       <Grid item>
         <Typography>
