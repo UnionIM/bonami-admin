@@ -74,7 +74,7 @@ const Navbar = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ maxHeight: "65px" }}>
       <AppBar position="static">
         <Toolbar>
           <Link to={"/"} style={{ display: "inline-block", width: "200px" }}>

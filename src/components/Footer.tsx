@@ -1,9 +1,13 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { BottomNavigation } from "@mui/material";
 import { colorful } from "../design/colors";
 
 const Footer = () => {
-  return <Box height={"180px"} bgcolor={colorful.blue}></Box>;
+  return (
+    <BottomNavigation
+      sx={{ height: "180px", bgcolor: colorful.blue, marginTop: "auto" }}
+    />
+  );
 };
 
 export default Footer;

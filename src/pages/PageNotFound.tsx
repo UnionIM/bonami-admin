@@ -8,7 +8,6 @@ const styles = {
     flexDirection: "column" as const,
     alignItems: "center",
     marginTop: 50,
-    height: "80vh",
   },
   title: {
     marginBottom: 20,

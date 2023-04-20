@@ -123,7 +123,12 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Global />
-      <Box bgcolor={"#f1f1f1"} height={"100%"}>
+      <Box
+        bgcolor={"#f1f1f1"}
+        minHeight={"100vh"}
+        display={"flex"}
+        flexDirection={"column"}
+      >
         <Navbar />
         <AppRouter />
         <Footer />
