@@ -167,7 +167,7 @@ export default class BonamiService {
         console.log(e);
       });
   }
-
+  /*sdfsdf*/
   static createItem(
     data: ICreateItemForm,
     menuItems: { value: string; name: string }[],
@@ -341,6 +341,41 @@ export default class BonamiService {
           message: "Success",
           severity: "success",
         });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
+
+  static updateItem(
+    data: ICreateItemForm,
+    menuItems: { value: string; name: string }[],
+    setAlert: Dispatch<
+      SetStateAction<{
+        isOpen: boolean;
+        message: string;
+        severity: AlertColor;
+      }>
+    >,
+    id: string
+  ) {
+    const categoryUa = menuItems?.find(
+      (item) => item.value === data.categoryEn
+    )?.name;
+    axios({
+      method: "PUT",
+      data: { id, ...data, categoryUa },
+      withCredentials: true,
+      url: "http://localhost:5000/item/edit",
+    })
+      .then((res) => {
+        console.log(res);
+        setAlert({ isOpen: true, message: "Success", severity: "success" });
       })
       .catch((e) => {
         console.log(e);

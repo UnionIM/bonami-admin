@@ -26,7 +26,7 @@ const CreateItem = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { data: itemToEdit, message: itemByIdMessage } = useFetchData(
+  const { data: itemToEdit } = useFetchData(
     BonamiController.getItemById,
     [id],
     []
@@ -91,20 +91,26 @@ const CreateItem = () => {
   const menuItems = useCategoryMenuItems(setOpenSnackbar, data, message);
 
   const onSubmit: SubmitHandler<ICreateItemForm> = (data) => {
-    if (files?.length && menuItems) {
-      BonamiService.createItem(data, menuItems, files, setOpenSnackbar);
-    } else if (!files?.length) {
-      setOpenSnackbar({
-        isOpen: true,
-        message: "Add at least 1 photo",
-        severity: "error",
-      });
+    if (location.pathname === "/item/create") {
+      if (files?.length && menuItems) {
+        BonamiService.createItem(data, menuItems, files, setOpenSnackbar);
+      } else if (!files?.length) {
+        setOpenSnackbar({
+          isOpen: true,
+          message: "Add at least 1 photo",
+          severity: "error",
+        });
+      } else {
+        setOpenSnackbar({
+          isOpen: true,
+          message: "Server error try again later",
+          severity: "error",
+        });
+      }
     } else {
-      setOpenSnackbar({
-        isOpen: true,
-        message: "Server error try again later",
-        severity: "error",
-      });
+      if (menuItems && id) {
+        BonamiService.updateItem(data, menuItems, setOpenSnackbar, id);
+      }
     }
   };
 
