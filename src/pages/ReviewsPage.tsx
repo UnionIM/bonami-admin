@@ -48,7 +48,8 @@ const ReviewsPage = () => {
     }
     if (item && item._id) {
       setReviews(sortArr(item.reviews, sort.element, sort.direction));
-    } else {
+    }
+    if (item && !item._id) {
       setOpenSnackbar({
         isOpen: true,
         message: "Wrong id",
