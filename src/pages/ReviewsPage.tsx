@@ -39,7 +39,6 @@ const ReviewsPage = () => {
   );
 
   useEffect(() => {
-    console.log(item);
     if (message) {
       setOpenSnackbar({
         isOpen: true,
@@ -47,8 +46,14 @@ const ReviewsPage = () => {
         severity: "error",
       });
     }
-    if (item) {
+    if (item && item._id) {
       setReviews(sortArr(item.reviews, sort.element, sort.direction));
+    } else {
+      setOpenSnackbar({
+        isOpen: true,
+        message: "Wrong id",
+        severity: "error",
+      });
     }
   }, [item, sort, message]);
 
@@ -79,7 +84,7 @@ const ReviewsPage = () => {
         sx={{ margin: "0 auto", width: "unset" }}
       >
         <Card>
-          {item ? (
+          {item && item._id ? (
             <>
               <Typography>Item information</Typography>
               <Typography color={gray.dark}>ID: {id}</Typography>
