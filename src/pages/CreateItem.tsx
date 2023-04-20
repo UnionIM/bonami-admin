@@ -75,7 +75,7 @@ const CreateItem = () => {
       setValue("price", itemToEdit?.price.toString());
       setValue("discount", itemToEdit?.discount.toString());
     }
-  }, [itemToEdit, location]);
+  }, [itemToEdit, location.pathname]);
 
   const { data, message } = useFetchData(BonamiController.getCategories);
 
@@ -162,7 +162,7 @@ const CreateItem = () => {
             </Card>
           </Grid>
           <Grid item container gap={"25px"} flexDirection={"column"}>
-            <Card>
+            <Card sx={{ height: "508px" }}>
               <Typography fontSize={"20px"}>Photos</Typography>
               <Typography fontSize={"15px"}>
                 First photo will be main photo of item and will be displayed in
