@@ -81,6 +81,7 @@ const CreateReview = () => {
           InputLabelProps={{ required: false }}
           multiline
           rows={5}
+          fullWidth
           sx={{ marginTop: "10px", display: "block" }}
         />
         <Button
