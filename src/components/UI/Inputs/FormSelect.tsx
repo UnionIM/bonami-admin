@@ -6,10 +6,11 @@ import { ICreateItemForm } from "../../../models/bonami-client";
 interface ISelect {
   register: any;
   label: any;
-  control: Control<ICreateItemForm, any>;
+  control: Control<ICreateItemForm>;
   header: string;
   m?: string;
   menuItems: { value: string; name: string }[];
+  defaultValue?: string;
 }
 
 const FormSelect: FC<ISelect> = ({
@@ -19,6 +20,7 @@ const FormSelect: FC<ISelect> = ({
   menuItems,
   m = "0",
   header,
+  defaultValue = "",
 }) => {
   return (
     <FormControl sx={{ m: `${m}` }}>
@@ -30,7 +32,7 @@ const FormSelect: FC<ISelect> = ({
           <Select
             {...register(`${label}`)}
             sx={{ width: "200px" }}
-            defaultValue={menuItems[0].value}
+            defaultValue={defaultValue}
             required
           >
             {menuItems.map((item) => (

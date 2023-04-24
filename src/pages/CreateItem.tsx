@@ -45,8 +45,8 @@ const CreateItem = () => {
               descriptionUa: itemToEdit.description
                 ? itemToEdit.description.ua
                 : "",
-              categoryEn: itemToEdit.category ? itemToEdit.description.en : "",
-              categoryUa: itemToEdit.category ? itemToEdit.description.ua : "",
+              categoryEn: itemToEdit.category ? itemToEdit.category.en : "",
+              categoryUa: itemToEdit.category ? itemToEdit.category.ua : "",
               price: itemToEdit.price ? itemToEdit.price.toString() : "",
               discount: itemToEdit.discount
                 ? itemToEdit.discount.toString()
@@ -141,7 +141,34 @@ const CreateItem = () => {
                 header={"Name"}
                 registerName={"name"}
               />
-              {!menuItems ? (
+              {id ? (
+                itemToEdit ? (
+                  !menuItems ? (
+                    <CircularProgress sx={{ margin: "20px 0" }} />
+                  ) : (
+                    <FormSelect
+                      register={register}
+                      label={"categoryEn"}
+                      header={"Category"}
+                      control={control}
+                      menuItems={menuItems}
+                      defaultValue={itemToEdit.category.en}
+                      m={"20px 0"}
+                    />
+                  )
+                ) : !menuItems ? (
+                  <CircularProgress sx={{ margin: "20px 0" }} />
+                ) : (
+                  <FormSelect
+                    register={register}
+                    label={"categoryEn"}
+                    header={"Category"}
+                    control={control}
+                    menuItems={menuItems}
+                    m={"20px 0"}
+                  />
+                )
+              ) : !menuItems ? (
                 <CircularProgress sx={{ margin: "20px 0" }} />
               ) : (
                 <FormSelect
@@ -153,6 +180,7 @@ const CreateItem = () => {
                   m={"20px 0"}
                 />
               )}
+              {}
               <MultiLangInputs
                 register={register}
                 header={"Description"}
