@@ -167,7 +167,7 @@ export default class BonamiService {
         console.log(e);
       });
   }
-  /*sdfsdf*/
+
   static createItem(
     data: ICreateItemForm,
     menuItems: { value: string; name: string }[],
@@ -302,8 +302,7 @@ export default class BonamiService {
     await axios({
       method: "DELETE",
       withCredentials: true,
-      data: { id: id },
-      url: "http://localhost:5000/item/delete",
+      url: `http://localhost:5000/item/delete?id=${id}`,
     })
       .then((res) => {
         console.log(res.data);
