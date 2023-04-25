@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
-import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, Grid, Tooltip, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Delete, EditOutlined } from "@mui/icons-material";
 import { colorful } from "../../../design/colors";
@@ -32,17 +32,19 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
         }}
       />
       <div style={{ padding: "10px" }}>
-        <Typography
-          fontSize={"14px"}
-          ref={nameElementRef}
-          mb={"10px"}
-          width={"150px"}
-          sx={{ wordWrap: "break-word" }}
-        >
-          {item.name.ua.length >= 29
-            ? item.name.ua.slice(0, 29) + "..."
-            : item.name.ua}
-        </Typography>
+        <Tooltip title={item.name.ua.length >= 29 ? item.name.ua : null}>
+          <Typography
+            fontSize={"14px"}
+            ref={nameElementRef}
+            mb={"10px"}
+            width={"150px"}
+            sx={{ wordWrap: "break-word" }}
+          >
+            {item.name.ua.length >= 29
+              ? item.name.ua.slice(0, 29) + "..."
+              : item.name.ua}
+          </Typography>
+        </Tooltip>
         <Grid container justifyContent={"space-between"}>
           <Typography fontSize={"14px"} mb={"10px"}>
             {item.price}
