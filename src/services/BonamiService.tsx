@@ -385,4 +385,35 @@ export default class BonamiService {
         });
       });
   }
+
+  static deleteImages(
+    id: string,
+    indexes: number[],
+    setAlert: Dispatch<
+      SetStateAction<{
+        isOpen: boolean;
+        message: string;
+        severity: AlertColor;
+      }>
+    >
+  ) {
+    axios({
+      method: "DELETE",
+      data: { id: id, indexes: indexes },
+      withCredentials: true,
+      url: "http://localhost:5000/item/img/delete",
+    })
+      .then((res) => {
+        console.log(res);
+        setAlert({ isOpen: true, message: "Success", severity: "success" });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
 }

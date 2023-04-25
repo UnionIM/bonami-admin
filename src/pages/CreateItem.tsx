@@ -21,6 +21,8 @@ import BonamiService from "../services/BonamiService";
 import MyAlert from "../components/UI/MyAlert";
 import useCategoryMenuItems from "../hooks/useCategoryMenuItems";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { DeleteButton } from "../components/UI/Buttons/DeleteButton";
+import { Delete, EditOutlined } from "@mui/icons-material";
 
 const CreateItem = () => {
   const { id } = useParams();
@@ -82,6 +84,7 @@ const CreateItem = () => {
   const [files, setFiles] = useState<FileList>();
   const [imgDisplayLinks, setImgDisplayLinks] = useState<string[]>([]);
   const [captcha, setCaptcha] = useState<string>("");
+  const [imgIndexes, setImgIndexes] = useState<number[]>([]);
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
@@ -117,17 +120,41 @@ const CreateItem = () => {
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFiles(e.target.files);
-      const fileArr = [];
+      const fileArr: string[] = [];
       // @ts-ignore
       for (let fileItem of e.target.files) {
         fileArr.push(URL.createObjectURL(fileItem));
       }
-      setImgDisplayLinks(fileArr);
+      setImgDisplayLinks((prevState) => [...prevState, ...fileArr]);
     }
   };
 
   const captchaHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setCaptcha(e.target.value);
+  };
+
+  const deleteImgHandler = (url: string) => {
+    const indexOfDeleted = imgDisplayLinks.indexOf(url);
+    setImgIndexes((prevState) => [...prevState, indexOfDeleted]);
+    if (files) {
+      const dt = new DataTransfer();
+      for (let i = 0; i < files?.length; i++) {
+        const file = files[i];
+        if (indexOfDeleted !== i) {
+          dt.items.add(file);
+        }
+      }
+      setFiles(dt.files);
+    }
+    const linksWithoutDeleted = imgDisplayLinks.filter((el) => el !== url);
+    setImgDisplayLinks(linksWithoutDeleted);
+  };
+
+  const deleteImagesByIndexes = () => {
+    if (id && imgIndexes) {
+      BonamiService.deleteImages(id, imgIndexes, setOpenSnackbar);
+      setImgIndexes([]);
+    }
   };
 
   return (
@@ -180,7 +207,6 @@ const CreateItem = () => {
                   m={"20px 0"}
                 />
               )}
-              {}
               <MultiLangInputs
                 register={register}
                 header={"Description"}
@@ -190,7 +216,7 @@ const CreateItem = () => {
             </Card>
           </Grid>
           <Grid item container gap={"25px"} flexDirection={"column"}>
-            <Card sx={{ height: "508px" }}>
+            <Card sx={{ height: "508px", position: "relative" }}>
               <Typography fontSize={"20px"}>Photos</Typography>
               <Typography fontSize={"15px"}>
                 First photo will be main photo of item and will be displayed in
@@ -215,21 +241,36 @@ const CreateItem = () => {
                 <ImageList
                   sx={{ width: 490, height: 235, m: "0 auto" }}
                   cols={3}
-                  rowHeight={150}
+                  rowHeight={193}
                   gap={8}
                 >
                   {imgDisplayLinks.map((el) => (
                     <ImageListItem key={el}>
-                      <img
-                        src={`${el}`}
-                        style={{
-                          width: "150px",
-                          height: "150px",
-                          borderRadius: "5px",
-                        }}
-                        alt={"Image"}
-                        loading={"lazy"}
-                      />
+                      <Box>
+                        <img
+                          src={`${el}`}
+                          style={{
+                            width: "156px",
+                            height: "156px",
+                            borderRadius: "5px",
+                          }}
+                          alt={"Image"}
+                          loading={"lazy"}
+                        />
+                        <Grid container justifyContent={"space-between"}>
+                          <Button variant={"contained"}>
+                            <EditOutlined sx={{ fontSize: 18 }} />
+                          </Button>
+                          <DeleteButton
+                            onClick={() => {
+                              deleteImgHandler(el);
+                            }}
+                            variant={"contained"}
+                          >
+                            <Delete fontSize={"small"} />
+                          </DeleteButton>
+                        </Grid>
+                      </Box>
                     </ImageListItem>
                   ))}
                 </ImageList>
@@ -243,6 +284,18 @@ const CreateItem = () => {
                 >
                   Upload photo
                 </Typography>
+              )}
+              {location.pathname !== "/item/create" ? (
+                <Button
+                  sx={{ position: "absolute", bottom: "20px", right: "20px" }}
+                  onClick={deleteImagesByIndexes}
+                  disabled={!imgIndexes.length}
+                  variant={"contained"}
+                >
+                  SAVE
+                </Button>
+              ) : (
+                <></>
               )}
             </Card>
             <Card>
