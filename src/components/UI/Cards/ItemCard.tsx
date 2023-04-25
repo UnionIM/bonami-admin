@@ -7,6 +7,7 @@ import { IItemListElement } from "../../../models/bonami-server-response";
 import BonamiService from "../../../services/BonamiService";
 import { IAlertState } from "../../../models/bonami-client";
 import { DeleteButton } from "../Buttons/DeleteButton";
+import noImage from "../../../design/img/noImage.png";
 
 interface IItemCard {
   item: IItemListElement;
@@ -22,15 +23,24 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
 
   return (
     <Card key={item._id} sx={{ padding: "unset" }}>
-      <img
-        src={item.images[0].url}
-        alt="Item img"
+      <object
+        data={item.images[0]?.url}
         style={{
           width: "177px",
           height: "177px",
           borderRadius: "5px",
         }}
-      />
+      >
+        <img
+          src={noImage}
+          alt="No img"
+          style={{
+            width: "177px",
+            height: "177px",
+            borderRadius: "5px",
+          }}
+        />
+      </object>
       <div style={{ padding: "10px" }}>
         <Tooltip title={item.name.ua.length >= 29 ? item.name.ua : null}>
           <Typography
