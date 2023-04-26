@@ -84,8 +84,9 @@ const CreateItem = () => {
   const [files, setFiles] = useState<FileList>();
   const [imgDisplayLinks, setImgDisplayLinks] = useState<string[]>([]);
   const [captcha, setCaptcha] = useState<string>("");
-  const [imgIndexes, setImgIndexes] = useState<number[]>([]);
-  const [imgEdit, setImgEdit] = useState<{ index: number; file: File }[]>([]);
+  const [deleteImgIndexes, setDeleteImgIndexes] = useState<number[]>([]);
+  const [editImgIndexes, setEditImgIndexes] = useState<number[]>([]);
+  const [editFiles, setEditFiles] = useState<FileList | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
@@ -136,7 +137,7 @@ const CreateItem = () => {
 
   const deleteImgHandler = (url: string) => {
     const indexOfDeleted = imgDisplayLinks.indexOf(url);
-    setImgIndexes((prevState) => [...prevState, indexOfDeleted]);
+    setDeleteImgIndexes((prevState) => [...prevState, indexOfDeleted]);
     if (files) {
       const dt = new DataTransfer();
       for (let i = 0; i < files?.length; i++) {
@@ -164,21 +165,28 @@ const CreateItem = () => {
         return url;
       });
       setImgDisplayLinks(editedImgDisplayLinks);
-      setImgEdit((prevState) => [
-        ...prevState,
-        // @ts-ignore
-        { index: indexOfEdited, file: e.target.files[0] },
-      ]);
+      setEditImgIndexes((prevState) => [...prevState, indexOfEdited]);
+      if (editFiles?.length) {
+        //@ts-ignore
+        setEditFiles((prevState) => [
+          //@ts-ignore
+          ...Array.from(prevState),
+          //@ts-ignore
+          e.target.files[0],
+        ]);
+      } else {
+        setEditFiles(e.target.files);
+      }
     }
   };
 
   const saveChanges = () => {
-    if (id && imgIndexes) {
-      BonamiService.deleteImages(id, imgIndexes, setOpenSnackbar);
-      setImgIndexes([]);
+    if (id && deleteImgIndexes) {
+      BonamiService.deleteImages(id, deleteImgIndexes, setOpenSnackbar);
+      setDeleteImgIndexes([]);
     }
-    if (imgEdit.length) {
-      //BonamiService.editImages()
+    if (id && editFiles?.length && editImgIndexes.length) {
+      BonamiService.editImages(id, editImgIndexes, editFiles, setOpenSnackbar);
     }
   };
 
@@ -320,7 +328,7 @@ const CreateItem = () => {
                 <Button
                   sx={{ position: "absolute", bottom: "20px", right: "20px" }}
                   onClick={saveChanges}
-                  disabled={!imgIndexes.length}
+                  disabled={!(editImgIndexes.length || deleteImgIndexes.length)}
                   variant={"contained"}
                 >
                   SAVE

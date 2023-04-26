@@ -416,4 +416,45 @@ export default class BonamiService {
         });
       });
   }
+
+  static editImages(
+    id: string,
+    indexes: number[],
+    files: FileList,
+    setAlert: Dispatch<
+      SetStateAction<{
+        isOpen: boolean;
+        message: string;
+        severity: AlertColor;
+      }>
+    >
+  ) {
+    const formData = new FormData();
+    formData.append("id", id);
+    for (const index of indexes) {
+      formData.append("indexes", index.toString());
+    }
+    //@ts-ignore
+    for (const file of files) {
+      formData.append("files", file);
+    }
+    axios({
+      method: "PUT",
+      data: formData,
+      withCredentials: true,
+      url: "http://localhost:5000/item/img/upload",
+    })
+      .then((res) => {
+        console.log(res);
+        setAlert({ isOpen: true, message: "Success", severity: "success" });
+      })
+      .catch((e) => {
+        console.log(e);
+        setAlert({
+          isOpen: true,
+          message: "Server error, try again later",
+          severity: "error",
+        });
+      });
+  }
 }
