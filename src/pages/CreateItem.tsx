@@ -85,6 +85,7 @@ const CreateItem = () => {
   const [imgDisplayLinks, setImgDisplayLinks] = useState<string[]>([]);
   const [captcha, setCaptcha] = useState<string>("");
   const [imgIndexes, setImgIndexes] = useState<number[]>([]);
+  const [imgEdit, setImgEdit] = useState<{ index: number; file: File }[]>([]);
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
@@ -150,10 +151,34 @@ const CreateItem = () => {
     setImgDisplayLinks(linksWithoutDeleted);
   };
 
-  const deleteImagesByIndexes = () => {
+  const handleImgEdit = (e: ChangeEvent<HTMLInputElement>, url: string) => {
+    if (e.target.files) {
+      const indexOfEdited = imgDisplayLinks.indexOf(url);
+      const editedImgDisplayLinks = imgDisplayLinks.map((url, index) => {
+        if (index === indexOfEdited) {
+          return URL.createObjectURL(
+            // @ts-ignore
+            e.target.files[0]
+          );
+        }
+        return url;
+      });
+      setImgDisplayLinks(editedImgDisplayLinks);
+      setImgEdit((prevState) => [
+        ...prevState,
+        // @ts-ignore
+        { index: indexOfEdited, file: e.target.files[0] },
+      ]);
+    }
+  };
+
+  const saveChanges = () => {
     if (id && imgIndexes) {
       BonamiService.deleteImages(id, imgIndexes, setOpenSnackbar);
       setImgIndexes([]);
+    }
+    if (imgEdit.length) {
+      //BonamiService.editImages()
     }
   };
 
@@ -244,11 +269,11 @@ const CreateItem = () => {
                   rowHeight={193}
                   gap={8}
                 >
-                  {imgDisplayLinks.map((el) => (
-                    <ImageListItem key={el}>
+                  {imgDisplayLinks.map((imgUrl) => (
+                    <ImageListItem key={imgUrl}>
                       <Box>
                         <img
-                          src={`${el}`}
+                          src={`${imgUrl}`}
                           style={{
                             width: "156px",
                             height: "156px",
@@ -258,12 +283,18 @@ const CreateItem = () => {
                           loading={"lazy"}
                         />
                         <Grid container justifyContent={"space-between"}>
-                          <Button variant={"contained"}>
+                          <Button variant={"contained"} component="label">
                             <EditOutlined sx={{ fontSize: 18 }} />
+                            <input
+                              onChange={(e) => handleImgEdit(e, imgUrl)}
+                              accept="image/*"
+                              type="file"
+                              hidden
+                            />
                           </Button>
                           <DeleteButton
                             onClick={() => {
-                              deleteImgHandler(el);
+                              deleteImgHandler(imgUrl);
                             }}
                             variant={"contained"}
                           >
@@ -288,7 +319,7 @@ const CreateItem = () => {
               {location.pathname !== "/item/create" ? (
                 <Button
                   sx={{ position: "absolute", bottom: "20px", right: "20px" }}
-                  onClick={deleteImagesByIndexes}
+                  onClick={saveChanges}
                   disabled={!imgIndexes.length}
                   variant={"contained"}
                 >
