@@ -31,7 +31,7 @@ const CreateItem = () => {
   const { data: itemToEdit } = useFetchData(
     BonamiController.getItemById,
     [id],
-    []
+    [id]
   );
 
   const { register, handleSubmit, reset, control, setValue } =
@@ -59,6 +59,9 @@ const CreateItem = () => {
     );
 
   useEffect(() => {
+    if (itemToEdit) {
+      setCategoryEn(itemToEdit.category.en);
+    }
     if (location.pathname === "/item/create" && itemToEdit) {
       reset();
     }
@@ -77,6 +80,10 @@ const CreateItem = () => {
       setValue("price", itemToEdit?.price.toString());
       setValue("discount", itemToEdit?.discount.toString());
     }
+    if (location.pathname === "/item/create") {
+      setImgDisplayLinks([]);
+      setCategoryEn("");
+    }
   }, [itemToEdit, location.pathname]);
 
   const { data, message } = useFetchData(BonamiController.getCategories);
@@ -87,6 +94,7 @@ const CreateItem = () => {
   const [deleteImgIndexes, setDeleteImgIndexes] = useState<number[]>([]);
   const [editImgIndexes, setEditImgIndexes] = useState<number[]>([]);
   const [editFiles, setEditFiles] = useState<FileList | null>(null);
+  const [categoryEn, setCategoryEn] = useState<string>("");
   const [openSnackbar, setOpenSnackbar] = useState<{
     isOpen: boolean;
     message: string;
@@ -98,6 +106,7 @@ const CreateItem = () => {
   const onSubmit: SubmitHandler<ICreateItemForm> = (data) => {
     if (location.pathname === "/item/create") {
       if (files?.length && menuItems) {
+        data.categoryEn = categoryEn;
         BonamiService.createItem(data, menuItems, files, setOpenSnackbar);
       } else if (!files?.length) {
         setOpenSnackbar({
@@ -121,7 +130,8 @@ const CreateItem = () => {
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFiles(e.target.files);
+      // @ts-ignore
+      setFiles((prevState) => [...Array.from(prevState), e.target.files]);
       const fileArr: string[] = [];
       // @ts-ignore
       for (let fileItem of e.target.files) {
@@ -202,43 +212,32 @@ const CreateItem = () => {
                 registerName={"name"}
               />
               {id ? (
-                itemToEdit ? (
-                  !menuItems ? (
-                    <CircularProgress sx={{ margin: "20px 0" }} />
-                  ) : (
-                    <FormSelect
-                      register={register}
-                      label={"categoryEn"}
-                      header={"Category"}
-                      control={control}
-                      menuItems={menuItems}
-                      defaultValue={itemToEdit.category.en}
-                      m={"20px 0"}
-                    />
-                  )
-                ) : !menuItems ? (
-                  <CircularProgress sx={{ margin: "20px 0" }} />
-                ) : (
+                itemToEdit && menuItems ? (
                   <FormSelect
-                    register={register}
                     label={"categoryEn"}
                     header={"Category"}
                     control={control}
+                    state={categoryEn}
+                    setState={setCategoryEn}
                     menuItems={menuItems}
+                    defaultValue={itemToEdit.category.en}
                     m={"20px 0"}
                   />
+                ) : (
+                  <CircularProgress sx={{ margin: "20px 0" }} />
                 )
-              ) : !menuItems ? (
-                <CircularProgress sx={{ margin: "20px 0" }} />
-              ) : (
+              ) : menuItems ? (
                 <FormSelect
-                  register={register}
                   label={"categoryEn"}
                   header={"Category"}
+                  state={categoryEn}
+                  setState={setCategoryEn}
                   control={control}
                   menuItems={menuItems}
                   m={"20px 0"}
                 />
+              ) : (
+                <CircularProgress sx={{ margin: "20px 0" }} />
               )}
               <MultiLangInputs
                 register={register}
