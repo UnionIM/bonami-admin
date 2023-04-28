@@ -130,8 +130,18 @@ const CreateItem = () => {
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      // @ts-ignore
-      setFiles((prevState) => [...Array.from(prevState), e.target.files]);
+      if (files) {
+        // @ts-ignore
+        setFiles((prevState) => [
+          // @ts-ignore
+          ...Array.from(prevState),
+          // @ts-ignore
+          ...Array.from(e.target.files),
+        ]);
+      } else {
+        // @ts-ignore
+        setFiles(e.target.files);
+      }
       const fileArr: string[] = [];
       // @ts-ignore
       for (let fileItem of e.target.files) {
