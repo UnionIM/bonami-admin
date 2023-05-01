@@ -162,7 +162,7 @@ const CreateItem = () => {
       const dt = new DataTransfer();
       for (let i = 0; i < files?.length; i++) {
         const file = files[i];
-        if (indexOfDeleted !== i) {
+        if (indexOfDeleted !== i + (imgDisplayLinks.length - files.length)) {
           dt.items.add(file);
         }
       }
@@ -171,6 +171,8 @@ const CreateItem = () => {
     const linksWithoutDeleted = imgDisplayLinks.filter((el) => el !== url);
     setImgDisplayLinks(linksWithoutDeleted);
   };
+
+  console.log(files);
 
   const handleImgEdit = (e: ChangeEvent<HTMLInputElement>, url: string) => {
     if (e.target.files) {
