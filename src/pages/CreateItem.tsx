@@ -172,8 +172,6 @@ const CreateItem = () => {
     setImgDisplayLinks(linksWithoutDeleted);
   };
 
-  console.log(files);
-
   const handleImgEdit = (e: ChangeEvent<HTMLInputElement>, url: string) => {
     if (e.target.files) {
       const indexOfEdited = imgDisplayLinks.indexOf(url);
@@ -203,12 +201,23 @@ const CreateItem = () => {
   };
 
   const saveChanges = () => {
-    if (id && deleteImgIndexes) {
+    if (id && deleteImgIndexes.length) {
+      console.log("b");
       BonamiService.deleteImages(id, deleteImgIndexes, setOpenSnackbar);
       setDeleteImgIndexes([]);
     }
     if (id && editFiles?.length && editImgIndexes.length) {
+      console.log("a");
       BonamiService.editImages(id, editImgIndexes, editFiles, setOpenSnackbar);
+    }
+    if (id && files) {
+      const loadImgIndexes: number[] = [];
+      for (let i = 0; i < imgDisplayLinks.length; i++) {
+        if (!imgDisplayLinks[i].includes("bonami-image-bucket")) {
+          loadImgIndexes.push(i);
+        }
+      }
+      BonamiService.editImages(id, loadImgIndexes, files, setOpenSnackbar);
     }
   };
 
@@ -339,7 +348,13 @@ const CreateItem = () => {
                 <Button
                   sx={{ position: "absolute", bottom: "20px", right: "20px" }}
                   onClick={saveChanges}
-                  disabled={!(editImgIndexes.length || deleteImgIndexes.length)}
+                  disabled={
+                    !(
+                      editImgIndexes.length ||
+                      deleteImgIndexes.length ||
+                      files?.length
+                    )
+                  }
                   variant={"contained"}
                 >
                   SAVE
