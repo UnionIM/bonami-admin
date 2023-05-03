@@ -62,7 +62,7 @@ const Navbar = () => {
     BonamiController.logOut()
       .then((res: { message: string }) => {
         if (res.message === "success") {
-          window.location.href = "http://localhost:3000/login";
+          window.location.href = `${process.env.REACT_APP_CLIENT_URL}/login`;
         }
       })
       .catch((e) => console.log(e));

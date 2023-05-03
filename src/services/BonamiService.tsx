@@ -102,7 +102,7 @@ export default class BonamiService {
     axios({
       method: "delete",
       withCredentials: true,
-      url: `http://localhost:5000/item/review/delete?item=${itemId}&review=${reviewId}`,
+      url: `${process.env.REACT_APP_SERVER_URL}/item/review/delete?item=${itemId}&review=${reviewId}`,
     })
       .then((res) => {
         console.log(res.data);
@@ -141,7 +141,7 @@ export default class BonamiService {
         password: password,
       },
       withCredentials: true,
-      url: "http://localhost:5000/local",
+      url: `${process.env.REACT_APP_SERVER_URL}/local`,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -200,7 +200,7 @@ export default class BonamiService {
       method: "POST",
       data: formData,
       withCredentials: true,
-      url: "http://localhost:5000/item/create",
+      url: `${process.env.REACT_APP_SERVER_URL}/item/create`,
     })
       .then((res) => {
         console.log(res);
@@ -224,7 +224,7 @@ export default class BonamiService {
       method: "POST",
       data: { name: { en: data.nameEn, ua: data.nameUa } },
       withCredentials: true,
-      url: "http://localhost:5000/category/create",
+      url: `${process.env.REACT_APP_SERVER_URL}/category/create`,
     })
       .then((res) => {
         console.log(res);
@@ -252,7 +252,7 @@ export default class BonamiService {
       method: "POST",
       withCredentials: true,
       data: data,
-      url: `http://localhost:5000/item/review/create`,
+      url: `${process.env.REACT_APP_SERVER_URL}/item/review/create`,
     })
       .then((res) => {
         console.log(res.data);
@@ -279,7 +279,7 @@ export default class BonamiService {
     axios({
       method: "DELETE",
       withCredentials: true,
-      url: "http://localhost:5000/category/delete-empty",
+      url: `${process.env.REACT_APP_SERVER_URL}/category/delete-empty`,
     })
       .then((res) => {
         console.log(res.data);
@@ -302,7 +302,7 @@ export default class BonamiService {
     await axios({
       method: "DELETE",
       withCredentials: true,
-      url: `http://localhost:5000/item/delete?id=${id}`,
+      url: `${process.env.REACT_APP_SERVER_URL}/item/delete?id=${id}`,
     })
       .then((res) => {
         console.log(res.data);
@@ -331,7 +331,7 @@ export default class BonamiService {
       method: "PUT",
       withCredentials: true,
       data: { status: status },
-      url: `http://localhost:5000/order/status?id=${id}`,
+      url: `${process.env.REACT_APP_SERVER_URL}/order/status?id=${id}`,
     })
       .then((res) => {
         console.log(res.data);
@@ -370,7 +370,7 @@ export default class BonamiService {
       method: "PUT",
       data: { id, ...data, categoryUa },
       withCredentials: true,
-      url: "http://localhost:5000/item/edit",
+      url: `${process.env.REACT_APP_SERVER_URL}/item/edit`,
     })
       .then((res) => {
         console.log(res);
@@ -401,7 +401,7 @@ export default class BonamiService {
       method: "DELETE",
       data: { id: id, indexes: indexes },
       withCredentials: true,
-      url: "http://localhost:5000/item/img/delete",
+      url: `${process.env.REACT_APP_SERVER_URL}/item/img/delete`,
     })
       .then((res) => {
         console.log(res);
@@ -442,7 +442,7 @@ export default class BonamiService {
       method: "PUT",
       data: formData,
       withCredentials: true,
-      url: "http://localhost:5000/item/img/upload",
+      url: `${process.env.REACT_APP_SERVER_URL}/item/img/upload`,
     })
       .then((res) => {
         console.log(res);

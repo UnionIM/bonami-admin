@@ -25,7 +25,7 @@ const Login = () => {
   }>({ isOpen: false, message: "", severity: "info" });
 
   const google = () => {
-    window.open("http://localhost:5000/google", "_self");
+    window.open(`${process.env.REACT_APP_SERVER_URL}/google`, "_self");
   };
   const local = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
