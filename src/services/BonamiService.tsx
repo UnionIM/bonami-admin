@@ -147,7 +147,7 @@ export default class BonamiService {
         if (res.status === 200) {
           if (res.data.isAdmin) {
             localStorage.setItem(`isAuth`, JSON.stringify(true));
-            window.location.href = "http://localhost:3000";
+            window.location.href = `${process.env.REACT_APP_CLIENT_URL}`;
           } else {
             setState(true);
           }

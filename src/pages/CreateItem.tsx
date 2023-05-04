@@ -202,12 +202,10 @@ const CreateItem = () => {
 
   const saveChanges = () => {
     if (id && deleteImgIndexes.length) {
-      console.log("b");
       BonamiService.deleteImages(id, deleteImgIndexes, setOpenSnackbar);
       setDeleteImgIndexes([]);
     }
     if (id && editFiles?.length && editImgIndexes.length) {
-      console.log("a");
       BonamiService.editImages(id, editImgIndexes, editFiles, setOpenSnackbar);
     }
     if (id && files) {
