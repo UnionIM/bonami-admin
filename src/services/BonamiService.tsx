@@ -21,19 +21,20 @@ import { AlertColor } from "@mui/material";
 
 export default class BonamiService {
   static async isAuth() {
-    return (await api.get("/isAuth")).data;
+    return (await api.get("/user", { withCredentials: true })).data;
   }
 
   static async logOut() {
-    return (await api.get("/logout")).data;
+    return (await api.get("/logout", { withCredentials: true })).data;
   }
 
   static async getUser() {
-    return (await api.get<IUser>("/user")).data;
+    return (await api.get<IUser>("/user", { withCredentials: true })).data;
   }
 
   static async getCategories() {
-    return (await api.get<ICategory[]>("/category")).data;
+    return (await api.get<ICategory[]>("/category", { withCredentials: true }))
+      .data;
   }
 
   static async getItemList(
@@ -44,13 +45,15 @@ export default class BonamiService {
   ) {
     return (
       await api.get<IItemList>(
-        `/item/list?search=${search}&category=${category}&page=${page}&per_page=${per_page}`
+        `/item/list?search=${search}&category=${category}&page=${page}&per_page=${per_page}`,
+        { withCredentials: true }
       )
     ).data;
   }
 
   static async getItemById(id: string) {
-    return (await api.get<IItem>(`/item?id=${id}`)).data;
+    return (await api.get<IItem>(`/item?id=${id}`, { withCredentials: true }))
+      .data;
   }
 
   static async getOrderList(
@@ -63,27 +66,36 @@ export default class BonamiService {
   ) {
     return (
       await api.get<IOrderList>(
-        `/order/list?email=${email}&date_start=${date_start}&date_end=${date_end}&sort_element=${sort.element}&sort_direct=${sort.direction}&page=${page}&per_page=${per_page}`
+        `/order/list?email=${email}&date_start=${date_start}&date_end=${date_end}&sort_element=${sort.element}&sort_direct=${sort.direction}&page=${page}&per_page=${per_page}`,
+        { withCredentials: true }
       )
     ).data;
   }
 
   static async getOrderById(id: string) {
-    return (await api.get<IOrder>(`/order?id=${id}`)).data;
+    return (await api.get<IOrder>(`/order?id=${id}`, { withCredentials: true }))
+      .data;
   }
 
   static async getStatistics() {
-    return (await api.get<IStatistic>(`/statistics`)).data;
+    return (
+      await api.get<IStatistic>(`/statistics`, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   static async getGraphData() {
-    return (await api.get<IGraph[]>(`/statistics/graph`)).data;
+    return (
+      await api.get<IGraph[]>(`/statistics/graph`, { withCredentials: true })
+    ).data;
   }
 
   static async recalculateProfit() {
     return (
       await api.get<{ delivered: number; pending: number }>(
-        `/statistics/recalculate`
+        `/statistics/recalculate`,
+        { withCredentials: true }
       )
     ).data;
   }
@@ -147,7 +159,8 @@ export default class BonamiService {
         if (res.status === 200) {
           if (res.data.isAdmin) {
             localStorage.setItem(`isAuth`, JSON.stringify(true));
-            window.location.href = `${process.env.REACT_APP_CLIENT_URL}`;
+            console.log(res);
+            //window.location.href = `${process.env.REACT_APP_CLIENT_URL}`;
           } else {
             setState(true);
           }

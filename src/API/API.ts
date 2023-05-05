@@ -7,6 +7,7 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
     "Access-Control-Allow-Credentials": true,
+    "Access-Control-Expose-Headers": "Set-Cookie",
   },
 });
 

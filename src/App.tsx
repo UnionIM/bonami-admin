@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import { gray } from "./design/colors";
 import Footer from "./components/Footer";
 import { useNavigate } from "react-router-dom";
+import { IUser } from "./models/bonami-server-response";
 
 const Global = createGlobalStyle`
   * {
@@ -43,8 +44,8 @@ function App() {
 
   useEffect(() => {
     BonamiController.isAuth()
-      .then((res: { isAuth: boolean }) => {
-        if (res.isAuth) {
+      .then((res: IUser) => {
+        if (res._id) {
           localStorage.setItem(`isAuth`, JSON.stringify(true));
         }
       })
