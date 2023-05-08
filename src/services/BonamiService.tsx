@@ -19,9 +19,15 @@ import {
 import { Dispatch, SetStateAction } from "react";
 import { AlertColor } from "@mui/material";
 
+axios.defaults.withCredentials = true;
+
 export default class BonamiService {
   static async isAuth() {
-    return (await api.get("/user", { withCredentials: true })).data;
+    return (
+      await api.get("/user", {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   static async logOut() {
@@ -134,7 +140,7 @@ export default class BonamiService {
       });
   }
 
-  static localLogin(
+  static async localLogin(
     email: string,
     password: string,
     setState: Dispatch<SetStateAction<boolean>>,
@@ -159,15 +165,13 @@ export default class BonamiService {
         if (res.status === 200) {
           if (res.data.isAdmin) {
             localStorage.setItem(`isAuth`, JSON.stringify(true));
-            console.log(res);
-            //window.location.href = `${process.env.REACT_APP_CLIENT_URL}`;
+            window.location.href = `${process.env.REACT_APP_CLIENT_URL}`;
           } else {
             setState(true);
           }
         }
       })
       .catch((e) => {
-        console.log(e);
         if (e.code !== "ERR_NETWORK" && !e.response.data.success) {
           setState(true);
         } else {
