@@ -66,7 +66,7 @@ const RangeDatePicker: FC<IDatePicker> = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           sx={{ width: width }}
-          label={"Date start"}
+          label={"Початок"}
           value={dateStart}
           onChange={dateStartHandler}
         />
@@ -74,7 +74,7 @@ const RangeDatePicker: FC<IDatePicker> = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           sx={{ width: width }}
-          label={"Date end"}
+          label={"Кінець"}
           value={dateEnd}
           onChange={dateEndHandler}
         />
@@ -84,7 +84,7 @@ const RangeDatePicker: FC<IDatePicker> = ({
         variant="contained"
         onClick={clearDateHandler}
       >
-        CLEAR
+        ОЧИСТИТИ
       </Button>
     </Grid>
   );

@@ -29,22 +29,22 @@ const CreateReview = () => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          placeholder={"Item id"}
+          placeholder={"ID товару"}
           {...register("id")}
           required
           InputLabelProps={{ required: false }}
         />
-        <Typography sx={{ marginTop: "15px" }}>Author</Typography>
+        <Typography sx={{ marginTop: "15px" }}>Замовник</Typography>
         <Grid container gap={"10px"}>
           <TextField
-            placeholder={"First name"}
+            placeholder={"Ім'я"}
             {...register("author.firstName")}
             required
             InputLabelProps={{ required: false }}
             sx={{ marginTop: "10px" }}
           />
           <TextField
-            placeholder={"Second name"}
+            placeholder={"Прізвище"}
             {...register("author.secondName")}
             required
             InputLabelProps={{ required: false }}
@@ -52,7 +52,7 @@ const CreateReview = () => {
           />
         </Grid>
         <TextField
-          placeholder={"Patronymic"}
+          placeholder={"По батькові (не обов'язково)"}
           {...register("author.patronymic")}
           required
           InputLabelProps={{ required: false }}
@@ -60,12 +60,12 @@ const CreateReview = () => {
         />
         <FormControlLabel
           control={<Switch {...register("ordered")} />}
-          label={"Is ordered"}
+          label={"Чи заказано"}
           sx={{ display: "block", mt: "10px" }}
         />
-        <Typography sx={{ marginTop: "15px" }}>Review</Typography>
+        <Typography sx={{ marginTop: "15px" }}>Відгук</Typography>
         <TextField
-          placeholder={"Rating"}
+          placeholder={"Оцінка"}
           {...register("rating")}
           required
           inputProps={{
@@ -75,7 +75,7 @@ const CreateReview = () => {
           sx={{ marginTop: "10px", display: "block" }}
         />
         <TextField
-          placeholder={"Text"}
+          placeholder={"Відгук"}
           {...register("text")}
           required
           InputLabelProps={{ required: false }}
@@ -89,7 +89,7 @@ const CreateReview = () => {
           variant="contained"
           sx={{ marginTop: "15px", display: "block" }}
         >
-          Create review
+          СТВОРИТИ ВІДГУК
         </Button>
       </form>
       <MyAlert state={openSnackbar} setState={setOpenSnackbar} />

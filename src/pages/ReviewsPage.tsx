@@ -61,19 +61,19 @@ const ReviewsPage = () => {
   const selectSortMenuItems: { value: ISort; name: string }[] = [
     {
       value: { element: "rating", direction: -1 },
-      name: "Best rating first",
+      name: "Спочатку найкраща оцінка",
     },
     {
       value: { element: "rating", direction: 1 },
-      name: "Worst rating first",
+      name: "Спочатку найгірша оцінка",
     },
     {
       value: { element: "createdAt", direction: -1 },
-      name: "Newest first",
+      name: "Спочатку новіші",
     },
     {
       value: { element: "createdAt", direction: 1 },
-      name: "Oldest first",
+      name: "Спочатку останні",
     },
   ];
 
@@ -87,13 +87,13 @@ const ReviewsPage = () => {
         <Card>
           {item && item._id ? (
             <>
-              <Typography>Item information</Typography>
+              <Typography>Інформація про товар</Typography>
               <Typography color={gray.dark}>ID: {id}</Typography>
               <Grid container gap={"40px"} sx={{ m: "15px 0 20px 0" }}>
                 <Grid item>
                   <img
                     src={item.images[0].url}
-                    alt="Item img"
+                    alt="Фото товару"
                     style={{
                       width: "300px",
                       height: "300px",
@@ -141,7 +141,7 @@ const ReviewsPage = () => {
           ) : (
             <Card sx={{ marginTop: "25px", width: "730px", height: "130px" }}>
               <Typography textAlign={"center"}>
-                No reviews on this item
+                Жодних відгуків на цей товар
               </Typography>
             </Card>
           )

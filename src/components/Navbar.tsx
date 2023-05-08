@@ -97,16 +97,16 @@ const Navbar = () => {
               <Grid
                 item
                 container
-                gap={"15px"}
+                gap={"35px"}
                 sx={{ ml: "40px" }}
                 alignItems={"center"}
                 component={"nav"}
               >
                 <Link to={"/item/list/1"}>
-                  <Typography>Item manager</Typography>
+                  <Typography>Товари</Typography>
                 </Link>
                 <Link to={"/order/list/1"}>
-                  <Typography>Orders</Typography>
+                  <Typography>Замовлення</Typography>
                 </Link>
               </Grid>
               <Grid
@@ -117,20 +117,20 @@ const Navbar = () => {
               >
                 <DropDownMenu buttonContent={<Add />}>
                   <Link to={"/item/create"} key={1}>
-                    Create item
+                    Створити товар
                   </Link>
                   <span onClick={handleClickOpenCreateReview} key={2}>
-                    Create review
+                    Створити відгук
                   </span>
                   <span onClick={handleClickOpenCreate} key={3}>
-                    Create category
+                    Створити категорію
                   </span>
                   <span onClick={handleClickOpenDelete} key={4}>
-                    Delete categories
+                    Видалити категорію
                   </span>
                 </DropDownMenu>
                 <Button onClick={logOutHandler} color={"inherit"}>
-                  Logout
+                  Вийти
                 </Button>
               </Grid>
             </Grid>
@@ -140,7 +140,7 @@ const Navbar = () => {
           <ModalDialog
             state={openCreateReview}
             setState={setOpenCreateReview}
-            title={"Create review"}
+            title={"Створити відгук"}
             width={"600px"}
           >
             <CreateReview />
@@ -148,13 +148,13 @@ const Navbar = () => {
           <ModalDialog
             state={openCreate}
             setState={setOpenCreate}
-            title={"Create category"}
+            title={"Створити категорію"}
             width={"500px"}
           >
             <form onSubmit={handleSubmit(onSubmit)}>
               <MultiLangInputs
                 register={register}
-                header={"Name"}
+                header={"Назва"}
                 registerName={"name"}
               />
               <Button
@@ -163,26 +163,26 @@ const Navbar = () => {
                 sx={{ width: "100%", marginTop: "20px" }}
                 onClick={handleCloseCreate}
               >
-                CREATE
+                СТВОРИТИ
               </Button>
             </form>
           </ModalDialog>
           <ModalDialog
             state={openDelete}
             setState={setOpenDelete}
-            title={"Delete category"}
+            title={"Видалити категорію"}
             width={"500px"}
           >
             <div>
               <Typography>
-                Click to button bellow to delete all categories without items
+                Натисніть кнопку знизу щоб видалити категорії без товарів
               </Typography>
               <Button
                 variant="contained"
                 sx={{ width: "100%", marginTop: "20px" }}
                 onClick={handleCloseDelete}
               >
-                DELETE
+                ВИДАЛИТИ
               </Button>
             </div>
           </ModalDialog>

@@ -96,15 +96,15 @@ const ItemList = () => {
   return (
     <Box p={"32px"}>
       <Card sx={{ width: "100%" }}>
-        <Typography sx={{ mb: "25px" }}>Item manager</Typography>
+        <Typography sx={{ mb: "25px" }}>Товари</Typography>
         <Grid container gap={"10px"}>
           <TextField
-            placeholder={"Search item..."}
+            placeholder={"Знайти товар..."}
             value={searchValue}
             onChange={searchHandler}
           />
           <Button variant="contained" onClick={findButtonHandler}>
-            FIND
+            ЗНАЙТИ
           </Button>
         </Grid>
         <Grid container gap={"10px"} sx={{ margin: "20px 0" }}>
@@ -132,14 +132,14 @@ const ItemList = () => {
             </div>
           )}
           <Button variant="contained" onClick={selectButtonHandler}>
-            SELECT
+            ВИБРАТИ
           </Button>
           <Button variant="contained" onClick={clearButtonHandler}>
-            CLEAR ALL
+            ОЧИСТИТИ УСЕ
           </Button>
         </Grid>
         <Typography m={"15px 0"}>
-          Total: {itemList?.totalCount || "...."} items
+          Усього: {itemList?.totalCount || "...."} товарів
         </Typography>
         <Divider sx={{ borderColor: gray.default }} />
         {itemList ? (

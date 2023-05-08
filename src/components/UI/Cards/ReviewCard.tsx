@@ -34,9 +34,7 @@ const ReviewCard: FC<IReviewCard> = ({ review, id, setOpenSnackbar }) => {
           {review.author.firstName} {review.author.secondName}{" "}
           {review.author.patronymic}
         </Typography>
-        <Typography>
-          {review.ordered ? "Item was ordered" : "Item was not ordered"}
-        </Typography>
+        <Typography>{review.ordered ? "Замовлено" : "Не замовлено"}</Typography>
       </Grid>
       <Grid container gap={"15px"}>
         <Rating defaultValue={review.rating} precision={0.1} readOnly></Rating>

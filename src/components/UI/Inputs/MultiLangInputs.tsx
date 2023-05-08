@@ -17,7 +17,7 @@ const MultiLangInputs: FC<IMultiLangInputs> = ({
   return (
     <Grid container flexDirection={"column"} gap={"10px"}>
       <Typography>{header}</Typography>
-      <Typography fontSize={"12px"}>English</Typography>
+      <Typography fontSize={"12px"}>Англійська</Typography>
       <TextField
         {...register(`${registerName}En`)}
         required
@@ -25,7 +25,7 @@ const MultiLangInputs: FC<IMultiLangInputs> = ({
         multiline
         rows={rows}
       />
-      <Typography fontSize={"12px"}>Ukrainian</Typography>
+      <Typography fontSize={"12px"}>Українська</Typography>
       <TextField
         {...register(`${registerName}Ua`)}
         required

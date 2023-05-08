@@ -75,8 +75,8 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
               component={Link}
               to={`/item/edit/${item._id}`}
             >
-              <Typography fontSize={"14px"}>EDIT</Typography>
-              <EditOutlined sx={{ fontSize: 18 }} />
+              <Typography fontSize={"14px"}>ЗМІНИТИ</Typography>
+              <EditOutlined sx={{ marginLeft: "5px", fontSize: 18 }} />
             </Button>
             <DeleteButton
               variant="contained"
@@ -104,7 +104,7 @@ const ItemCard: FC<IItemCard> = ({ item, setOpenSnackbar }) => {
               borderRadius: "10px",
             }}
           >
-            OPEN REVIEWS
+            ВІДГУКИ
           </Button>
         </Box>
       </div>

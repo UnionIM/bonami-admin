@@ -125,15 +125,7 @@ const OrderPage = () => {
                     alignItems={"center"}
                   >
                     <Grid item>
-                      <Grid container alignItems={"center"} gap={"15px"}>
-                        <OrderStatus status={order.status} />
-                        <Typography
-                          fontWeight={700}
-                          sx={{ textTransform: "capitalize" }}
-                        >
-                          {order.status}
-                        </Typography>
-                      </Grid>
+                      <OrderStatus status={order.status} />
                       <Typography color={gray.dark} sx={{ mt: "10px" }}>
                         {timeConverter(order.createdAt)}
                       </Typography>
@@ -145,13 +137,13 @@ const OrderPage = () => {
                             variant="contained"
                             onClick={handleMarkAsDelivered}
                           >
-                            MARK AS DELIVERED
+                            ДОСТАВЛЕНЕ
                           </Button>
                           <Button
                             variant="contained"
                             onClick={handleMarkAsCanceled}
                           >
-                            MARK AS CANCELED
+                            СКАСОВАНЕ
                           </Button>
                         </>
                       ) : order.status === "delivered" ? (
@@ -160,13 +152,13 @@ const OrderPage = () => {
                             variant="contained"
                             onClick={handleMarkAsPending}
                           >
-                            MARK AS PENDING
+                            В ОЧІКУВАННІ
                           </Button>
                           <Button
                             variant="contained"
                             onClick={handleMarkAsCanceled}
                           >
-                            MARK AS CANCELED
+                            СКАСОВАНЕ
                           </Button>
                         </>
                       ) : (
@@ -175,13 +167,13 @@ const OrderPage = () => {
                             variant="contained"
                             onClick={handleMarkAsPending}
                           >
-                            MARK AS PENDING
+                            В ОЧІКУВАННІ
                           </Button>
                           <Button
                             variant="contained"
                             onClick={handleMarkAsDelivered}
                           >
-                            MARK AS DELIVERED
+                            ДОСТАВЛЕНЕ
                           </Button>
                         </>
                       )}
@@ -196,15 +188,15 @@ const OrderPage = () => {
                   <Grid container alignItems={"center"} gap={"12px"}>
                     <img src={order.isPaid ? check : cross} alt="" />
                     <Typography fontWeight={700}>
-                      {order.isPaid ? "Paid" : "Not paid"}
+                      {order.isPaid ? "Оплачено" : "Не оплачено"}
                     </Typography>
                     <Grid
                       container
                       justifyContent={"space-between"}
                       alignItems={"center"}
-                      sx={{ width: "84%", textAlign: "right" }}
+                      sx={{ textAlign: "right" }}
                     >
-                      <Typography>Total</Typography>
+                      <Typography>Усього</Typography>
                       <Typography>{getTotalPrice(order.items)}</Typography>
                     </Grid>
                   </Grid>

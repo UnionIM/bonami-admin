@@ -40,7 +40,7 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
             sx={{ width: "unset" }}
             gap={"20px"}
           >
-            <Typography fontWeight={700}>Customer</Typography>
+            <Typography fontWeight={700}>Замовник</Typography>
             <Grid item>
               <Typography>
                 {order.name.firstName} {order.name.secondName}{" "}
@@ -48,8 +48,8 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
               </Typography>
               <Typography>
                 {order.amountOfOrders === 1
-                  ? `${order.amountOfOrders} order`
-                  : `${order.amountOfOrders} orders`}
+                  ? `${order.amountOfOrders} заказ`
+                  : `${order.amountOfOrders} заказів`}
               </Typography>
             </Grid>
           </Grid>
@@ -68,13 +68,13 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
               <img src={person} alt="" />
             </Box>
             <Typography>
-              {order.isAuthenticated ? "Have acc." : "No accnt."}
+              {order.isAuthenticated ? "Є акк." : "Нема акк."}
             </Typography>
           </Grid>
         </Grid>
         <Divider sx={{ borderColor: gray.default, margin: "25px 0" }} />
         <Typography fontWeight={700} marginBottom={"20px"}>
-          Customer information
+          Інформація про замовника
         </Typography>
         {order.email ? (
           <Grid container gap={"14px"}>
@@ -132,7 +132,7 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
         )}
         <Divider sx={{ borderColor: gray.default, margin: "25px 0" }} />
         <Typography fontWeight={700} marginBottom={"20px"}>
-          Address
+          Адреса
         </Typography>
         <Typography>{order.delivery.country || ""}</Typography>
         <Typography>
@@ -157,16 +157,14 @@ const CustomerInformation: FC<ICustomerInformation> = ({ order }) => {
             color={colorful.lightBlue}
             sx={{ textDecoration: "underline", mt: "15px" }}
           >
-            Open in google maps
+            Відкрити у гугл картах
           </Typography>
         </a>
         <Divider sx={{ borderColor: gray.default, margin: "25px 0" }} />
         <Typography fontWeight={700} marginBottom={"20px"}>
-          Notes
+          Нотатки до замовлення
         </Typography>
-        <Typography>
-          {order.notes || "The customer didn't leave any notes"}
-        </Typography>
+        <Typography>{order.notes || "Замовник не лишив нотатки"}</Typography>
       </Card>
     </>
   );

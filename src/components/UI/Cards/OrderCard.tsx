@@ -23,7 +23,7 @@ const OrderCard: FC<IOrderCard> = ({ orderElement }) => {
         ? string.slice(0, maxChars) + "..."
         : string;
     } else {
-      return "N/A";
+      return "—";
     }
   };
 
@@ -35,7 +35,7 @@ const OrderCard: FC<IOrderCard> = ({ orderElement }) => {
         alignItems={"center"}
         gap={"50px"}
       >
-        <OrderStatus status={orderElement?.status}></OrderStatus>
+        <OrderStatus status={orderElement.status} />
         <Typography>{timeConverter(orderElement?.createdAt)}</Typography>
       </Grid>
       <Grid container justifyContent={"space-between"} sx={{ mt: "25px" }}>
@@ -86,7 +86,7 @@ const OrderCard: FC<IOrderCard> = ({ orderElement }) => {
         component={Link}
         to={`/order/${orderElement._id}`}
       >
-        Open order
+        Відкрити замовлення
       </Button>
     </Card>
   );

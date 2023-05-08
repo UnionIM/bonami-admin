@@ -82,26 +82,26 @@ const OrderList = () => {
   const selectSortMenuItems: { value: ISort; name: string }[] = [
     {
       value: { element: "status", direction: -1 },
-      name: "Status pending first",
+      name: "Спочатку в очікуванні",
     },
     {
       value: { element: "status", direction: 1 },
-      name: "Status canceled first",
+      name: "Спочатку відмінені",
     },
     {
       value: { element: "createdAt", direction: -1 },
-      name: "Newest first",
+      name: "Спочатку новіші",
     },
     {
       value: { element: "createdAt", direction: 1 },
-      name: "Latest first",
+      name: "Спочатку останні",
     },
   ];
 
   return (
     <Box p={"32px"}>
       <Card sx={{ width: "100%" }}>
-        <Typography sx={{ mb: "25px" }}>Orders</Typography>
+        <Typography sx={{ mb: "25px" }}>Замовлення</Typography>
         <Grid
           container
           justifyContent={"space-between"}
@@ -116,12 +116,12 @@ const OrderList = () => {
           >
             <Grid container gap={"15px"} sx={{ width: "unset" }}>
               <TextField
-                placeholder={"Email..."}
+                placeholder={"Пошта..."}
                 value={searchValue}
                 onChange={searchHandler}
               />
               <Button variant="contained" onClick={findButtonHandler}>
-                FIND
+                ЗНАЙТИ
               </Button>
             </Grid>
             <SortSelect
@@ -147,7 +147,12 @@ const OrderList = () => {
             m={"35px auto 25px"}
             width={responsiveWidthHandler(width)}
           >
-            <Grid container gap={"20px"} width={responsiveWidthHandler(width)}>
+            <Grid
+              container
+              gap={"20px"}
+              width={responsiveWidthHandler(width)}
+              justifyContent={"center"}
+            >
               {orderList.orderList.map((el) => (
                 <OrderCard key={el._id} orderElement={el} />
               ))}

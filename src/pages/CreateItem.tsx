@@ -227,14 +227,14 @@ const CreateItem = () => {
             <Card sx={{ width: "450px" }}>
               <MultiLangInputs
                 register={register}
-                header={"Name"}
+                header={"Назва"}
                 registerName={"name"}
               />
               {id ? (
                 itemToEdit && menuItems ? (
                   <FormSelect
                     label={"categoryEn"}
-                    header={"Category"}
+                    header={"Категорія"}
                     control={control}
                     state={categoryEn}
                     setState={setCategoryEn}
@@ -254,7 +254,7 @@ const CreateItem = () => {
               ) : menuItems ? (
                 <FormSelect
                   label={"categoryEn"}
-                  header={"Category"}
+                  header={"Категорія"}
                   state={categoryEn}
                   setState={setCategoryEn}
                   control={control}
@@ -272,7 +272,7 @@ const CreateItem = () => {
               )}
               <MultiLangInputs
                 register={register}
-                header={"Description"}
+                header={"Опис"}
                 rows={5}
                 registerName={"description"}
               />
@@ -280,17 +280,17 @@ const CreateItem = () => {
           </Grid>
           <Grid item container gap={"25px"} flexDirection={"column"}>
             <Card sx={{ height: "508px", position: "relative" }}>
-              <Typography fontSize={"20px"}>Photos</Typography>
+              <Typography fontSize={"20px"}>Фото</Typography>
               <Typography fontSize={"15px"}>
-                First photo will be main photo of item and will be displayed in
-                catalog grid
+                Перше фото буде головним фото товару та буде відображено у
+                карточці товара на сітці товарів
               </Typography>
               <Button
                 variant="contained"
                 component="label"
                 sx={{ margin: "10px 0" }}
               >
-                Upload
+                Загрузити
                 <input
                   {...register("files")}
                   onChange={handleFileInput}
@@ -351,7 +351,7 @@ const CreateItem = () => {
                     paddingTop: "90px",
                   }}
                 >
-                  Upload photo
+                  Загрузити фото
                 </Typography>
               )}
               {location.pathname !== "/item/create" ? (
@@ -367,7 +367,7 @@ const CreateItem = () => {
                   }
                   variant={"contained"}
                 >
-                  SAVE
+                  ЗБЕРЕГТИ
                 </Button>
               ) : (
                 <></>
@@ -376,7 +376,7 @@ const CreateItem = () => {
             <Card>
               <Grid container gap={"20px"}>
                 <Grid item>
-                  <Typography>Price</Typography>
+                  <Typography>Ціна</Typography>
                   <TextField
                     {...register("price")}
                     inputProps={{
@@ -387,7 +387,7 @@ const CreateItem = () => {
                   />
                 </Grid>
                 <Grid item>
-                  <Typography>Discount</Typography>
+                  <Typography>Знижка</Typography>
                   <TextField
                     {...register("discount")}
                     inputProps={{
@@ -402,9 +402,11 @@ const CreateItem = () => {
             <Card>
               <Grid container justifyContent={"space-between"}>
                 <TextField
-                  placeholder={`Please enter ‘I want to ${
-                    location.pathname === "/item/create" ? "create" : "edit"
-                  } item’`}
+                  placeholder={`Введіть ‘Я хочу ${
+                    location.pathname === "/item/create"
+                      ? "створити"
+                      : "змінити"
+                  } товар’`}
                   onChange={captchaHandler}
                   value={captcha}
                   sx={{ width: "70%" }}
@@ -415,14 +417,18 @@ const CreateItem = () => {
                   disabled={
                     !(
                       captcha ===
-                      `I want to ${
-                        location.pathname === "/item/create" ? "create" : "edit"
-                      } item`
+                      `Я хочу ${
+                        location.pathname === "/item/create"
+                          ? "створити"
+                          : "змінити"
+                      } товар`
                     )
                   }
                   sx={{ width: "25%" }}
                 >
-                  {location.pathname === "/item/create" ? "CREATE" : "EDIT"}
+                  {location.pathname === "/item/create"
+                    ? "СТВОРИТИ"
+                    : "ЗМІНИТИ"}
                 </Button>
               </Grid>
             </Card>

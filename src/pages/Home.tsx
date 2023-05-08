@@ -115,7 +115,7 @@ const Home = () => {
     labels: graphData?.labels,
     datasets: [
       {
-        label: "Amount",
+        label: "Кількість",
         data: graphData?.data,
         backgroundColor: colorful.blue,
       },
@@ -136,12 +136,12 @@ const Home = () => {
         <Card sx={{ height: "100%", width: "350px" }}>
           {stat ? (
             <>
-              <Typography fontSize={"20px"}>Category statistic</Typography>
+              <Typography fontSize={"20px"}>Статистика категорій</Typography>
               <Typography mt={"21px"}>
-                Total categories: {stat.amountOfCategories}
+                Усього категорій: {stat.amountOfCategories}
               </Typography>
               <Typography mt={"15px"}>
-                Most ordered category:{" "}
+                Найбільш замовлена категорія :{" "}
                 {
                   findMostOrderedCategory(stat.orderedCategories).categoryName
                     .ua
@@ -169,15 +169,15 @@ const Home = () => {
         <Card sx={{ marginLeft: "32px" }}>
           {stat ? (
             <>
-              <Typography fontSize={"20px"}>Order statistic</Typography>
+              <Typography fontSize={"20px"}>Статистика замовлень</Typography>
               <Typography textAlign={"center"}>
-                Total orders:{" "}
+                Усього замовлень:{" "}
                 {stat.orderStatistic.amountOfCanceledOrders +
                   stat.orderStatistic.amountOfDeliveredOrders +
                   stat.orderStatistic.amountOfPendingOrders}
               </Typography>
               <Grid container flexDirection={"column"}>
-                <Grid container gap={"10px"}>
+                <Grid container gap={"10px"} justifyContent={"center"}>
                   <Grid
                     container
                     sx={{ width: "unset" }}
@@ -186,7 +186,7 @@ const Home = () => {
                   >
                     <GraphColorIcon color={colorful.green} />
                     <Typography sx={{ lineHeight: "unset" }}>
-                      Delivered: {stat.orderStatistic.amountOfDeliveredOrders}
+                      Доставлено: {stat.orderStatistic.amountOfDeliveredOrders}
                     </Typography>
                   </Grid>
                   <Grid
@@ -197,7 +197,7 @@ const Home = () => {
                   >
                     <GraphColorIcon color={colorful.yellow} />
                     <Typography sx={{ lineHeight: "unset" }}>
-                      Pending: {stat.orderStatistic.amountOfPendingOrders}
+                      В очікуванні: {stat.orderStatistic.amountOfPendingOrders}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -210,12 +210,14 @@ const Home = () => {
                 >
                   <GraphColorIcon color={colorful.red} />
                   <Typography sx={{ lineHeight: "unset" }}>
-                    Canceled: {stat.orderStatistic.amountOfCanceledOrders}
+                    Відмінено: {stat.orderStatistic.amountOfCanceledOrders}
                   </Typography>
                 </Grid>
               </Grid>
               <Doughnut data={doughnutData} />
-              <Typography>Total profit of delivered orders:</Typography>
+              <Typography>
+                Загальний прибуток від доставлених замовлень:
+              </Typography>
               <Typography
                 color={colorful.green}
                 fontSize={"64px"}
@@ -223,7 +225,9 @@ const Home = () => {
               >
                 {stat.orderStatistic.profitOfDeliveredOrders} ₴
               </Typography>
-              <Typography>Total profit of pending orders:</Typography>
+              <Typography>
+                Загальний прибуток від замовлень в очікуванні:
+              </Typography>
               <Typography
                 color={colorful.yellow}
                 fontSize={"64px"}
@@ -233,7 +237,7 @@ const Home = () => {
               </Typography>
               <Grid container justifyContent={"center"}>
                 <Button variant={"contained"} onClick={recalculateHandler}>
-                  {recalculateLoading ? "LOADING..." : "RECALCULATE"}
+                  {recalculateLoading ? "ЗАЧЕКАЙТЕ..." : "ПЕРЕРАХУВАТИ"}
                 </Button>
               </Grid>
             </>
@@ -244,7 +248,7 @@ const Home = () => {
         <Card sx={{ ml: "32px", width: "400px" }}>
           {graphData ? (
             <>
-              <Typography mb={"20px"}>Orders graph</Typography>
+              <Typography mb={"20px"}>Графік заказів</Typography>
               <RangeDatePicker
                 dateEnd={dateEnd}
                 dateStart={dateStart}

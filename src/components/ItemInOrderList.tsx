@@ -44,7 +44,7 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
           disabled={currentPageNumber === 0}
           sx={{ mr: "10px" }}
         >
-          Prev
+          {"<"}
         </Button>
         <Button
           onClick={handleNext}
@@ -53,7 +53,7 @@ const ItemInOrderList: FC<IItemInOrderList> = ({ items }) => {
             items.length === itemNumber
           }
         >
-          Next
+          {">"}
         </Button>
       </Grid>
     </Grid>
