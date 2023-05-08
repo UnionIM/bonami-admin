@@ -243,7 +243,13 @@ const CreateItem = () => {
                     m={"20px 0"}
                   />
                 ) : (
-                  <CircularProgress sx={{ margin: "20px 0" }} />
+                  <Grid
+                    sx={{ width: "200px", margin: "20px 0" }}
+                    container
+                    justifyContent={"center"}
+                  >
+                    <CircularProgress />
+                  </Grid>
                 )
               ) : menuItems ? (
                 <FormSelect
@@ -256,7 +262,13 @@ const CreateItem = () => {
                   m={"20px 0"}
                 />
               ) : (
-                <CircularProgress sx={{ margin: "20px 0" }} />
+                <Grid
+                  sx={{ width: "200px", margin: "20px 0" }}
+                  container
+                  justifyContent={"center"}
+                >
+                  <CircularProgress />
+                </Grid>
               )}
               <MultiLangInputs
                 register={register}

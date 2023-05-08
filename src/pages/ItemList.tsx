@@ -109,7 +109,13 @@ const ItemList = () => {
         </Grid>
         <Grid container gap={"10px"} sx={{ margin: "20px 0" }}>
           {!menuItems ? (
-            <CircularProgress />
+            <Grid
+              sx={{ width: "241px", height: "48px" }}
+              container
+              justifyContent={"center"}
+            >
+              <CircularProgress />
+            </Grid>
           ) : (
             <div style={{ width: "241px" }}>
               <Select
@@ -133,7 +139,7 @@ const ItemList = () => {
           </Button>
         </Grid>
         <Typography m={"15px 0"}>
-          Total: {itemList?.totalCount} items
+          Total: {itemList?.totalCount || "...."} items
         </Typography>
         <Divider sx={{ borderColor: gray.default }} />
         {itemList ? (
@@ -172,7 +178,13 @@ const ItemList = () => {
             />
           </Grid>
         ) : (
-          <CircularProgress />
+          <Grid
+            sx={{ width: "100%", margin: "200px 0" }}
+            container
+            justifyContent={"center"}
+          >
+            <CircularProgress />
+          </Grid>
         )}
       </Card>
       <MyAlert state={openSnackbar} setState={setOpenSnackbar} />

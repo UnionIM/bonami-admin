@@ -166,7 +166,13 @@ const OrderList = () => {
             />
           </Grid>
         ) : (
-          <CircularProgress />
+          <Grid
+            sx={{ width: "100%", margin: "200px 0" }}
+            container
+            justifyContent={"center"}
+          >
+            <CircularProgress />
+          </Grid>
         )}
       </Card>
       <MyAlert state={openSnackBar} setState={setOpenSnackBar} />
