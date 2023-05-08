@@ -53,7 +53,6 @@ const Home = () => {
       const epochStart = new Date(dateStart?.toString() || "").valueOf();
       const epochEnd = new Date(dateEnd?.toString() || "").valueOf();
       const filteredData = graph.filter((el) => {
-        console.log(el.date < epochStart, el.date, "<", epochStart);
         return !(el.date < epochStart || el.date > epochEnd);
       });
       setGraphData({
